@@ -16,7 +16,7 @@ runs:
           run: |
               $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
               $vspath = & $vswhere -products * -latest -property installationPath
-              & "$vspath\Common7\Tools\Launch-VsDevShell.ps1" -Arch $INPUT_ARCH -HostArch $INPUT_HOSTARCH -SkipAutomaticLocation
+              & "$vspath\Common7\Tools\Launch-VsDevShell.ps1" -Arch $env:INPUT_ARCH -HostArch $env:INPUT_HOSTARCH -SkipAutomaticLocation
           shell: pwsh
           env:
               INPUT_ARCH: ${{ inputs.arch }}
