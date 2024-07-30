@@ -14,7 +14,6 @@ runs:
     steps:
         - name: Set Greeting
           run: |
-              $PSVersionTable
               $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
               $vspath = & $vswhere -products * -latest -property installationPath
               & "$vspath\Common7\Tools\Launch-VsDevShell.ps1" -Arch $env:INPUT_ARCH -HostArch $env:INPUT_HOSTARCH -SkipAutomaticLocation
