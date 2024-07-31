@@ -13,3 +13,5 @@ runs:
           shell: pwsh
           run: |
               .\powershell-scripts\add_to_path.ps1
+              $env:PATH
+              dev
