@@ -15,8 +15,8 @@ runs:
         path: powershell-scripts
 
     - name: Checkout repo
+      env:
+        INPUT_REPO_PATH: ${{ inputs.repo-path }}
       uses: actions/checkout@v4
       with:
         path: $env:INPUT_REPO_PATH
-      env:
-        INPUT_REPO_PATH: ${{ inputs.repo_path }}
