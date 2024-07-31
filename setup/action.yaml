@@ -4,11 +4,11 @@ description: "GitHub Actions setup"
 
 inputs:
   path:
-    description: "Path of repo"
+    description: "Path"
     required: false
     default: "repo"
   depth:
-    description: "Fetch depth of repo"
+    description: "Fetch depth"
     required: false
     default: "1"
 
