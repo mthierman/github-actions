@@ -7,7 +7,7 @@ inputs:
     description: "Path"
     required: false
     default: "repo"
-  depth:
+  fetch-depth:
     description: "Fetch depth"
     required: false
     default: "1"
