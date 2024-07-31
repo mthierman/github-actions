@@ -1,10 +1,13 @@
 name: "Setup"
+
 description: "GitHub Actions setup"
+
 inputs:
   repo-path:
     description: "Path of repo"
     required: false
     default: "repo"
+
 runs:
   using: "composite"
   steps:
@@ -18,6 +21,7 @@ runs:
       uses: actions/checkout@v4
       with:
         path: ${{ inputs.repo-path }}
+
 branding:
   color: orange
   icon: loader
