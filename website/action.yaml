@@ -1,9 +1,12 @@
 name: "Setup"
+
 description: "GitHub Actions setup"
+
 inputs:
   token:
     description: "Checkout token"
     required: true
+
 runs:
   using: "composite"
   steps:
