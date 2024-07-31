@@ -3,10 +3,14 @@ name: "Setup"
 description: "GitHub Actions setup"
 
 inputs:
-  repo-path:
+  path:
     description: "Path of repo"
     required: false
     default: "repo"
+  depth:
+    description: "Fetch depth of repo"
+    required: false
+    default: "1"
 
 runs:
   using: "composite"
@@ -20,7 +24,8 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v4
       with:
-        path: ${{ inputs.repo-path }}
+        path: ${{ inputs.path }}
+        fetch-depth: ${{ inputs.fetch-depth }}
 
 branding:
   color: orange
