@@ -1,0 +1,10 @@
+name: "Setup"
+description: "GitHub Actions setup"
+runs:
+    using: "composite"
+    steps:
+        - name: Checkout powershell-scripts
+          uses: actions/checkout@v4
+          with:
+              repository: mthierman/powershell-scripts
+              path: powershell-scripts
