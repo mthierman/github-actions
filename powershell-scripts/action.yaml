@@ -1,0 +1,15 @@
+name: "powershell-scripts"
+description: "powershell-scripts"
+runs:
+    using: "composite"
+    steps:
+        - name: Checkout powershell-scripts
+          uses: actions/checkout@v4
+          with:
+              repository: mthierman/powershell-scripts
+              path: powershell-scripts
+
+        - name: Add powershell-scripts to path
+          shell: pwsh
+          run: |
+              .\powershell-scripts\add_to_path.ps1
