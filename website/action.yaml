@@ -1,19 +1,15 @@
 name: "Setup"
 description: "GitHub Actions setup"
 inputs:
-  repo-path:
-    description: "Path of repo"
+  token:
+    description: "Checkout token"
     required: true
 runs:
   using: "composite"
   steps:
-    - name: Checkout powershell-scripts
+    - name: Checkout mthierman.pages.dev
       uses: actions/checkout@v4
       with:
-        repository: mthierman/powershell-scripts
-        path: powershell-scripts
-
-    - name: Checkout repo
-      uses: actions/checkout@v4
-      with:
-        path: ${{ inputs.repo-path }}
+        repository: mthierman/mthierman.com
+        token: ${{ inputs.token }}
+        path: mthierman.com
