@@ -1,6 +1,6 @@
 name: "Setup"
 
-description: "GitHub Actions setup"
+description: "Checkout mthierman.pages.dev"
 
 inputs:
   token:
