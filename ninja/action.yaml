@@ -23,7 +23,6 @@ runs:
         $env:HOMEPATH
         "$(Get-Location)\ninja" | Out-File -FilePath $env:GITHUB_PATH -Append
         Get-Content $env:GITHUB_PATH
-        ninja --version
 
 branding:
   color: black
