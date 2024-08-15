@@ -20,7 +20,7 @@ runs:
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
         Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
         Remove-Item .\ninja-${{ inputs.platform }}.zip
-        "$(Get-Location)\ninja" | Out-File -FilePath $env:GITHUB_PATH -Append
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
 
 branding:
   color: black
