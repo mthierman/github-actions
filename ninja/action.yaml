@@ -19,6 +19,8 @@ runs:
         $env:GITHUB_PATH
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
         Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
+        Get-ChildItem
+        Get-ChildItem ninja
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
         $env:GITHUB_PATH
         ninja --version
