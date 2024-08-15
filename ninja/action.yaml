@@ -21,7 +21,3 @@ runs:
         Remove-Item .\ninja-${{ inputs.platform }}.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
         "Ninja v$(.\ninja\ninja --version)"
-
-branding:
-  color: black
-  icon: download

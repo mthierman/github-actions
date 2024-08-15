@@ -26,7 +26,3 @@ runs:
       with:
         path: ${{ inputs.path }}
         fetch-depth: ${{ inputs.fetch-depth }}
-
-branding:
-  color: orange
-  icon: loader
