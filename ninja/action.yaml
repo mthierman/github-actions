@@ -18,6 +18,8 @@ runs:
       run: |
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
         Add-Content $env:GITHUB_PATH $(Get-Location)
+        $env:GITHUB_PATH
+        ninja --version
 
 branding:
   color: black
