@@ -19,7 +19,8 @@ runs:
         Get-Location
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
         Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
-        Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
+        Get-ChildItem ninja
+        "$(Get-Location)\ninja"
         $env:GITHUB_PATH
         ninja --version
 
