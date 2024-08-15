@@ -8,8 +8,7 @@ inputs:
     required: true
   version:
     description: "Version"
-    required: false
-    default: "repo"
+    required: true
 
 runs:
   using: "composite"
