@@ -1,0 +1,23 @@
+name: "clap-validator"
+
+description: "Install clap-validator"
+
+inputs:
+  platform:
+    description: "Platform"
+    required: true
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download clap-validator
+      shell: pwsh
+      run: |
+        gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-validator
+        Expand-Archive .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip -DestinationPath clap-validator
+        Remove-Item .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\clap-validator"
+        "Ninja v$(.\clap-validator\clap-validator --version)"
