@@ -14,7 +14,7 @@ runs:
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-${{ inputs.version }}.exe -OutFile innosetup-${{ inputs.version }}.exe
-        .\innosetup-${{ inputs.version }}.exe /VERYSILENT /CURRENTUSER /DIR=innosetup-${{ inputs.version }}
+        .\innosetup-6.5.1.exe /VERYSILENT /CURRENTUSER /DIR=innosetup-6.5.1
         Get-ChildItem
         Remove-Item innosetup-${{ inputs.version }}.exe
         Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-${{ inputs.version }}"
