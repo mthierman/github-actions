@@ -20,4 +20,4 @@ runs:
         Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
         Remove-Item .\ninja-${{ inputs.platform }}.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
-        "Ninja v$(.\ninja\ninja --version)"
+        "Ninja v$(ninja --version)"
