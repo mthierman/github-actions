@@ -1,0 +1,20 @@
+name: "InnoSetup"
+
+description: "Install Inno Setup"
+
+inputs:
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Inno Setup
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://files.jrsoftware.org/is/6/innosetup-6.5.1.exe" -OutFile "innosetup-6.5.1.exe"
+        Expand-Archive ".\innosetup-${{ inputs.version }}.zip" -DestinationPath "innosetup-6.5.1"
+        Remove-Item ".\innosetup-${{ inputs.version }}.zip"
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-6.5.1"
+        iscc
