@@ -16,7 +16,7 @@ runs:
     - name: Download Ninja
       shell: pwsh
       run: |
-        gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
+        gh release download v${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
         Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
         Remove-Item .\ninja-${{ inputs.platform }}.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
