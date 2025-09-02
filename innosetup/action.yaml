@@ -13,8 +13,9 @@ runs:
     - name: Download Inno Setup
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri "https://files.jrsoftware.org/is/6/innosetup-6.5.1.exe" -OutFile "innosetup-6.5.1.exe"
-        Expand-Archive ".\innosetup-${{ inputs.version }}.zip" -DestinationPath "innosetup-6.5.1"
-        Remove-Item ".\innosetup-${{ inputs.version }}.zip"
-        Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-6.5.1"
+        Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-${{ inputs.version }}.exe -OutFile innosetup-${{ inputs.version }}.exe
+        .\innosetup-${{ inputs.version }}.exe /VERYSILENT /CURRENTUSER /DIR=innosetup-${{ inputs.version }}
+        Get-ChildItem
+        Remove-Item innosetup-${{ inputs.version }}.exe
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-${{ inputs.version }}"
         iscc
