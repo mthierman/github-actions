@@ -15,7 +15,7 @@ runs:
       with:
         path: |
           ~/.nuget/packages
-          ~/.nuget/tools
+          ~/.dotnet/tools
         key: ${{ runner.os }}-dotnet-tools-wix-${{ inputs.version }}
 
     - name: Install Wix
