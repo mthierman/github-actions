@@ -20,7 +20,7 @@ runs:
           ninja
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
-    - name: Install Ninja
+    - name: Install
       shell: pwsh
       run: |
         gh release download v${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
