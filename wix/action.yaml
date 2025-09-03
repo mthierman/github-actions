@@ -10,7 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache dotnet tools
+    - name: Cache
       uses: actions/cache@v4
       with:
         path: |
@@ -18,7 +18,7 @@ runs:
           ~/.dotnet/tools
         key: ${{ runner.os }}-dotnet-tools-wix-${{ inputs.version }}
 
-    - name: Install Wix
+    - name: Install
       shell: pwsh
       run: |
         dotnet tool install --global wix --version ${{ inputs.version }}
