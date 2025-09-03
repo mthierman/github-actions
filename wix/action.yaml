@@ -14,9 +14,8 @@ runs:
       uses: actions/cache@v4
       with:
         path: |
-          ~/.nuget/packages
           ~/.dotnet/tools
-        key: ${{ runner.os }}-dotnet-tools-wix-${{ inputs.version }}
+        key: ${{ runner.os }}-wix-${{ inputs.version }}
 
     - name: Install
       shell: pwsh
