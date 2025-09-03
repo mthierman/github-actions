@@ -13,7 +13,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download clap-info
+    - name: Install clap-info
       shell: pwsh
       run: |
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-info

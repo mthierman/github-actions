@@ -10,7 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download Inno Setup
+    - name: Install Inno Setup
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-${{ inputs.version }}.exe -OutFile innosetup-${{ inputs.version }}.exe

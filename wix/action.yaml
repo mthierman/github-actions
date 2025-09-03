@@ -1,0 +1,16 @@
+name: "Wix"
+
+description: "Install Wix"
+
+inputs:
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Wix
+      shell: pwsh
+      run: |
+        dotnet tool install --global wix --version ${{ inputs.version }}
