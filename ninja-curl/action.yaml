@@ -19,7 +19,7 @@ runs:
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
     - name: Platform detection
-      if: steps.cache-ninja.outputs.cache-hit != true
+      if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         switch ("${{ runner.os }}") {
