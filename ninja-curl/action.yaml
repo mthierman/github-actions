@@ -34,7 +34,12 @@ runs:
       if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        $platform = $env:NINJA_PLATFORM
+        switch ("${{ runner.os }}") {
+          "Windows" { $platform = "win" }
+          "Linux" { $platform = "linux" }
+          "macOS" { $platform = "mac" }
+          default { throw "Unsupported OS: ${{runner.os}}" }
+        }
         gh release download v${{ inputs.version }} -p "*$platform.zip" -R ninja-build/ninja
         Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
         Remove-Item .\ninja-$platform.zip
