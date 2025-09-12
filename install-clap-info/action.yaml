@@ -22,9 +22,15 @@ runs:
       if: steps.cache-clap-info.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-info
-        Expand-Archive .\clap-info-${{ inputs.platform }}.zip -DestinationPath clap-info
-        Remove-Item .\clap-info-${{ inputs.platform }}.zip
+        switch ("${{ runner.os }}") {
+          "Windows" { $platform = "win-x64" }
+          "Linux" { $platform = "linux-x64" }
+          "macOS" { $platform = "mac-universal" }
+          default { throw "Unsupported OS: ${{runner.os}}" }
+        }
+        gh release download ${{ inputs.version }} -p '*$platform.zip' -R free-audio/clap-info
+        Expand-Archive .\clap-info-$platform.zip -DestinationPath clap-info
+        Remove-Item .\clap-info-$platform.zip
 
     - name: Add to path
       shell: pwsh

@@ -22,9 +22,15 @@ runs:
       if: steps.cache-clap-validator.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-validator
-        Expand-Archive .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip -DestinationPath clap-validator
-        Remove-Item .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip
+        switch ("${{ runner.os }}") {
+          "Windows" { $platform = "windows" }
+          "Linux" { $platform = "ubuntu-18.04" }
+          "macOS" { $platform = "macos-universal" }
+          default { throw "Unsupported OS: ${{runner.os}}" }
+        }
+        gh release download ${{ inputs.version }} -p '*$platform.zip' -R free-audio/clap-validator
+        Expand-Archive .\clap-validator-${{ inputs.version }}-$platform.zip -DestinationPath clap-validator
+        Remove-Item .\clap-validator-${{ inputs.version }}-$platform.zip
 
     - name: Add to path
       shell: pwsh
