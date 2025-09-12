@@ -1,11 +1,8 @@
-name: "clap-validator"
+name: "Install clap-validator"
 
 description: "Install clap-validator"
 
 inputs:
-  platform:
-    description: "Platform"
-    required: true
   version:
     description: "Version"
     required: true
@@ -13,7 +10,16 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Cache
+      id: cache-clap-validator
+      uses: actions/cache@v4
+      with:
+        path: |
+          clap-validator
+        key: ${{ runner.os }}-clap-validator-${{ inputs.version }}
+
     - name: Install clap-validator
+      if: steps.cache-clap-validator.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-validator

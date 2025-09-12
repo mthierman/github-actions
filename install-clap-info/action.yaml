@@ -1,11 +1,8 @@
-name: "clap-info"
+name: "Install clap-info"
 
 description: "Install clap-info"
 
 inputs:
-  platform:
-    description: "Platform"
-    required: true
   version:
     description: "Version"
     required: true
@@ -13,7 +10,16 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Cache
+      id: cache-clap-info
+      uses: actions/cache@v4
+      with:
+        path: |
+          clap-info
+        key: ${{ runner.os }}-clap-info-${{ inputs.version }}
+
     - name: Install clap-info
+      if: steps.cache-clap-info.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-info
