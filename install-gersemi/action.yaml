@@ -1,0 +1,33 @@
+name: "Install Gersemi"
+
+description: "Install Gersemi"
+
+inputs:
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.13"
+        check-latest: true
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "0.8.17"
+        enable-cache: true
+
+    - name: Check python
+      shell: pwsh
+      run: |
+        uv python list
+
+    - name: Install Gersemi
+      shell: pwsh
+      run: |
+        uv tool install gersemi
