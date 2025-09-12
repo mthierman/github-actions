@@ -18,18 +18,6 @@ runs:
           ninja
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
-    - name: Platform detection
-      if: steps.cache-ninja.outputs.cache-hit != 'true'
-      shell: pwsh
-      run: |
-        switch ("${{ runner.os }}") {
-          "Windows" { $platform = "win" }
-          "Linux" { $platform = "linux" }
-          "macOS" { $platform = "mac" }
-          default { throw "Unsupported OS: ${{runner.os}}" }
-        }
-        Add-Content $env:GITHUB_ENV "NINJA_PLATFORM=$platform"
-
     - name: Install
       if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
