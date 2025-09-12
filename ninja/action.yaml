@@ -3,9 +3,6 @@ name: "Ninja"
 description: "Install Ninja"
 
 inputs:
-  platform:
-    description: "Platform"
-    required: true
   version:
     description: "Version"
     required: true
@@ -13,7 +10,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache
+    - name: Cache Ninja
+      id: cache-ninja
       uses: actions/cache@v4
       with:
         path: |
@@ -21,9 +19,16 @@ runs:
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
     - name: Install
+      if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        gh release download v${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
-        Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
-        Remove-Item .\ninja-${{ inputs.platform }}.zip
+        switch ("${{ runner.os }}") {
+          "Windows" { $platform = "win" }
+          "Linux" { $platform = "linux" }
+          "macOS" { $platform = "mac" }
+          default { throw "Unsupported OS: ${{runner.os}}" }
+        }
+        gh release download v${{ inputs.version }} -p "*$platform.zip" -R ninja-build/ninja
+        Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
+        Remove-Item .\ninja-$platform.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
