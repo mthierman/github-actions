@@ -32,7 +32,7 @@ runs:
       shell: pwsh
       run: |
         $platform = $env:NINJA_PLATFORM
-        gh release download v${{ inputs.version }} -p '*$platform.zip' -R ninja-build/ninja
+        gh release download v${{ inputs.version }} -p "*$platform.zip" -R ninja-build/ninja
         Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
         Remove-Item .\ninja-$platform.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
