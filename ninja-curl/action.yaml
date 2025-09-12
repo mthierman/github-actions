@@ -1,0 +1,29 @@
+name: "Ninja"
+
+description: "Install Ninja"
+
+inputs:
+  platform:
+    description: "Platform"
+    required: true
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ninja
+        key: ${{ runner.os }}-ninja-${{ inputs.version }}
+
+    - name: Install
+      shell: pwsh
+      run: |
+        gh release download v${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
+        Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
+        Remove-Item .\ninja-${{ inputs.platform }}.zip
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
