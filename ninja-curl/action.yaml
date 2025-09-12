@@ -3,9 +3,6 @@ name: "Ninja"
 description: "Install Ninja"
 
 inputs:
-  platform:
-    description: "Platform"
-    required: true
   version:
     description: "Version"
     required: true
@@ -20,10 +17,22 @@ runs:
           ninja
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
+    - name: Platform detection
+      shell: pwsh
+      run: |
+        switch ("${{ runner.os }}") {
+          "Windows" { $platform = "win" }
+          "Linux" { $platform = "linux" }
+          "macOS" { $platform = "mac" }
+          default { throw "Unsupported OS: ${{runner.os}}" }
+        }
+        Add-Content $env:GITHUB_ENV "NINJA_PLATFORM=$platform"
+
     - name: Install
       shell: pwsh
       run: |
-        gh release download v${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R ninja-build/ninja
-        Expand-Archive .\ninja-${{ inputs.platform }}.zip -DestinationPath ninja
-        Remove-Item .\ninja-${{ inputs.platform }}.zip
+        $platform = $env:NINJA_PLATFORM
+        gh release download v${{ inputs.version }} -p '*$platform.zip' -R ninja-build/ninja
+        Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
+        Remove-Item .\ninja-$platform.zip
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
