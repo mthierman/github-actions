@@ -18,7 +18,7 @@ runs:
           ninja
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
-    - name: Install
+    - name: Install Ninja
       if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
@@ -31,4 +31,8 @@ runs:
         gh release download v${{ inputs.version }} -p "*$platform.zip" -R ninja-build/ninja
         Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
         Remove-Item .\ninja-$platform.zip
+
+    - name: Add Ninja to path
+      shell: pwsh
+      run: |
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
