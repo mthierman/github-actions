@@ -11,6 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Cache
+      id: cache-wix
       uses: actions/cache@v4
       with:
         path: |
@@ -18,6 +19,7 @@ runs:
         key: ${{ runner.os }}-wix-${{ inputs.version }}
 
     - name: Install
+      if: steps.cache-wix.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         dotnet tool install --global wix --version ${{ inputs.version }}

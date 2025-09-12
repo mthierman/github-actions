@@ -10,7 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache Ninja
+    - name: Cache
       id: cache-ninja
       uses: actions/cache@v4
       with:
@@ -18,7 +18,7 @@ runs:
           ninja
         key: ${{ runner.os }}-ninja-${{ inputs.version }}
 
-    - name: Install Ninja
+    - name: Install
       if: steps.cache-ninja.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
@@ -32,7 +32,7 @@ runs:
         Expand-Archive .\ninja-$platform.zip -DestinationPath ninja
         Remove-Item .\ninja-$platform.zip
 
-    - name: Add Ninja to path
+    - name: Add to path
       shell: pwsh
       run: |
         Add-Content $env:GITHUB_PATH "$(Get-Location)\ninja"
