@@ -25,5 +25,8 @@ runs:
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-info
         Expand-Archive .\clap-info-${{ inputs.platform }}.zip -DestinationPath clap-info
         Remove-Item .\clap-info-${{ inputs.platform }}.zip
+
+    - name: Add to path
+      shell: pwsh
+      run: |
         Add-Content $env:GITHUB_PATH "$(Get-Location)\clap-info"
-        "clap-info v$(.\clap-info\clap-info --version)"

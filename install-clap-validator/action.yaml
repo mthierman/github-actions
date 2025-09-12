@@ -25,5 +25,8 @@ runs:
         gh release download ${{ inputs.version }} -p '*${{ inputs.platform }}.zip' -R free-audio/clap-validator
         Expand-Archive .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip -DestinationPath clap-validator
         Remove-Item .\clap-validator-${{ inputs.version }}-${{ inputs.platform }}.zip
+
+    - name: Add to path
+      shell: pwsh
+      run: |
         Add-Content $env:GITHUB_PATH "$(Get-Location)\clap-validator"
-        "Ninja v$(.\clap-validator\clap-validator --version)"
