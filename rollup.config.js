@@ -1,15 +1,14 @@
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
 
-const config = {
-    input: "src/index.js",
+export default {
+    input: "hello-js/action.ts",
     output: {
         esModule: true,
-        file: "dist/index.js",
+        file: "hello-js/dist/action.js",
         format: "es",
         sourcemap: true,
     },
-    plugins: [commonjs(), nodeResolve({ preferBuiltins: true })],
+    plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 };
-
-export default config;

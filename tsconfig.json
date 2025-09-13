@@ -7,6 +7,8 @@
         "rewriteRelativeImportExtensions": true,
         "erasableSyntaxOnly": true,
         "verbatimModuleSyntax": true,
-        "strict": true
+        "strict": true,
+        "importHelpers": false,
+        "noEmitHelpers": false
     }
 }
