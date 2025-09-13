@@ -8,7 +8,6 @@ export default {
         esModule: true,
         file: "hello-js/dist/action.js",
         format: "es",
-        sourcemap: true,
     },
     plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 };
