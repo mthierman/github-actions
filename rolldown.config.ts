@@ -2,8 +2,8 @@ import { defineConfig } from "rolldown";
 
 export default defineConfig([
     {
-        input: "hello-js/action.ts",
         platform: "node",
+        input: "hello-js/action.ts",
         output: {
             file: "hello-js/dist/action.js",
         },
