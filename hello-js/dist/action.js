@@ -23877,7 +23877,7 @@ var require_github = __commonJS({
   }
 });
 
-// hello-js/action.js
+// hello-js/action.ts
 var core = __toESM(require_core());
 var github = __toESM(require_github());
 try {
