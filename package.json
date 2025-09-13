@@ -2,7 +2,8 @@
     "name": "github-actions",
     "private": true,
     "scripts": {
-        "build": "esbuild src/index.js --bundle --platform=node --target=node22 --format=cjs --outfile=hello-world-javascript-action/dist/index.js"
+        "build": "esbuild src/index.js --bundle --platform=node --target=node22 --format=cjs --outfile=hello-world-javascript-action/dist/index.js",
+        "action:build": "esbuild hello-js/action.js --bundle --platform=node --target=node22 --format=cjs --outfile=hello-js/dist/action.js"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
