@@ -1,15 +1,20 @@
 {
     "name": "github-actions",
     "private": true,
+    "type": "module",
     "scripts": {
         "build": "esbuild src/index.js --bundle --platform=node --target=node22 --format=cjs --outfile=hello-world-javascript-action/dist/index.js",
-        "action:build": "esbuild hello-js/action.ts --bundle --platform=node --target=node22 --format=cjs --outfile=hello-js/dist/action.js"
+        "action:build": "esbuild hello-js/action.ts --bundle --platform=node --target=node22 --format=cjs --outfile=hello-js/dist/action.js",
+        "rollup": "rollup --config rollup.config.js"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
         "@actions/github": "^6.0.1",
+        "@rollup/plugin-commonjs": "^28.0.6",
+        "@rollup/plugin-node-resolve": "^16.0.1",
         "esbuild": "^0.25.9",
         "prettier": "^3.6.2",
+        "rollup": "^4.50.1",
         "typescript": "^5.9.2"
     }
 }
