@@ -23878,8 +23878,8 @@ var require_github = __commonJS({
 });
 
 // hello-js/action.ts
-var core = __toESM(require_core(), 1);
-var github = __toESM(require_github(), 1);
+var core = __toESM(require_core());
+var github = __toESM(require_github());
 try {
   const nameToGreet = core.getInput("who-to-greet");
   core.info(`Hello ${nameToGreet}!`);

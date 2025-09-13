@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
         "noEmit": true,
-        "target": "ESNext",
-        "module": "NodeNext",
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
         "rewriteRelativeImportExtensions": true,
         "erasableSyntaxOnly": true,
         "verbatimModuleSyntax": true,
