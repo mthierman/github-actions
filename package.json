@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "esbuild src/index.js --bundle --platform=node --target=node22 --format=esm --packages=external --outfile=hello-world-javascript-action/dist/index.mjs"
+        "build": "esbuild src/index.js --bundle --platform=node --target=node22 --format=esm --external:@actions/core --external:@actions/github --outfile=hello-world-javascript-action/dist/index.mjs"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
