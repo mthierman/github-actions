@@ -23878,8 +23878,8 @@ var require_github = __commonJS({
 });
 
 // hello-js/action.ts
-var core = __toESM(require_core());
-var github = __toESM(require_github());
+var core = __toESM(require_core(), 1);
+var github = __toESM(require_github(), 1);
 try {
   const nameToGreet = core.getInput("who-to-greet");
   core.info(`Hello ${nameToGreet}!`);
@@ -23888,7 +23888,8 @@ try {
   const payload = JSON.stringify(github.context.payload, void 0, 2);
   core.info(`The event payload: ${payload}`);
 } catch (error) {
-  core.setFailed(error.message);
+  const err = error;
+  core.setFailed(err.message);
 }
 /*! Bundled license information:
 
