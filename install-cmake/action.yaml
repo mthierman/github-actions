@@ -1,0 +1,34 @@
+name: "Install CMake"
+
+description: "Install CMake"
+
+inputs:
+  version:
+    description: "Version"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache
+      id: cache-cmake
+      uses: actions/cache@v4
+      with:
+        path: |
+          cmake-${{ inputs.version }}
+        key: ${{ runner.os }}-cmake-${{ inputs.version }}
+
+    - name: Install
+      if: steps.cache-cmake.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri https://github.com/Kitware/CMake/releases/download/v${{ inputs.version }}/cmake-${{ inputs.version }}-windows-x86_64.zip -OutFile cmake-${{ inputs.version }}.zip
+        # Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-${{ inputs.version }}.exe -OutFile innosetup-${{ inputs.version }}.exe
+        # Start-Process -FilePath ".\innosetup-${{ inputs.version }}.exe" -ArgumentList "/VERYSILENT", "/CURRENTUSER", "/DIR=innosetup-${{ inputs.version }}" -Wait
+        Remove-Item .\innosetup-${{ inputs.version }}.exe
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-${{ inputs.version }}"
+
+    - name: Add to path
+      shell: pwsh
+      run: |
+        Add-Content $env:GITHUB_PATH "$(Get-Location)\innosetup-${{ inputs.version }}"
