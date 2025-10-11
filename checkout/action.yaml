@@ -1,0 +1,20 @@
+name: "checkout"
+
+description: "Checkout repos"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v5
+      with:
+        repository: mthierman/powershell-scripts
+        path: powershell-scripts
+
+    - uses: actions/checkout@v5
+      with:
+        path: repo
+
+    - uses: actions/checkout@v5
+      with:
+        repository: mthierman/mthierman.pages.dev
+        path: web
