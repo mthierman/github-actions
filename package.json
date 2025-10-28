@@ -3,10 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "action:esbuild": "esbuild hello-js/action.ts --bundle --platform=node --target=node22 --format=cjs --outfile=hello-js/dist/action.cjs",
+        "action:esbuild": "esbuild hello-js/action.ts --bundle --platform=node --target=node24 --format=cjs --outfile=hello-js/dist/action.cjs",
         "action:rollup": "rollup --config rollup.config.js",
         "action:rolldown": "rolldown -c rolldown.config.ts",
-        "testing:esbuild": "esbuild testing-js/action.ts --bundle --platform=node --target=node22 --format=cjs --outfile=testing-js/dist/action.cjs"
+        "testing:esbuild": "esbuild testing-js/action.ts --bundle --platform=node --target=node24 --format=cjs --outfile=testing-js/dist/action.cjs"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
