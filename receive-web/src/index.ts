@@ -11,7 +11,7 @@ if (!event_path) {
 const event = JSON.parse(await readFile(event_path, "utf8"));
 const payload = event.client_payload;
 
-await writeFile(join(resolve("src/content/projects"), "pane.json"), payload.pane);
+await writeFile(join(resolve("src/content/projects"), "pane.json"), JSON.stringify(payload.pane));
 
 execSync(
     `git config user.name github-actions[bot] &&
