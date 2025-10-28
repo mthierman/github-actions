@@ -6,7 +6,8 @@ try {
     const package_json = JSON.parse(
         readFileSync(core.getInput("package-json", { required: true }), { encoding: "utf8" }),
     );
-    core.info(`${package_json}`);
+    // core.info(`${package_json}`);
+    console.dir(package_json, { depth: null });
 
     // Get the JSON webhook payload for the event that triggered the workflow
     const payload = JSON.stringify(github.context.payload, undefined, 2);

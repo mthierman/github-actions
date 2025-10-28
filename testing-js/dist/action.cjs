@@ -23885,7 +23885,7 @@ try {
   const package_json = JSON.parse(
     (0, import_node_fs.readFileSync)(core.getInput("package-json", { required: true }), { encoding: "utf8" })
   );
-  core.info(`${package_json}`);
+  console.dir(package_json, { depth: null });
   const payload = JSON.stringify(github.context.payload, void 0, 2);
   core.info(`The event payload: ${payload}`);
 } catch (error) {
