@@ -11,7 +11,11 @@ import { spawnSync } from "node:child_process";
     const releases = core.getInput("releases", { required: true });
     const event_type = core.getInput("event_type", { required: true });
 
-    const event = {
+    const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+
+    await octokit.repos.createDispatchEvent({
+        owner: "mthierman",
+        repo: "mthierman.pages.dev",
         event_type: event_type,
         client_payload: {
             data: {
@@ -40,12 +44,5 @@ import { spawnSync } from "node:child_process";
                     }),
             },
         },
-    };
-
-    const octokit = new Octokit({ auth: process.env.GH_TOKEN });
-    await octokit.repos.createDispatchEvent({
-        owner: "mthierman",
-        repo: "mthierman.pages.dev",
-        ...event,
     });
 })();
