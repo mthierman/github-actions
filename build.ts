@@ -6,6 +6,7 @@ await esbuild.build({
     bundle: true,
     platform: "node",
     target: "node24",
-    format: "cjs",
-    outfile: resolve("notify-web/dist/action.cjs"),
+    format: "esm",
+    sourcemap: true,
+    outfile: resolve("notify-web/dist/action.js"),
 });

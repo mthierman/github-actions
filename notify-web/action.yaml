@@ -2,6 +2,23 @@ name: Notify web
 
 description: Notify mthierman.pages.dev
 
+inputs:
+  name:
+    description: "Name of project"
+    required: true
+  description:
+    description: "Description of project"
+    required: true
+  version:
+    description: "Version of build"
+    required: true
+  repo:
+    description: "URL of git repository"
+    required: true
+  event_type:
+    description: "Type of event"
+    required: true
+
 runs:
   using: node24
-  main: action.cjs
+  main: action.js
