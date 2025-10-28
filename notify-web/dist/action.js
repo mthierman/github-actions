@@ -20966,7 +20966,7 @@ var require_fast_content_type_parse = __commonJS({
   }
 });
 
-// notify-web/src/action.ts
+// notify-web/action.ts
 var core = __toESM(require_core(), 1);
 
 // node_modules/.pnpm/@js-temporal+polyfill@0.5.1/node_modules/@js-temporal/polyfill/dist/index.esm.js
@@ -28404,7 +28404,7 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
   }
 );
 
-// notify-web/src/action.ts
+// notify-web/action.ts
 import { spawnSync } from "node:child_process";
 var name = core.getInput("name", { required: true });
 var event_type = core.getInput("event_type", { required: true });
