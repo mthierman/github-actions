@@ -13,4 +13,4 @@ outputs:
 
 runs:
   using: node24
-  main: dist/action.cjs
+  main: action.cjs

@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "preinstall": "node ./scripts/preinstall.ts",
-        "build": "node ./scripts/build.ts",
+        "build": "node ./build.ts",
         "hello-js:rollup": "rollup --config rollup.config.js",
         "hello-js:rolldown": "rolldown -c rolldown.config.ts"
     },

@@ -1,0 +1,7 @@
+name: Notify web
+
+description: Notify mthierman.pages.dev
+
+runs:
+  using: node24
+  main: action.cjs
