@@ -1,15 +1,15 @@
-import * as core from "@actions/core";
+import { getInput } from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
 import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 
 (async () => {
-    const name = core.getInput("name", { required: true });
-    const description = core.getInput("description", { required: true });
-    const version = core.getInput("version", { required: true });
-    const repo = core.getInput("repo", { required: true });
-    const releases = core.getInput("releases", { required: true });
-    const event_type = core.getInput("event_type", { required: true });
+    const name = getInput("name", { required: true });
+    const description = getInput("description", { required: true });
+    const version = getInput("version", { required: true });
+    const repo = getInput("repo", { required: true });
+    const releases = getInput("releases", { required: true });
+    const event_type = getInput("event_type", { required: true });
 
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 

@@ -20962,7 +20962,7 @@ var require_fast_content_type_parse = __commonJS({
 });
 
 // notify-web/src/index.ts
-var core = __toESM(require_core(), 1);
+var import_core2 = __toESM(require_core(), 1);
 
 // node_modules/.pnpm/@js-temporal+polyfill@0.5.1/node_modules/@js-temporal/polyfill/dist/index.esm.js
 var import_jsbi = __toESM(require_jsbi_cjs(), 1);
@@ -28402,12 +28402,12 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
 // notify-web/src/index.ts
 var import_node_child_process = require("node:child_process");
 (async () => {
-  const name = core.getInput("name", { required: true });
-  const description = core.getInput("description", { required: true });
-  const version = core.getInput("version", { required: true });
-  const repo = core.getInput("repo", { required: true });
-  const releases = core.getInput("releases", { required: true });
-  const event_type = core.getInput("event_type", { required: true });
+  const name = (0, import_core2.getInput)("name", { required: true });
+  const description = (0, import_core2.getInput)("description", { required: true });
+  const version = (0, import_core2.getInput)("version", { required: true });
+  const repo = (0, import_core2.getInput)("repo", { required: true });
+  const releases = (0, import_core2.getInput)("releases", { required: true });
+  const event_type = (0, import_core2.getInput)("event_type", { required: true });
   const octokit = new Octokit2({ auth: process.env.GH_TOKEN });
   await octokit.repos.createDispatchEvent({
     owner: "mthierman",
