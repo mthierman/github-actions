@@ -14,7 +14,7 @@ import { spawnSync } from "node:child_process";
     const releases = core.getInput("releases", { required: true });
     const event_type = core.getInput("event_type", { required: true });
 
-    const payload = {
+    const event = {
         event_type: event_type,
         client_payload: {
             data: {
@@ -46,19 +46,10 @@ import { spawnSync } from "node:child_process";
     };
 
     // https://docs.github.com/en/rest/guides/scripting-with-the-rest-api-and-javascript?apiVersion=2022-11-28
-    if (process.env.CI) {
-        const octokit = new Octokit({ auth: process.env.GH_TOKEN });
-        await octokit.repos.createDispatchEvent({
-            owner: "mthierman",
-            repo: "mthierman.pages.dev",
-            ...payload,
-        });
-    } else {
-        console.dir(
-            {
-                ...payload,
-            },
-            { depth: null },
-        );
-    }
+    const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+    await octokit.repos.createDispatchEvent({
+        owner: "mthierman",
+        repo: "mthierman.pages.dev",
+        ...event,
+    });
 })();

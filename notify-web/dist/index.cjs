@@ -28408,7 +28408,7 @@ var import_node_child_process = require("node:child_process");
   const repo = core.getInput("repo", { required: true });
   const releases = core.getInput("releases", { required: true });
   const event_type = core.getInput("event_type", { required: true });
-  const payload = {
+  const event = {
     event_type,
     client_payload: {
       data: {
@@ -28435,21 +28435,12 @@ var import_node_child_process = require("node:child_process");
       }
     }
   };
-  if (process.env.CI) {
-    const octokit = new Octokit2({ auth: process.env.GH_TOKEN });
-    await octokit.repos.createDispatchEvent({
-      owner: "mthierman",
-      repo: "mthierman.pages.dev",
-      ...payload
-    });
-  } else {
-    console.dir(
-      {
-        ...payload
-      },
-      { depth: null }
-    );
-  }
+  const octokit = new Octokit2({ auth: process.env.GH_TOKEN });
+  await octokit.repos.createDispatchEvent({
+    owner: "mthierman",
+    repo: "mthierman.pages.dev",
+    ...event
+  });
 })();
 /*! Bundled license information:
 
