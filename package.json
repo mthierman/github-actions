@@ -5,8 +5,7 @@
     "scripts": {
         "preinstall": "node ./scripts/preinstall.ts",
         "build": "node ./build.ts",
-        "rollup": "rollup --config rollup.config.js",
-        "rolldown": "rolldown -c rolldown.config.ts"
+        "rollup": "rollup --config rollup.config.js"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
