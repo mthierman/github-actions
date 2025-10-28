@@ -1,12 +1,13 @@
-import esbuild from "esbuild";
+import commonjs from "@rollup/plugin-commonjs";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
 import { resolve } from "node:path";
+import { rollup } from "rollup";
 
-await esbuild.build({
-    platform: "node",
-    target: "node24",
-    format: "esm",
-    entryPoints: [resolve("notify-web/action.ts")],
-    outfile: resolve("notify-web/dist/action.ts"),
-    bundle: true,
-    minify: true,
+const bundle = await rollup({
+    input: resolve("notify-web/src/index.ts"),
+    output: { esModule: true, file: "index.js", format: "es", sourcemap: true },
+    plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 });
+
+bundle.write({ dir: "notify-web/dist" });

@@ -4,9 +4,9 @@
     "type": "module",
     "scripts": {
         "preinstall": "node ./scripts/preinstall.ts",
-        "build": "node ./rollup.ts",
-        "hello-js:rollup": "rollup --config rollup.config.js",
-        "hello-js:rolldown": "rolldown -c rolldown.config.ts"
+        "build": "node ./build.ts",
+        "rollup": "rollup --config rollup.config.js",
+        "rolldown": "rolldown -c rolldown.config.ts"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
@@ -17,10 +17,8 @@
         "@rollup/plugin-node-resolve": "^16.0.3",
         "@rollup/plugin-typescript": "^12.3.0",
         "@types/node": "^24.9.2",
-        "esbuild": "^0.25.11",
         "octokit": "^5.0.4",
         "prettier": "^3.6.2",
-        "rolldown": "1.0.0-beta.45",
         "rollup": "^4.52.5",
         "typescript": "^5.9.3"
     }

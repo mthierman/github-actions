@@ -3,11 +3,12 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 
 export default {
-    input: "hello-js/action.ts",
+    input: "notify-web/src/index.ts",
     output: {
         esModule: true,
-        file: "hello-js/dist/action.js",
+        file: "notify-web/dist/index.js",
         format: "es",
+        sourcemap: true,
     },
     plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 };
