@@ -16,7 +16,7 @@ const event_type = core.getInput("event_type", { required: true });
 const payload = {
     event_type: event_type,
     client_payload: {
-        [name]: {
+        data: {
             name: name,
             version: version,
             description: description,
