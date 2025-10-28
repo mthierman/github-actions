@@ -8,7 +8,7 @@ if (!event_path) {
 }
 const event = JSON.parse(await readFile(event_path, "utf8"));
 const client_payload = event.client_payload;
-await writeFile(join(resolve("src/content/projects"), `${client_payload.data.name}.json`), JSON.stringify(client_payload.data));
+await writeFile(join(resolve("src/content/projects"), `${client_payload.data.name}.json`), JSON.stringify(client_payload.data, null, 4));
 execSync(`git config user.name github-actions[bot] &&
     git config user.email 41898282+github-actions[bot]@users.noreply.github.com &&
     git add -A &&

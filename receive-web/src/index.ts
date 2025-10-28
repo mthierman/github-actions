@@ -13,7 +13,7 @@ const client_payload = event.client_payload;
 
 await writeFile(
     join(resolve("src/content/projects"), `${client_payload.data.name}.json`),
-    JSON.stringify(client_payload.data),
+    JSON.stringify(client_payload.data, null, 4),
 );
 
 execSync(
