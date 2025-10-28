@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { readFileSync } from "node:fs";
-
+//
 try {
     const package_json = JSON.parse(
         readFileSync(core.getInput("package-json", { required: true }), { encoding: "utf8" }),
