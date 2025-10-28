@@ -1,0 +1,22 @@
+import { execSync } from "node:child_process";
+import { readFile, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+
+const event_path = process.env.GITHUB_EVENT_PATH;
+
+if (!event_path) {
+    throw new Error("GITHUB_EVENT_PATH not set");
+}
+
+const event = JSON.parse(await readFile(event_path, "utf8"));
+const payload = event.client_payload;
+
+await writeFile(join(resolve("src/content/projects"), "pane.json"), payload.pane);
+
+execSync(
+    `git config user.name github-actions[bot] &&
+    git config user.email 41898282+github-actions[bot]@users.noreply.github.com &&
+    git add -A &&
+    (git commit -m 'github-actions: Update generated files' || echo "No changes to commit") &&
+    git push origin main`,
+);

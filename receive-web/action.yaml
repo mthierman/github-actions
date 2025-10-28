@@ -1,0 +1,7 @@
+name: Receive web
+
+description: Receive notifications for mthierman.pages.dev
+
+runs:
+  using: node24
+  main: dist/index.js

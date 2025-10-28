@@ -4,10 +4,18 @@ import typescript from "@rollup/plugin-typescript";
 import { resolve } from "node:path";
 import { rollup } from "rollup";
 
-const bundle = await rollup({
+const notify_web = await rollup({
     input: resolve("notify-web/src/index.ts"),
     output: { esModule: true, file: "index.js", format: "es", sourcemap: true },
     plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 });
 
-bundle.write({ dir: "notify-web/dist" });
+notify_web.write({ dir: "notify-web/dist" });
+
+const receive_web = await rollup({
+    input: resolve("receive-web/src/index.ts"),
+    output: { esModule: true, file: "index.js", format: "es", sourcemap: true },
+    plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
+});
+
+receive_web.write({ dir: "receive-web/dist" });
