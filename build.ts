@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { builtinModules } from "node:module"; // <-- auto-detect built-ins
+import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 
 async function buildAll() {
@@ -17,7 +17,7 @@ async function buildAll() {
                 outfile: resolve(`${action.outdir}/index.js`),
                 platform: "node",
                 target: "node24",
-                format: "esm",
+                format: "cjs",
                 bundle: true,
                 sourcemap: true,
                 minify: false,
