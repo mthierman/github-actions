@@ -14,7 +14,7 @@ async function buildAll() {
         actions.map((action) =>
             build({
                 entryPoints: [resolve(action.entry)],
-                outfile: resolve(`${action.outdir}/index.js`),
+                outfile: resolve(`${action.outdir}/index.cjs`),
                 platform: "node",
                 target: "node24",
                 format: "cjs",

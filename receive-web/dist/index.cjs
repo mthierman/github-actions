@@ -23,4 +23,4 @@ var import_node_path = require("node:path");
     git push origin main`
   );
 })();
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.cjs.map
