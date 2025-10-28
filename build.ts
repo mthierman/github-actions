@@ -1,21 +1,33 @@
-import commonjs from "@rollup/plugin-commonjs";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
+import { build } from "esbuild";
+import { builtinModules } from "node:module"; // <-- auto-detect built-ins
 import { resolve } from "node:path";
-import { rollup } from "rollup";
 
-const notify_web = await rollup({
-    input: resolve("notify-web/src/index.ts"),
-    output: { esModule: true, file: "index.js", format: "es" },
-    plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
+async function buildAll() {
+    const nodeBuiltins: string[] = [...builtinModules];
+
+    const actions = [
+        { name: "notify-web", entry: "notify-web/src/index.ts", outdir: "notify-web/dist" },
+        { name: "receive-web", entry: "receive-web/src/index.ts", outdir: "receive-web/dist" },
+    ];
+
+    await Promise.all(
+        actions.map((action) =>
+            build({
+                entryPoints: [resolve(action.entry)],
+                outfile: resolve(`${action.outdir}/index.js`),
+                platform: "node",
+                target: "node24",
+                format: "esm",
+                bundle: true,
+                sourcemap: true,
+                minify: false,
+                external: nodeBuiltins,
+            }),
+        ),
+    );
+}
+
+buildAll().catch((err) => {
+    console.error(err);
+    process.exit(1);
 });
-
-notify_web.write({ dir: "notify-web/dist" });
-
-const receive_web = await rollup({
-    input: resolve("receive-web/src/index.ts"),
-    output: { esModule: true, file: "index.js", format: "es" },
-    plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
-});
-
-receive_web.write({ dir: "receive-web/dist" });

@@ -1,16 +1,22 @@
-import { execSync } from 'node:child_process';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
-
-const event_path = process.env.GITHUB_EVENT_PATH;
+// receive-web/src/index.ts
+import { execSync } from "node:child_process";
+import { readFile, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+var event_path = process.env.GITHUB_EVENT_PATH;
 if (!event_path) {
-    throw new Error("GITHUB_EVENT_PATH not set");
+  throw new Error("GITHUB_EVENT_PATH not set");
 }
-const event = JSON.parse(await readFile(event_path, "utf8"));
-const client_payload = event.client_payload;
-await writeFile(join(resolve("src/content/projects"), `${client_payload.data.name}.json`), JSON.stringify(client_payload.data, null, 4));
-execSync(`git config user.name github-actions[bot] &&
+var event = JSON.parse(await readFile(event_path, "utf8"));
+var client_payload = event.client_payload;
+await writeFile(
+  join(resolve("src/content/projects"), `${client_payload.data.name}.json`),
+  JSON.stringify(client_payload.data, null, 4)
+);
+execSync(
+  `git config user.name github-actions[bot] &&
     git config user.email 41898282+github-actions[bot]@users.noreply.github.com &&
     git add -A &&
     (git commit -m 'github-actions: Update generated files' || echo "No changes to commit") &&
-    git push origin main`);
+    git push origin main`
+);
+//# sourceMappingURL=index.js.map
