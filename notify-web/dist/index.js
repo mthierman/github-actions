@@ -30937,11 +30937,11 @@ const Octokit = Octokit$1.plugin(requestLog, legacyRestEndpointMethods, paginate
 // https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax#runs
 // https://github.com/actions/toolkit
 const name = coreExports.getInput("name", { required: true });
-const event_type = coreExports.getInput("event_type", { required: true });
-const version = coreExports.getInput("version", { required: true });
 const description = coreExports.getInput("description", { required: true });
+const version = coreExports.getInput("version", { required: true });
 const repo = coreExports.getInput("repo", { required: true });
 const releases = coreExports.getInput("releases", { required: true });
+const event_type = coreExports.getInput("event_type", { required: true });
 const payload = {
     event_type: event_type,
     client_payload: {

@@ -7,11 +7,11 @@ import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 
 const name = core.getInput("name", { required: true });
-const event_type = core.getInput("event_type", { required: true });
-const version = core.getInput("version", { required: true });
 const description = core.getInput("description", { required: true });
+const version = core.getInput("version", { required: true });
 const repo = core.getInput("repo", { required: true });
 const releases = core.getInput("releases", { required: true });
+const event_type = core.getInput("event_type", { required: true });
 
 const payload = {
     event_type: event_type,
