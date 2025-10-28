@@ -1,7 +1,0 @@
-name: Testing
-
-description: Print package.json
-
-runs:
-  using: node24
-  main: action.cjs
