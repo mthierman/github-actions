@@ -6,7 +6,7 @@ import { rollup } from "rollup";
 
 const notify_web = await rollup({
     input: resolve("notify-web/src/index.ts"),
-    output: { esModule: true, file: "index.js", format: "es", sourcemap: true },
+    output: { esModule: true, file: "index.js", format: "es" },
     plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 });
 
@@ -14,7 +14,7 @@ notify_web.write({ dir: "notify-web/dist" });
 
 const receive_web = await rollup({
     input: resolve("receive-web/src/index.ts"),
-    output: { esModule: true, file: "index.js", format: "es", sourcemap: true },
+    output: { esModule: true, file: "index.js", format: "es" },
     plugins: [commonjs(), nodeResolve({ preferBuiltins: true }), typescript()],
 });
 
