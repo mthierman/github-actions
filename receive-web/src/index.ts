@@ -10,11 +10,10 @@ import { join, resolve } from "node:path";
     }
 
     const event = JSON.parse(await readFile(event_path, "utf8"));
-    const client_payload = event.client_payload;
 
     await writeFile(
-        join(resolve("src/content/projects"), `${client_payload.data.name}.json`),
-        JSON.stringify(client_payload.data, null, 4),
+        join(resolve("src/content/projects"), `${event.client_payload.data.name}.json`),
+        JSON.stringify(event.client_payload.data, null, 4),
     );
 
     execSync(
