@@ -4,10 +4,9 @@
     "type": "module",
     "scripts": {
         "preinstall": "node ./scripts/preinstall.ts",
-        "build": "esbuild testing-js/action.ts --bundle --platform=node --target=node24 --format=cjs --outfile=testing-js/dist/action.cjs",
-        "action:esbuild": "esbuild hello-js/action.ts --bundle --platform=node --target=node24 --format=cjs --outfile=hello-js/dist/action.cjs",
-        "action:rollup": "rollup --config rollup.config.js",
-        "action:rolldown": "rolldown -c rolldown.config.ts"
+        "build": "node ./scripts/build.ts",
+        "hello-js:rollup": "rollup --config rollup.config.js",
+        "hello-js:rolldown": "rolldown -c rolldown.config.ts"
     },
     "devDependencies": {
         "@actions/core": "^1.11.1",
