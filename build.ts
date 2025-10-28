@@ -7,6 +7,5 @@ await esbuild.build({
     platform: "node",
     target: "node24",
     format: "esm",
-    sourcemap: true,
     outfile: resolve("notify-web/dist/action.js"),
 });
