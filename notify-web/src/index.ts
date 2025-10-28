@@ -1,6 +1,3 @@
-// https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action
-// https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax#runs
-// https://github.com/actions/toolkit
 import * as core from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
 import { Octokit } from "@octokit/rest";
@@ -45,7 +42,6 @@ import { spawnSync } from "node:child_process";
         },
     };
 
-    // https://docs.github.com/en/rest/guides/scripting-with-the-rest-api-and-javascript?apiVersion=2022-11-28
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
     await octokit.repos.createDispatchEvent({
         owner: "mthierman",
