@@ -2,12 +2,6 @@ name: Testing
 
 description: Print package.json
 
-inputs:
-  package-json:
-    description: Path to package.json
-    required: true
-    default: ./package.json
-
 runs:
   using: node24
   main: dist/action.cjs

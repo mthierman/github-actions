@@ -1,17 +1,9 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github";
 import { readFileSync } from "node:fs";
 
 try {
-    const package_json = JSON.parse(
-        readFileSync(core.getInput("package-json", { required: true }), { encoding: "utf8" }),
-    );
-    // core.info(`${package_json}`);
+    const package_json = JSON.parse(readFileSync("package.json", { encoding: "utf8" }));
     console.dir(package_json, { depth: null });
-
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    core.info(`The event payload: ${payload}`);
 } catch (error) {
     const err = error as Error;
     core.setFailed(err.message);
