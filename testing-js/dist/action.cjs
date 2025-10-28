@@ -23880,8 +23880,11 @@ var require_github = __commonJS({
 // testing-js/action.ts
 var core = __toESM(require_core(), 1);
 var github = __toESM(require_github(), 1);
+var import_node_fs = require("node:fs");
 try {
-  const package_json = core.getInput("package-json");
+  const package_json = JSON.parse(
+    (0, import_node_fs.readFileSync)(core.getInput("package-json", { required: true }), { encoding: "utf8" })
+  );
   core.info(`${package_json}`);
   const payload = JSON.stringify(github.context.payload, void 0, 2);
   core.info(`The event payload: ${payload}`);
