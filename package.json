@@ -4,8 +4,7 @@
     "type": "module",
     "scripts": {
         "preinstall": "node ./preinstall.ts",
-        "build": "node ./build.ts",
-        "rollup": "rollup --config rollup.config.js"
+        "build": "node ./build.ts"
     },
     "devDependencies": {
         "@actions/cache": "^4.1.0",
