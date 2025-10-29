@@ -1,0 +1,12 @@
+name: "Install Inno Setup"
+
+description: "Install Inno Setup"
+
+inputs:
+  version:
+    description: "Version"
+    default: "6.5.4"
+
+runs:
+  using: node24
+  main: dist/index.cjs

@@ -2,10 +2,13 @@ import { build } from "esbuild";
 import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 
-async function buildAll() {
-    const nodeBuiltins: string[] = [...builtinModules];
-
-    const actions = [{ name: "notify-web" }, { name: "receive-web" }];
+async function build_actions() {
+    const actions = [
+        { name: "notify-web" },
+        { name: "receive-web" },
+        { name: "install-innosetup" },
+        { name: "install-ninja" },
+    ];
 
     await Promise.all(
         actions.map((action) =>
@@ -18,13 +21,13 @@ async function buildAll() {
                 bundle: true,
                 sourcemap: true,
                 minify: false,
-                external: nodeBuiltins,
+                external: [...builtinModules],
             }),
         ),
     );
 }
 
-buildAll().catch((err) => {
+build_actions().catch((err) => {
     console.error(err);
     process.exit(1);
 });

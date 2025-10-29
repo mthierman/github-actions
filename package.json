@@ -8,6 +8,7 @@
         "rollup": "rollup --config rollup.config.js"
     },
     "devDependencies": {
+        "@actions/cache": "^4.1.0",
         "@actions/core": "^1.11.1",
         "@js-temporal/polyfill": "^0.5.1",
         "@types/node": "^24.9.2",

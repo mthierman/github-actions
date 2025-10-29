@@ -1,0 +1,12 @@
+name: "Install Ninja"
+
+description: "Install Ninja"
+
+inputs:
+  version:
+    description: "Version"
+    default: "1.13.1"
+
+runs:
+  using: node24
+  main: dist/index.cjs
