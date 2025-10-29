@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "preinstall": "node ./scripts/preinstall.ts",
+        "preinstall": "node ./preinstall.ts",
         "build": "node ./build.ts",
         "rollup": "rollup --config rollup.config.js"
     },
