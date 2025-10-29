@@ -69422,9 +69422,9 @@ function download_file(url, dest) {
     const cache_key = `${os.platform()}-ninja-${version}`;
     const restored_key = await cache.restoreCache([install_dir], cache_key);
     if (restored_key) {
-      core.info(`Cache hit for Inno Setup ${version}`);
+      core.info(`Cache hit for Ninja ${version}`);
     } else {
-      core.info(`Cache miss, downloading Inno Setup ${version}`);
+      core.info(`Cache miss, downloading Ninja ${version}`);
     }
     let platform2;
     switch (os.platform()) {
