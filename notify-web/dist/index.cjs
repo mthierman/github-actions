@@ -28404,12 +28404,12 @@ var import_node_child_process = require("node:child_process");
 var import_node_fs = require("node:fs");
 var import_node_path = require("node:path");
 (async () => {
-  const action_path = process.env.GITHUB_ACTION_PATH;
-  if (!action_path) {
-    throw new Error("GITHUB_ACTION_PATH not set");
+  const workspace_path = process.env.GITHUB_WORKSPACE;
+  if (!workspace_path) {
+    throw new Error("GITHUB_WORKSPACE not set");
   }
   const package_json = JSON.parse(
-    (0, import_node_fs.readFileSync)((0, import_node_path.resolve)(action_path, "package.json"), {
+    (0, import_node_fs.readFileSync)((0, import_node_path.resolve)(workspace_path, "package.json"), {
       encoding: "utf-8"
     })
   );

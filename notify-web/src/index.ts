@@ -6,14 +6,14 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 (async () => {
-    const action_path = process.env.GITHUB_ACTION_PATH;
+    const workspace_path = process.env.GITHUB_WORKSPACE;
 
-    if (!action_path) {
-        throw new Error("GITHUB_ACTION_PATH not set");
+    if (!workspace_path) {
+        throw new Error("GITHUB_WORKSPACE not set");
     }
 
     const package_json = JSON.parse(
-        readFileSync(resolve(action_path, "package.json"), {
+        readFileSync(resolve(workspace_path, "package.json"), {
             encoding: "utf-8",
         }),
     );
