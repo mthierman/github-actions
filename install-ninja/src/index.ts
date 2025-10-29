@@ -4,19 +4,18 @@ import { getInput } from "@actions/core";
 import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
-import * as https from "node:https";
 import * as os from "node:os";
-import { join } from "node:path";
-import { pipeline } from "node:stream";
-import { promisify } from "node:util";
+import * as path from "node:path";
+import * as stream from "node:stream";
+import * as util from "node:util";
 
-const stream_pipeline = promisify(pipeline);
+const stream_pipeline = util.promisify(stream.pipeline);
 
 (async () => {
     try {
         const version = getInput("version", { required: true });
         const workspace = process.cwd();
-        const install_dir = join(workspace, `ninja-${version}`);
+        const install_dir = path.join(workspace, `ninja-${version}`);
         const cache_key = `${os.platform()}-ninja-${version}`;
         const restored_key = await cache.restoreCache([install_dir], cache_key);
 
@@ -57,7 +56,7 @@ const stream_pipeline = promisify(pipeline);
         }
 
         const asset_url = asset.browser_download_url;
-        const zip_path = join(workspace, asset.name);
+        const zip_path = path.join(workspace, asset.name);
 
         const res = await fetch(asset_url);
 
