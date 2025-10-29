@@ -4,31 +4,32 @@ import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 
 (async () => {
+    const event_type = getInput("event_type", { required: true });
     const name = getInput("name", { required: true });
-    const description = getInput("description", { required: true });
     const version = getInput("version", { required: true });
+    const description = getInput("description", { required: true });
+    const symbol = getInput("symbol", { required: true });
     const repo = getInput("repo", { required: true });
     const releases = getInput("releases", { required: true });
-    const event_type = getInput("event_type", { required: true });
 
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 
     await octokit.repos.createDispatchEvent({
         owner: "mthierman",
         repo: "mthierman.pages.dev",
-        event_type: event_type,
+        event_type,
         client_payload: {
             data: {
-                name: name,
-                version: version,
-                description: description,
+                name,
+                version,
+                description,
+                repo,
+                releases,
+                symbol,
                 build_time: Temporal.Now.plainDateTimeISO().toString(),
                 latest_commit: spawnSync("git", ["rev-parse", "--short", "HEAD"], {
                     encoding: "utf-8",
                 }).stdout.trim(),
-                symbol: "🪟",
-                repo: repo,
-                releases: releases,
                 recent_commits: spawnSync(
                     "git",
                     ["log", "-5", "--pretty=format:%h%x00%an%x00%aI%x00%s%x00"],

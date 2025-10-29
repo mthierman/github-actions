@@ -28402,12 +28402,13 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
 // notify-web/src/index.ts
 var import_node_child_process = require("node:child_process");
 (async () => {
+  const event_type = (0, import_core2.getInput)("event_type", { required: true });
   const name = (0, import_core2.getInput)("name", { required: true });
-  const description = (0, import_core2.getInput)("description", { required: true });
   const version = (0, import_core2.getInput)("version", { required: true });
+  const description = (0, import_core2.getInput)("description", { required: true });
+  const symbol = (0, import_core2.getInput)("symbol", { required: true });
   const repo = (0, import_core2.getInput)("repo", { required: true });
   const releases = (0, import_core2.getInput)("releases", { required: true });
-  const event_type = (0, import_core2.getInput)("event_type", { required: true });
   const octokit = new Octokit2({ auth: process.env.GH_TOKEN });
   await octokit.repos.createDispatchEvent({
     owner: "mthierman",
@@ -28418,13 +28419,13 @@ var import_node_child_process = require("node:child_process");
         name,
         version,
         description,
+        repo,
+        releases,
+        symbol,
         build_time: qi.Now.plainDateTimeISO().toString(),
         latest_commit: (0, import_node_child_process.spawnSync)("git", ["rev-parse", "--short", "HEAD"], {
           encoding: "utf-8"
         }).stdout.trim(),
-        symbol: "\u{1FA9F}",
-        repo,
-        releases,
         recent_commits: (0, import_node_child_process.spawnSync)(
           "git",
           ["log", "-5", "--pretty=format:%h%x00%an%x00%aI%x00%s%x00"],
