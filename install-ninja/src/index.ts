@@ -1,34 +1,16 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import { getInput } from "@actions/core";
+import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as https from "node:https";
 import * as os from "node:os";
 import { join } from "node:path";
+import { pipeline } from "node:stream";
+import { promisify } from "node:util";
 
-function download_file(url: string, dest: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const file = fs.createWriteStream(dest);
-        https
-            .get(url, (res) => {
-                if (res.statusCode !== 200) {
-                    return reject(new Error(`Failed to get '${url}' (${res.statusCode})`));
-                }
-                res.pipe(file);
-                file.on("finish", () =>
-                    file.close((err) => {
-                        if (err) return reject(err);
-                        resolve();
-                    }),
-                );
-            })
-            .on("error", (err) => {
-                fs.unlinkSync(dest);
-                reject(err);
-            });
-    });
-}
+const stream_pipeline = promisify(pipeline);
 
 (async () => {
     try {
@@ -43,6 +25,8 @@ function download_file(url: string, dest: string): Promise<void> {
         } else {
             core.info(`Cache miss, downloading Ninja ${version}`);
         }
+
+        fs.mkdirSync(install_dir, { recursive: true });
 
         let platform: string;
         switch (os.platform()) {
@@ -59,14 +43,33 @@ function download_file(url: string, dest: string): Promise<void> {
                 throw new Error(`Unsupported OS: ${os.platform()}`);
         }
 
-        const zip_path = join(workspace, `ninja-${platform}.zip`);
+        const octokit = new Octokit();
+        const releases = await octokit.rest.repos.getReleaseByTag({
+            owner: "ninja-build",
+            repo: "ninja",
+            tag: `v${version}`,
+        });
 
-        await download_file(
-            `https://github.com/ninja-build/ninja/releases/download/v${version}/ninja-${platform}.zip`,
-            zip_path,
-        );
+        const asset = releases.data.assets.find((a) => a.name.includes(platform));
 
-        fs.mkdirSync(install_dir, { recursive: true });
+        if (!asset) {
+            throw new Error(`No asset found for platform ${platform}`);
+        }
+
+        const asset_url = asset.browser_download_url;
+        const zip_path = join(workspace, asset.name);
+
+        const res = await fetch(asset_url);
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
+        }
+
+        if (!res.body) {
+            throw new Error("Response body is null");
+        }
+
+        await stream_pipeline(res.body, fs.createWriteStream(zip_path));
 
         const extract_result = spawnSync("7z", ["x", zip_path, `-o${install_dir}`, "-y"], {
             stdio: "inherit",
