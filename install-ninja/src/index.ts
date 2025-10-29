@@ -7,7 +7,7 @@ import * as https from "node:https";
 import * as os from "node:os";
 import { join } from "node:path";
 
-function downloadFile(url: string, dest: string): Promise<void> {
+function download_file(url: string, dest: string): Promise<void> {
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(dest);
         https
@@ -61,7 +61,7 @@ function downloadFile(url: string, dest: string): Promise<void> {
 
         const zip_path = join(workspace, `ninja-${platform}.zip`);
 
-        await downloadFile(
+        await download_file(
             `https://github.com/ninja-build/ninja/releases/download/v${version}/ninja-${platform}.zip`,
             zip_path,
         );

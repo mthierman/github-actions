@@ -69393,7 +69393,7 @@ var fs = __toESM(require("node:fs"), 1);
 var https = __toESM(require("node:https"), 1);
 var os = __toESM(require("node:os"), 1);
 var import_node_path = require("node:path");
-function downloadFile(url, dest) {
+function download_file(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
     https.get(url, (res) => {
@@ -69441,7 +69441,7 @@ function downloadFile(url, dest) {
         throw new Error(`Unsupported OS: ${os.platform()}`);
     }
     const zip_path = (0, import_node_path.join)(workspace, `ninja-${platform2}.zip`);
-    await downloadFile(
+    await download_file(
       `https://github.com/ninja-build/ninja/releases/download/v${version}/ninja-${platform2}.zip`,
       zip_path
     );
@@ -69471,4 +69471,3 @@ undici/lib/fetch/body.js:
 undici/lib/websocket/frame.js:
   (*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> *)
 */
-//# sourceMappingURL=index.cjs.map

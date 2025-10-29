@@ -7,7 +7,7 @@ import * as https from "node:https";
 import * as os from "node:os";
 import { join } from "node:path";
 
-function downloadFile(url: string, dest: string): Promise<void> {
+function download_file(url: string, dest: string): Promise<void> {
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(dest);
         https
@@ -46,7 +46,7 @@ function downloadFile(url: string, dest: string): Promise<void> {
 
         const installer_path = join(workspace, `innosetup-${version}.exe`);
 
-        await downloadFile(
+        await download_file(
             `https://files.jrsoftware.org/is/6/innosetup-${version}.exe`,
             installer_path,
         );

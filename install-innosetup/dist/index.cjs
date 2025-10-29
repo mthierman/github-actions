@@ -69393,7 +69393,7 @@ var fs = __toESM(require("node:fs"), 1);
 var https = __toESM(require("node:https"), 1);
 var os = __toESM(require("node:os"), 1);
 var import_node_path = require("node:path");
-function downloadFile(url, dest) {
+function download_file(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
     https.get(url, (res) => {
@@ -69427,7 +69427,7 @@ function downloadFile(url, dest) {
       core.info(`Cache miss, downloading Inno Setup ${version}`);
     }
     const installer_path = (0, import_node_path.join)(workspace, `innosetup-${version}.exe`);
-    await downloadFile(
+    await download_file(
       `https://files.jrsoftware.org/is/6/innosetup-${version}.exe`,
       installer_path
     );
@@ -69450,4 +69450,3 @@ undici/lib/fetch/body.js:
 undici/lib/websocket/frame.js:
   (*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> *)
 */
-//# sourceMappingURL=index.cjs.map
