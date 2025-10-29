@@ -28428,9 +28428,6 @@ var import_node_path = require("node:path");
         homepage: package_json.homepage,
         repository: package_json.repository.url,
         build_time: qi.Now.plainDateTimeISO().toString(),
-        latest_commit: (0, import_node_child_process.spawnSync)("git", ["rev-parse", "--short", "HEAD"], {
-          encoding: "utf-8"
-        }).stdout.trim(),
         recent_commits: (0, import_node_child_process.spawnSync)(
           "git",
           ["log", "-5", "--pretty=format:%h%x00%an%x00%aI%x00%s%x00"],

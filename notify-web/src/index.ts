@@ -34,9 +34,6 @@ import { resolve } from "node:path";
                 homepage: package_json.homepage,
                 repository: package_json.repository.url,
                 build_time: Temporal.Now.plainDateTimeISO().toString(),
-                latest_commit: spawnSync("git", ["rev-parse", "--short", "HEAD"], {
-                    encoding: "utf-8",
-                }).stdout.trim(),
                 recent_commits: spawnSync(
                     "git",
                     ["log", "-5", "--pretty=format:%h%x00%an%x00%aI%x00%s%x00"],
