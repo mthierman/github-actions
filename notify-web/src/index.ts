@@ -1,9 +1,9 @@
 import { getInput } from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
-import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { Octokit } from "octokit";
 
 (async () => {
     const github_workspace = process.env.GITHUB_WORKSPACE;
@@ -22,7 +22,7 @@ import { resolve } from "node:path";
 
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 
-    await octokit.repos.createDispatchEvent({
+    await octokit.rest.repos.createDispatchEvent({
         owner: "mthierman",
         repo: "mthierman.pages.dev",
         event_type,
