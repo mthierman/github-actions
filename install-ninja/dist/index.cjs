@@ -72927,53 +72927,53 @@ var util = __toESM(require("node:util"), 1);
       core.info(`Cache hit for Ninja ${version}`);
     } else {
       core.info(`Cache miss, downloading Ninja ${version}`);
+      fs.mkdirSync(install_dir, { recursive: true });
+      let platform2;
+      switch (os.platform()) {
+        case "win32":
+          platform2 = "win";
+          break;
+        case "linux":
+          platform2 = "linux";
+          break;
+        case "darwin":
+          platform2 = "mac";
+          break;
+        default:
+          throw new Error(`Unsupported OS: ${os.platform()}`);
+      }
+      const octokit = new Octokit2();
+      const releases = await octokit.rest.repos.getReleaseByTag({
+        owner: "ninja-build",
+        repo: "ninja",
+        tag: `v${version}`
+      });
+      const asset = releases.data.assets.find((a) => a.name.includes(platform2));
+      if (!asset) {
+        throw new Error(`No asset found for platform ${platform2}`);
+      }
+      const asset_url = asset.browser_download_url;
+      const zip_path = path.join(workspace, asset.name);
+      const res = await fetch(asset_url);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
+      }
+      if (!res.body) {
+        throw new Error("Response body is null");
+      }
+      await stream_pipeline(res.body, fs.createWriteStream(zip_path));
+      const extract_result = (0, import_node_child_process.spawnSync)("7z", ["x", zip_path, `-o${install_dir}`, "-y"], {
+        stdio: "inherit"
+      });
+      if (extract_result.error) {
+        throw extract_result.error;
+      }
+      if (extract_result.status !== 0) {
+        throw new Error(`7-Zip extraction failed with code ${extract_result.status}`);
+      }
+      fs.rmSync(zip_path);
+      await cache.saveCache([install_dir], cache_key);
     }
-    fs.mkdirSync(install_dir, { recursive: true });
-    let platform2;
-    switch (os.platform()) {
-      case "win32":
-        platform2 = "win";
-        break;
-      case "linux":
-        platform2 = "linux";
-        break;
-      case "darwin":
-        platform2 = "mac";
-        break;
-      default:
-        throw new Error(`Unsupported OS: ${os.platform()}`);
-    }
-    const octokit = new Octokit2();
-    const releases = await octokit.rest.repos.getReleaseByTag({
-      owner: "ninja-build",
-      repo: "ninja",
-      tag: `v${version}`
-    });
-    const asset = releases.data.assets.find((a) => a.name.includes(platform2));
-    if (!asset) {
-      throw new Error(`No asset found for platform ${platform2}`);
-    }
-    const asset_url = asset.browser_download_url;
-    const zip_path = path.join(workspace, asset.name);
-    const res = await fetch(asset_url);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
-    }
-    if (!res.body) {
-      throw new Error("Response body is null");
-    }
-    await stream_pipeline(res.body, fs.createWriteStream(zip_path));
-    const extract_result = (0, import_node_child_process.spawnSync)("7z", ["x", zip_path, `-o${install_dir}`, "-y"], {
-      stdio: "inherit"
-    });
-    if (extract_result.error) {
-      throw extract_result.error;
-    }
-    if (extract_result.status !== 0) {
-      throw new Error(`7-Zip extraction failed with code ${extract_result.status}`);
-    }
-    fs.rmSync(zip_path);
-    await cache.saveCache([install_dir], cache_key);
     core.addPath(install_dir);
     core.info(`Ninja ${version} added to PATH`);
   } catch (error) {

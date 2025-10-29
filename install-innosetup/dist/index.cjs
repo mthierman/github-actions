@@ -69406,22 +69406,22 @@ var util = __toESM(require("node:util"), 1);
       core.info(`Cache hit for Inno Setup ${version}`);
     } else {
       core.info(`Cache miss, downloading Inno Setup ${version}`);
+      const asset_url = `https://files.jrsoftware.org/is/6/innosetup-${version}.exe`;
+      const installer_path = path.join(workspace, `innosetup-${version}.exe`);
+      const res = await fetch(asset_url);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
+      }
+      if (!res.body) {
+        throw new Error("Response body is null");
+      }
+      await stream_pipeline(res.body, fs.createWriteStream(installer_path));
+      (0, import_node_child_process.spawnSync)(installer_path, ["/VERYSILENT", "/CURRENTUSER", `/DIR=${install_dir}`], {
+        stdio: "inherit"
+      });
+      fs.rmSync(installer_path);
+      await cache.saveCache([install_dir], cache_key);
     }
-    const asset_url = `https://files.jrsoftware.org/is/6/innosetup-${version}.exe`;
-    const installer_path = path.join(workspace, `innosetup-${version}.exe`);
-    const res = await fetch(asset_url);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
-    }
-    if (!res.body) {
-      throw new Error("Response body is null");
-    }
-    await stream_pipeline(res.body, fs.createWriteStream(installer_path));
-    (0, import_node_child_process.spawnSync)(installer_path, ["/VERYSILENT", "/CURRENTUSER", `/DIR=${install_dir}`], {
-      stdio: "inherit"
-    });
-    fs.rmSync(installer_path);
-    await cache.saveCache([install_dir], cache_key);
     core.addPath(install_dir);
     core.info(`Inno Setup ${version} added to PATH`);
   } catch (error) {
