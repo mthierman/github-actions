@@ -1,7 +1,7 @@
 import { getInput } from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
 import { Octokit } from "@octokit/rest";
-import { execSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
