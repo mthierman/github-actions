@@ -9,10 +9,10 @@ import * as path from "node:path";
 import * as stream from "node:stream";
 import * as util from "node:util";
 
-const stream_pipeline = util.promisify(stream.pipeline);
-
 (async () => {
     try {
+        const stream_pipeline = util.promisify(stream.pipeline);
+
         const version = getInput("version", { required: true });
         const workspace = process.cwd();
         const install_dir = path.join(workspace, `ninja-${version}`);

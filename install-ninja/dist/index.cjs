@@ -72915,9 +72915,9 @@ var os = __toESM(require("node:os"), 1);
 var path = __toESM(require("node:path"), 1);
 var stream = __toESM(require("node:stream"), 1);
 var util = __toESM(require("node:util"), 1);
-var stream_pipeline = util.promisify(stream.pipeline);
 (async () => {
   try {
+    const stream_pipeline = util.promisify(stream.pipeline);
     const version = (0, import_core2.getInput)("version", { required: true });
     const workspace = process.cwd();
     const install_dir = path.join(workspace, `ninja-${version}`);

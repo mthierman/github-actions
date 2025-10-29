@@ -3,38 +3,18 @@ import * as core from "@actions/core";
 import { getInput } from "@actions/core";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
-import * as https from "node:https";
 import * as os from "node:os";
-import { join } from "node:path";
-
-function download_file(url: string, dest: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const file = fs.createWriteStream(dest);
-        https
-            .get(url, (res) => {
-                if (res.statusCode !== 200) {
-                    return reject(new Error(`Failed to get '${url}' (${res.statusCode})`));
-                }
-                res.pipe(file);
-                file.on("finish", () =>
-                    file.close((err) => {
-                        if (err) return reject(err);
-                        resolve();
-                    }),
-                );
-            })
-            .on("error", (err) => {
-                fs.unlinkSync(dest);
-                reject(err);
-            });
-    });
-}
+import * as path from "node:path";
+import * as stream from "node:stream";
+import * as util from "node:util";
 
 (async () => {
     try {
+        const stream_pipeline = util.promisify(stream.pipeline);
+
         const version = getInput("version", { required: true });
         const workspace = process.cwd();
-        const install_dir = join(workspace, `innosetup-${version}`);
+        const install_dir = path.join(workspace, `innosetup-${version}`);
         const cache_key = `${os.platform()}-innosetup-${version}`;
         const restored_key = await cache.restoreCache([install_dir], cache_key);
 
@@ -44,12 +24,19 @@ function download_file(url: string, dest: string): Promise<void> {
             core.info(`Cache miss, downloading Inno Setup ${version}`);
         }
 
-        const installer_path = join(workspace, `innosetup-${version}.exe`);
+        const installer_path = path.join(workspace, `innosetup-${version}.exe`);
 
-        await download_file(
-            `https://files.jrsoftware.org/is/6/innosetup-${version}.exe`,
-            installer_path,
-        );
+        const res = await fetch(`https://files.jrsoftware.org/is/6/innosetup-${version}.exe`);
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch ${asset_url}: ${res.statusText}`);
+        }
+
+        if (!res.body) {
+            throw new Error("Response body is null");
+        }
+
+        await stream_pipeline(res.body, fs.createWriteStream(zip_path));
 
         spawnSync(installer_path, ["/VERYSILENT", "/CURRENTUSER", `/DIR=${install_dir}`], {
             stdio: "inherit",
