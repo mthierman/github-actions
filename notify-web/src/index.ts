@@ -1,16 +1,15 @@
 import { getInput } from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
 import { Octokit } from "@octokit/rest";
-import { spawnSync } from "node:child_process";
+import { execSync, spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 (async () => {
+    const package_json = JSON.parse(
+        readFileSync(resolve(import.meta.dirname, "package.json"), { encoding: "utf-8" }),
+    );
     const event_type = getInput("event_type", { required: true });
-    const name = getInput("name", { required: true });
-    const version = getInput("version", { required: true });
-    const description = getInput("description", { required: true });
-    const symbol = getInput("symbol", { required: true });
-    const repo = getInput("repo", { required: true });
-    const releases = getInput("releases", { required: true });
 
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 
@@ -20,12 +19,12 @@ import { spawnSync } from "node:child_process";
         event_type,
         client_payload: {
             data: {
-                name,
-                version,
-                description,
-                repo,
-                releases,
-                symbol,
+                name: package_json.name,
+                version: package_json.version,
+                description: package_json.description,
+                symbol: package_json.symbol,
+                homepage: package_json.homepage,
+                repository: package_json.repository.url,
                 build_time: Temporal.Now.plainDateTimeISO().toString(),
                 latest_commit: spawnSync("git", ["rev-parse", "--short", "HEAD"], {
                     encoding: "utf-8",
