@@ -14,12 +14,12 @@ var import_node_path = require("node:path");
     (0, import_node_path.join)((0, import_node_path.resolve)("src/content/projects"), `${event.client_payload.data.name}.json`),
     JSON.stringify(event.client_payload.data, null, 4)
   );
-  (0, import_node_child_process.execSync)(
+  (0, import_node_child_process.spawnSync)(
     `git config user.name github-actions[bot] &&
     git config user.email 41898282+github-actions[bot]@users.noreply.github.com &&
     git add -A &&
     (git commit -m 'github-actions: Update generated files' || echo "No changes to commit") &&
     git push origin main`
-  );
+  ).stdout;
 })();
 //# sourceMappingURL=index.cjs.map
