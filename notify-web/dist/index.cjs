@@ -28403,10 +28403,15 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
 var import_node_child_process = require("node:child_process");
 var import_node_fs = require("node:fs");
 var import_node_path = require("node:path");
-var import_meta = {};
 (async () => {
+  const action_path = process.env.GITHUB_ACTION_PATH;
+  if (!action_path) {
+    throw new Error("GITHUB_ACTION_PATH not set");
+  }
   const package_json = JSON.parse(
-    (0, import_node_fs.readFileSync)((0, import_node_path.resolve)(import_meta.dirname, "package.json"), { encoding: "utf-8" })
+    (0, import_node_fs.readFileSync)((0, import_node_path.resolve)(action_path, "package.json"), {
+      encoding: "utf-8"
+    })
   );
   const event_type = (0, import_core2.getInput)("event_type", { required: true });
   const octokit = new Octokit2({ auth: process.env.GH_TOKEN });

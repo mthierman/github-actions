@@ -6,8 +6,16 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 (async () => {
+    const action_path = process.env.GITHUB_ACTION_PATH;
+
+    if (!action_path) {
+        throw new Error("GITHUB_ACTION_PATH not set");
+    }
+
     const package_json = JSON.parse(
-        readFileSync(resolve(import.meta.dirname, "package.json"), { encoding: "utf-8" }),
+        readFileSync(resolve(action_path, "package.json"), {
+            encoding: "utf-8",
+        }),
     );
     const event_type = getInput("event_type", { required: true });
 
