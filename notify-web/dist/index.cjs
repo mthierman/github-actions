@@ -28401,15 +28401,15 @@ var Octokit2 = Octokit.plugin(requestLog, legacyRestEndpointMethods, paginateRes
 
 // notify-web/src/index.ts
 var import_node_child_process = require("node:child_process");
-var import_node_fs = require("node:fs");
+var import_promises = require("node:fs/promises");
 var import_node_path = require("node:path");
 (async () => {
-  const workspace_path = process.env.GITHUB_WORKSPACE;
-  if (!workspace_path) {
+  const github_workspace = process.env.GITHUB_WORKSPACE;
+  if (!github_workspace) {
     throw new Error("GITHUB_WORKSPACE not set");
   }
   const package_json = JSON.parse(
-    (0, import_node_fs.readFileSync)((0, import_node_path.resolve)(workspace_path, "package.json"), {
+    await (0, import_promises.readFile)((0, import_node_path.resolve)(github_workspace, "package.json"), {
       encoding: "utf-8"
     })
   );

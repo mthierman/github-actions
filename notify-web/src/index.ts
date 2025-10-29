@@ -2,21 +2,22 @@ import { getInput } from "@actions/core";
 import { Temporal } from "@js-temporal/polyfill";
 import { Octokit } from "@octokit/rest";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 (async () => {
-    const workspace_path = process.env.GITHUB_WORKSPACE;
+    const github_workspace = process.env.GITHUB_WORKSPACE;
 
-    if (!workspace_path) {
+    if (!github_workspace) {
         throw new Error("GITHUB_WORKSPACE not set");
     }
 
     const package_json = JSON.parse(
-        readFileSync(resolve(workspace_path, "package.json"), {
+        await readFile(resolve(github_workspace, "package.json"), {
             encoding: "utf-8",
         }),
     );
+
     const event_type = getInput("event_type", { required: true });
 
     const octokit = new Octokit({ auth: process.env.GH_TOKEN });
