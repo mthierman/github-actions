@@ -1,9 +1,8 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import { getInput } from "@actions/core";
-import { execSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import * as os from "node:os";
-import * as path from "node:path";
 
 (async () => {
     try {
