@@ -10,6 +10,21 @@ import * as stream from "node:stream";
 import * as util from "node:util";
 
 (async () => {
+    let platform: string;
+    switch (os.platform()) {
+        case "win32":
+            platform = "win";
+            break;
+        case "linux":
+            platform = "linux";
+            break;
+        case "darwin":
+            platform = "mac";
+            break;
+        default:
+            return;
+    }
+
     try {
         const stream_pipeline = util.promisify(stream.pipeline);
         const version = getInput("version", { required: true });
@@ -20,21 +35,6 @@ import * as util from "node:util";
 
         if (!restored_key) {
             fs.mkdirSync(install_dir, { recursive: true });
-
-            let platform: string;
-            switch (os.platform()) {
-                case "win32":
-                    platform = "win";
-                    break;
-                case "linux":
-                    platform = "linux";
-                    break;
-                case "darwin":
-                    platform = "mac";
-                    break;
-                default:
-                    throw new Error(`Unsupported OS: ${os.platform()}`);
-            }
 
             const octokit = new Octokit();
             const releases = await octokit.rest.repos.getReleaseByTag({

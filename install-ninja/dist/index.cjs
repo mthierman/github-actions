@@ -72916,6 +72916,20 @@ var path = __toESM(require("node:path"), 1);
 var stream = __toESM(require("node:stream"), 1);
 var util = __toESM(require("node:util"), 1);
 (async () => {
+  let platform2;
+  switch (os.platform()) {
+    case "win32":
+      platform2 = "win";
+      break;
+    case "linux":
+      platform2 = "linux";
+      break;
+    case "darwin":
+      platform2 = "mac";
+      break;
+    default:
+      return;
+  }
   try {
     const stream_pipeline = util.promisify(stream.pipeline);
     const version = (0, import_core2.getInput)("version", { required: true });
@@ -72925,20 +72939,6 @@ var util = __toESM(require("node:util"), 1);
     const restored_key = await cache.restoreCache([install_dir], cache_key);
     if (!restored_key) {
       fs.mkdirSync(install_dir, { recursive: true });
-      let platform2;
-      switch (os.platform()) {
-        case "win32":
-          platform2 = "win";
-          break;
-        case "linux":
-          platform2 = "linux";
-          break;
-        case "darwin":
-          platform2 = "mac";
-          break;
-        default:
-          throw new Error(`Unsupported OS: ${os.platform()}`);
-      }
       const octokit = new Octokit2();
       const releases = await octokit.rest.repos.getReleaseByTag({
         owner: "ninja-build",
