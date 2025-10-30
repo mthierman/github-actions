@@ -8,8 +8,8 @@ import * as path from "node:path";
 (async () => {
     try {
         const version = getInput("version", { required: true });
-        const tool_dir = execSync("uv tool dir", { encoding: "utf8" }).trim();
-        const bin_dir = path.join(os.homedir(), ".local", "bin");
+        const tool_dir = process.env.UV_TOOL_DIR!;
+        const bin_dir = process.env.UV_TOOL_BIN_DIR!;
         const cache_key = `${os.platform()}-gersemi-${version}`;
         const restored_key = await cache.restoreCache([tool_dir, bin_dir], cache_key);
 
