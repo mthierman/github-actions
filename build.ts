@@ -7,6 +7,7 @@ const actions = [
     { name: "receive-web" },
     { name: "install-innosetup" },
     { name: "install-ninja" },
+    { name: "install-wix" },
 ];
 
 await Promise.all(
