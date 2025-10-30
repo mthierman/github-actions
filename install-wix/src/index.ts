@@ -15,7 +15,7 @@ import * as path from "node:path";
         if (restored_key) {
             core.info(`Cache hit for Wix ${version}`);
         } else {
-            core.info(`Cache miss, downloading Ninja ${version}`);
+            core.info(`Cache miss, downloading Wix ${version}`);
 
             const install_wix = spawnSync(
                 "dotnet",

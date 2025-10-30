@@ -69400,7 +69400,7 @@ var path = __toESM(require("node:path"), 1);
     if (restored_key) {
       core.info(`Cache hit for Wix ${version}`);
     } else {
-      core.info(`Cache miss, downloading Ninja ${version}`);
+      core.info(`Cache miss, downloading Wix ${version}`);
       const install_wix = (0, import_node_child_process.spawnSync)(
         "dotnet",
         ["tool", "install", "--global", "wix", "--version", `${version}`],
