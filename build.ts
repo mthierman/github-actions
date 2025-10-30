@@ -5,9 +5,10 @@ import { resolve } from "node:path";
 const actions = [
     { name: "notify-web" },
     { name: "receive-web" },
-    { name: "install-innosetup" },
     { name: "install-ninja" },
+    { name: "install-gersemi" },
     { name: "install-wix" },
+    { name: "install-innosetup" },
 ];
 
 await Promise.all(
