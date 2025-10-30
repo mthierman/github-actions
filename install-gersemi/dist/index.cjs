@@ -69401,7 +69401,7 @@ var os = __toESM(require("node:os"), 1);
         stdio: "inherit"
       });
       if (install.status !== 0) {
-        throw new Error(`dotnet tool install failed: ${install.status}`);
+        throw new Error(`uv tool install failed: ${install.status}`);
       }
       await cache.saveCache([tool_dir], cache_key);
     }
