@@ -72923,10 +72923,7 @@ var util = __toESM(require("node:util"), 1);
     const install_dir = path.join(workspace, `ninja-${version}`);
     const cache_key = `${os.platform()}-ninja-${version}`;
     const restored_key = await cache.restoreCache([install_dir], cache_key);
-    if (restored_key) {
-      core.info(`Cache hit for Ninja ${version}`);
-    } else {
-      core.info(`Cache miss, downloading Ninja ${version}`);
+    if (!restored_key) {
       fs.mkdirSync(install_dir, { recursive: true });
       let platform2;
       switch (os.platform()) {
