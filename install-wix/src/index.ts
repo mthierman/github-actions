@@ -6,6 +6,10 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 (async () => {
+    if (os.platform() !== "win32") {
+        return;
+    }
+
     try {
         const version = getInput("version", { required: true });
         const tool_dir = path.join(os.homedir(), ".dotnet", "tools");

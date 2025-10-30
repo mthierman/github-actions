@@ -69392,6 +69392,9 @@ var import_node_child_process = require("node:child_process");
 var os = __toESM(require("node:os"), 1);
 var path = __toESM(require("node:path"), 1);
 (async () => {
+  if (os.platform() !== "win32") {
+    return;
+  }
   try {
     const version = (0, import_core.getInput)("version", { required: true });
     const tool_dir = path.join(os.homedir(), ".dotnet", "tools");
