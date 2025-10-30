@@ -12,11 +12,7 @@ import * as path from "node:path";
         const cache_key = `${os.platform()}-wix-${version}`;
         const restored_key = await cache.restoreCache([tool_dir], cache_key);
 
-        if (restored_key) {
-            core.info(`Cache hit for Wix ${version}`);
-        } else {
-            core.info(`Cache miss, downloading Wix ${version}`);
-
+        if (!restored_key) {
             const install_wix = spawnSync(
                 "dotnet",
                 ["tool", "install", "--global", "wix", "--version", `${version}`],

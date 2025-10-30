@@ -69397,10 +69397,7 @@ var path = __toESM(require("node:path"), 1);
     const tool_dir = path.join(os.homedir(), ".dotnet", "tools");
     const cache_key = `${os.platform()}-wix-${version}`;
     const restored_key = await cache.restoreCache([tool_dir], cache_key);
-    if (restored_key) {
-      core.info(`Cache hit for Wix ${version}`);
-    } else {
-      core.info(`Cache miss, downloading Wix ${version}`);
+    if (!restored_key) {
       const install_wix = (0, import_node_child_process.spawnSync)(
         "dotnet",
         ["tool", "install", "--global", "wix", "--version", `${version}`],
