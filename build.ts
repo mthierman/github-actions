@@ -6,12 +6,12 @@ import { fileURLToPath } from "node:url";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const dirs = await readdir(root, { withFileTypes: true });
+
+const excluded = new Set(["archive", ".git", "node_modules"]);
 const actions = dirs
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
-    .filter((name) => name !== "archive")
-    .filter((name) => name !== ".git")
-    .filter((name) => name !== "node_modules");
+    .filter((name) => !excluded.has(name));
 
 await Promise.all(
     actions.map(async (action) => {
