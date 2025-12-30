@@ -3,12 +3,13 @@ import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 
 const actions = [
+    { name: "install-gersemi" },
+    { name: "install-innosetup" },
+    { name: "install-msvc" },
+    { name: "install-ninja" },
+    { name: "install-wix" },
     { name: "notify-web" },
     { name: "receive-web" },
-    { name: "install-ninja" },
-    { name: "install-gersemi" },
-    { name: "install-wix" },
-    { name: "install-innosetup" },
 ];
 
 await Promise.all(

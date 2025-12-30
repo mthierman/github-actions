@@ -1,0 +1,12 @@
+name: "Install MSVC"
+
+description: "Install MSVC"
+
+inputs:
+  version:
+    description: "Version"
+    default: "18.1.1"
+
+runs:
+  using: node24
+  main: dist/index.cjs
