@@ -4,7 +4,7 @@ description: "Install Inno Setup"
 
 inputs:
   version:
-    description: "Version"
+    description: "Version of Inno Setup to install (e.g. 6.7.1)"
     default: "6.7.1"
 
 runs:
