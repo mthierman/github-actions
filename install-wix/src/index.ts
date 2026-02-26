@@ -31,7 +31,6 @@ import * as path from "node:path";
         }
 
         core.addPath(tool_dir);
-        core.info(`Wix ${version} added to PATH`);
     } catch (error: any) {
         core.setFailed(error.message);
     }
