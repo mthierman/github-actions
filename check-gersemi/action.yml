@@ -1,11 +1,7 @@
 name: "Check Gersemi"
-
 description: "Install gersemi via uv-tool and run gersemi --check"
 
 inputs:
-  version:
-    description: "Version of gersemi to install (e.g. 0.26.0)"
-    default: "0.26.0"
   paths:
     description: "Newline-separated files and/or folders to check"
     default: "."
