@@ -4,9 +4,6 @@ description: "Install clang-format via uv-tool and verify formatting"
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-python@v6
-    - uses: astral-sh/setup-uv@v7
     - uses: surge-synthesizer/sst-githubactions/uv-tool@main
       with:
         tool: "clang-format"
