@@ -7,7 +7,7 @@ inputs:
     description: "Tool id"
     required: true
   version:
-    description: "Tool Version"
+    description: "Tool version"
     required: true
 
 runs:
