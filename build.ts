@@ -10,6 +10,7 @@ const actions = [
     { name: "install-wix" },
     { name: "notify-web" },
     { name: "receive-web" },
+    { name: "uv-tool" },
 ];
 
 await Promise.all(
