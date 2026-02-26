@@ -1,25 +1,22 @@
 import { build } from "esbuild";
 import { builtinModules } from "node:module";
-import { resolve, dirname } from "node:path";
-import { readdir, access } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
-const root = dirname(fileURLToPath(import.meta.url));
-const dirs = await readdir(root, { withFileTypes: true });
-
-const excluded = new Set(["archive", ".git", "node_modules"]);
-const actions = dirs
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name)
-    .filter((name) => !excluded.has(name));
+const actions = [
+    { name: "install-clang-format" },
+    { name: "install-gersemi" },
+    { name: "install-innosetup" },
+    { name: "install-ninja" },
+    { name: "install-wix" },
+    { name: "notify-web" },
+    { name: "receive-web" },
+];
 
 await Promise.all(
-    actions.map(async (action) => {
-        const index = resolve(root, action, "src/index.ts");
-        await access(index);
-        await build({
-            entryPoints: [index],
-            outfile: resolve(root, action, "dist/index.cjs"),
+    actions.map((action) =>
+        build({
+            entryPoints: [resolve(`${action.name}/src/index.ts`)],
+            outfile: resolve(`${action.name}/dist/index.cjs`),
             platform: "node",
             target: "node24",
             format: "cjs",
@@ -27,8 +24,8 @@ await Promise.all(
             minify: false,
             sourcemap: false,
             external: [...builtinModules],
-        });
-    }),
+        }),
+    ),
 ).catch((error) => {
     console.error(error);
     process.exit(1);
