@@ -1015,14 +1015,14 @@ var require_util = __commonJS({
         }
         const port = url.port != null ? url.port : url.protocol === "https:" ? 443 : 80;
         let origin = url.origin != null ? url.origin : `${url.protocol}//${url.hostname}:${port}`;
-        let path = url.path != null ? url.path : `${url.pathname || ""}${url.search || ""}`;
+        let path2 = url.path != null ? url.path : `${url.pathname || ""}${url.search || ""}`;
         if (origin.endsWith("/")) {
           origin = origin.substring(0, origin.length - 1);
         }
-        if (path && !path.startsWith("/")) {
-          path = `/${path}`;
+        if (path2 && !path2.startsWith("/")) {
+          path2 = `/${path2}`;
         }
-        url = new URL(origin + path);
+        url = new URL(origin + path2);
       }
       return url;
     }
@@ -2636,20 +2636,20 @@ var require_parseParams = __commonJS({
 var require_basename = __commonJS({
   "node_modules/.pnpm/@fastify+busboy@2.1.1/node_modules/@fastify/busboy/lib/utils/basename.js"(exports2, module2) {
     "use strict";
-    module2.exports = function basename(path) {
-      if (typeof path !== "string") {
+    module2.exports = function basename(path2) {
+      if (typeof path2 !== "string") {
         return "";
       }
-      for (var i = path.length - 1; i >= 0; --i) {
-        switch (path.charCodeAt(i)) {
+      for (var i = path2.length - 1; i >= 0; --i) {
+        switch (path2.charCodeAt(i)) {
           case 47:
           // '/'
           case 92:
-            path = path.slice(i + 1);
-            return path === ".." || path === "." ? "" : path;
+            path2 = path2.slice(i + 1);
+            return path2 === ".." || path2 === "." ? "" : path2;
         }
       }
-      return path === ".." || path === "." ? "" : path;
+      return path2 === ".." || path2 === "." ? "" : path2;
     };
   }
 });
@@ -4042,8 +4042,8 @@ var require_util2 = __commonJS({
     function createDeferredPromise() {
       let res;
       let rej;
-      const promise = new Promise((resolve, reject) => {
-        res = resolve;
+      const promise = new Promise((resolve2, reject) => {
+        res = resolve2;
         rej = reject;
       });
       return { promise, resolve: res, reject: rej };
@@ -5547,8 +5547,8 @@ Content-Type: ${value.type || "application/octet-stream"}\r
                 });
               }
             });
-            const busboyResolve = new Promise((resolve, reject) => {
-              busboy.on("finish", resolve);
+            const busboyResolve = new Promise((resolve2, reject) => {
+              busboy.on("finish", resolve2);
               busboy.on("error", (err) => reject(new TypeError(err)));
             });
             if (this.body !== null) for await (const chunk of consumeBody(this[kState].body)) busboy.write(chunk);
@@ -5679,7 +5679,7 @@ var require_request = __commonJS({
     }
     var Request = class _Request {
       constructor(origin, {
-        path,
+        path: path2,
         method,
         body,
         headers,
@@ -5693,11 +5693,11 @@ var require_request = __commonJS({
         throwOnError,
         expectContinue
       }, handler) {
-        if (typeof path !== "string") {
+        if (typeof path2 !== "string") {
           throw new InvalidArgumentError("path must be a string");
-        } else if (path[0] !== "/" && !(path.startsWith("http://") || path.startsWith("https://")) && method !== "CONNECT") {
+        } else if (path2[0] !== "/" && !(path2.startsWith("http://") || path2.startsWith("https://")) && method !== "CONNECT") {
           throw new InvalidArgumentError("path must be an absolute URL or start with a slash");
-        } else if (invalidPathRegex.exec(path) !== null) {
+        } else if (invalidPathRegex.exec(path2) !== null) {
           throw new InvalidArgumentError("invalid request path");
         }
         if (typeof method !== "string") {
@@ -5760,7 +5760,7 @@ var require_request = __commonJS({
         this.completed = false;
         this.aborted = false;
         this.upgrade = upgrade || null;
-        this.path = query ? util.buildURL(path, query) : path;
+        this.path = query ? util.buildURL(path2, query) : path2;
         this.origin = origin;
         this.idempotent = idempotent == null ? method === "HEAD" || method === "GET" : idempotent;
         this.blocking = blocking == null ? false : blocking;
@@ -6082,9 +6082,9 @@ var require_dispatcher_base = __commonJS({
       }
       close(callback) {
         if (callback === void 0) {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve2, reject) => {
             this.close((err, data) => {
-              return err ? reject(err) : resolve(data);
+              return err ? reject(err) : resolve2(data);
             });
           });
         }
@@ -6122,12 +6122,12 @@ var require_dispatcher_base = __commonJS({
           err = null;
         }
         if (callback === void 0) {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve2, reject) => {
             this.destroy(err, (err2, data) => {
               return err2 ? (
                 /* istanbul ignore next: should never error */
                 reject(err2)
-              ) : resolve(data);
+              ) : resolve2(data);
             });
           });
         }
@@ -6768,9 +6768,9 @@ var require_RedirectHandler = __commonJS({
           return this.handler.onHeaders(statusCode, headers, resume, statusText);
         }
         const { origin, pathname, search } = util.parseURL(new URL(this.location, this.opts.origin && new URL(this.opts.path, this.opts.origin)));
-        const path = search ? `${pathname}${search}` : pathname;
+        const path2 = search ? `${pathname}${search}` : pathname;
         this.opts.headers = cleanRequestHeaders(this.opts.headers, statusCode === 303, this.opts.origin !== origin);
-        this.opts.path = path;
+        this.opts.path = path2;
         this.opts.origin = origin;
         this.opts.maxRedirections = 0;
         this.opts.query = null;
@@ -7187,16 +7187,16 @@ var require_client = __commonJS({
         return this[kNeedDrain] < 2;
       }
       async [kClose]() {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           if (!this[kSize]) {
-            resolve(null);
+            resolve2(null);
           } else {
-            this[kClosedResolve] = resolve;
+            this[kClosedResolve] = resolve2;
           }
         });
       }
       async [kDestroy](err) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           const requests = this[kQueue].splice(this[kPendingIdx]);
           for (let i = 0; i < requests.length; i++) {
             const request = requests[i];
@@ -7207,7 +7207,7 @@ var require_client = __commonJS({
               this[kClosedResolve]();
               this[kClosedResolve] = null;
             }
-            resolve();
+            resolve2();
           };
           if (this[kHTTP2Session] != null) {
             util.destroy(this[kHTTP2Session], err);
@@ -7787,7 +7787,7 @@ var require_client = __commonJS({
         });
       }
       try {
-        const socket = await new Promise((resolve, reject) => {
+        const socket = await new Promise((resolve2, reject) => {
           client[kConnector]({
             host,
             hostname,
@@ -7799,7 +7799,7 @@ var require_client = __commonJS({
             if (err) {
               reject(err);
             } else {
-              resolve(socket2);
+              resolve2(socket2);
             }
           });
         });
@@ -8010,7 +8010,7 @@ var require_client = __commonJS({
         writeH2(client, client[kHTTP2Session], request);
         return;
       }
-      const { body, method, path, host, upgrade, headers, blocking, reset } = request;
+      const { body, method, path: path2, host, upgrade, headers, blocking, reset } = request;
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body && typeof body.read === "function") {
         body.read(0);
@@ -8060,7 +8060,7 @@ var require_client = __commonJS({
       if (blocking) {
         socket[kBlocking] = true;
       }
-      let header = `${method} ${path} HTTP/1.1\r
+      let header = `${method} ${path2} HTTP/1.1\r
 `;
       if (typeof host === "string") {
         header += `host: ${host}\r
@@ -8123,7 +8123,7 @@ upgrade: ${upgrade}\r
       return true;
     }
     function writeH2(client, session, request) {
-      const { body, method, path, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
+      const { body, method, path: path2, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
       let headers;
       if (typeof reqHeaders === "string") headers = Request[kHTTP2CopyHeaders](reqHeaders.trim());
       else headers = reqHeaders;
@@ -8166,7 +8166,7 @@ upgrade: ${upgrade}\r
         });
         return true;
       }
-      headers[HTTP2_HEADER_PATH] = path;
+      headers[HTTP2_HEADER_PATH] = path2;
       headers[HTTP2_HEADER_SCHEME] = "https";
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body && typeof body.read === "function") {
@@ -8423,12 +8423,12 @@ upgrade: ${upgrade}\r
           cb();
         }
       }
-      const waitForDrain = () => new Promise((resolve, reject) => {
+      const waitForDrain = () => new Promise((resolve2, reject) => {
         assert(callback === null);
         if (socket[kError]) {
           reject(socket[kError]);
         } else {
-          callback = resolve;
+          callback = resolve2;
         }
       });
       if (client[kHTTPConnVersion] === "h2") {
@@ -8773,8 +8773,8 @@ var require_pool_base = __commonJS({
         if (this[kQueue].isEmpty()) {
           return Promise.all(this[kClients].map((c) => c.close()));
         } else {
-          return new Promise((resolve) => {
-            this[kClosedResolve] = resolve;
+          return new Promise((resolve2) => {
+            this[kClosedResolve] = resolve2;
           });
         }
       }
@@ -9352,7 +9352,7 @@ var require_readable = __commonJS({
         if (this.closed) {
           return Promise.resolve(null);
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           const signalListenerCleanup = signal ? util.addAbortListener(signal, () => {
             this.destroy();
           }) : noop;
@@ -9361,7 +9361,7 @@ var require_readable = __commonJS({
             if (signal && signal.aborted) {
               reject(signal.reason || Object.assign(new Error("The operation was aborted"), { name: "AbortError" }));
             } else {
-              resolve(null);
+              resolve2(null);
             }
           }).on("error", noop).on("data", function(chunk) {
             limit -= chunk.length;
@@ -9383,11 +9383,11 @@ var require_readable = __commonJS({
         throw new TypeError("unusable");
       }
       assert(!stream[kConsume]);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         stream[kConsume] = {
           type,
           stream,
-          resolve,
+          resolve: resolve2,
           reject,
           length: 0,
           body: []
@@ -9422,12 +9422,12 @@ var require_readable = __commonJS({
       }
     }
     function consumeEnd(consume2) {
-      const { type, body, resolve, stream, length } = consume2;
+      const { type, body, resolve: resolve2, stream, length } = consume2;
       try {
         if (type === "text") {
-          resolve(toUSVString(Buffer.concat(body)));
+          resolve2(toUSVString(Buffer.concat(body)));
         } else if (type === "json") {
-          resolve(JSON.parse(Buffer.concat(body)));
+          resolve2(JSON.parse(Buffer.concat(body)));
         } else if (type === "arrayBuffer") {
           const dst = new Uint8Array(length);
           let pos = 0;
@@ -9435,12 +9435,12 @@ var require_readable = __commonJS({
             dst.set(buf, pos);
             pos += buf.byteLength;
           }
-          resolve(dst.buffer);
+          resolve2(dst.buffer);
         } else if (type === "blob") {
           if (!Blob2) {
             Blob2 = require("buffer").Blob;
           }
-          resolve(new Blob2(body, { type: stream[kContentType] }));
+          resolve2(new Blob2(body, { type: stream[kContentType] }));
         }
         consumeFinish(consume2);
       } catch (err) {
@@ -9695,9 +9695,9 @@ var require_api_request = __commonJS({
     };
     function request(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           request.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -9870,9 +9870,9 @@ var require_api_stream = __commonJS({
     };
     function stream(opts, factory, callback) {
       if (callback === void 0) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           stream.call(this, opts, factory, (err, data) => {
-            return err ? reject(err) : resolve(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -10153,9 +10153,9 @@ var require_api_upgrade = __commonJS({
     };
     function upgrade(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           upgrade.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -10244,9 +10244,9 @@ var require_api_connect = __commonJS({
     };
     function connect(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           connect.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -10406,20 +10406,20 @@ var require_mock_utils = __commonJS({
       }
       return true;
     }
-    function safeUrl(path) {
-      if (typeof path !== "string") {
-        return path;
+    function safeUrl(path2) {
+      if (typeof path2 !== "string") {
+        return path2;
       }
-      const pathSegments = path.split("?");
+      const pathSegments = path2.split("?");
       if (pathSegments.length !== 2) {
-        return path;
+        return path2;
       }
       const qp = new URLSearchParams(pathSegments.pop());
       qp.sort();
       return [...pathSegments, qp.toString()].join("?");
     }
-    function matchKey(mockDispatch2, { path, method, body, headers }) {
-      const pathMatch = matchValue(mockDispatch2.path, path);
+    function matchKey(mockDispatch2, { path: path2, method, body, headers }) {
+      const pathMatch = matchValue(mockDispatch2.path, path2);
       const methodMatch = matchValue(mockDispatch2.method, method);
       const bodyMatch = typeof mockDispatch2.body !== "undefined" ? matchValue(mockDispatch2.body, body) : true;
       const headersMatch = matchHeaders(mockDispatch2, headers);
@@ -10437,7 +10437,7 @@ var require_mock_utils = __commonJS({
     function getMockDispatch(mockDispatches, key) {
       const basePath = key.query ? buildURL(key.path, key.query) : key.path;
       const resolvedPath = typeof basePath === "string" ? safeUrl(basePath) : basePath;
-      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path }) => matchValue(safeUrl(path), resolvedPath));
+      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path2 }) => matchValue(safeUrl(path2), resolvedPath));
       if (matchedMockDispatches.length === 0) {
         throw new MockNotMatchedError(`Mock dispatch not matched for path '${resolvedPath}'`);
       }
@@ -10474,9 +10474,9 @@ var require_mock_utils = __commonJS({
       }
     }
     function buildKey(opts) {
-      const { path, method, body, headers, query } = opts;
+      const { path: path2, method, body, headers, query } = opts;
       return {
-        path,
+        path: path2,
         method,
         body,
         headers,
@@ -10925,10 +10925,10 @@ var require_pending_interceptors_formatter = __commonJS({
       }
       format(pendingInterceptors) {
         const withPrettyHeaders = pendingInterceptors.map(
-          ({ method, path, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
+          ({ method, path: path2, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
             Method: method,
             Origin: origin,
-            Path: path,
+            Path: path2,
             "Status code": statusCode,
             Persistent: persist ? "\u2705" : "\u274C",
             Invocations: timesInvoked,
@@ -13868,7 +13868,7 @@ var require_fetch = __commonJS({
       async function dispatch({ body }) {
         const url = requestCurrentURL(request);
         const agent = fetchParams.controller.dispatcher;
-        return new Promise((resolve, reject) => agent.dispatch(
+        return new Promise((resolve2, reject) => agent.dispatch(
           {
             path: url.pathname + url.search,
             origin: url.origin,
@@ -13944,7 +13944,7 @@ var require_fetch = __commonJS({
                   }
                 }
               }
-              resolve({
+              resolve2({
                 status,
                 statusText,
                 headersList: headers[kHeadersList],
@@ -13987,7 +13987,7 @@ var require_fetch = __commonJS({
                 const val = headersList[n + 1].toString("latin1");
                 headers[kHeadersList].append(key, val);
               }
-              resolve({
+              resolve2({
                 status,
                 statusText: STATUS_CODES[status],
                 headersList: headers[kHeadersList],
@@ -15548,8 +15548,8 @@ var require_util6 = __commonJS({
         }
       }
     }
-    function validateCookiePath(path) {
-      for (const char of path) {
+    function validateCookiePath(path2) {
+      for (const char of path2) {
         const code = char.charCodeAt(0);
         if (code < 33 || char === ";") {
           throw new Error("Invalid cookie path");
@@ -17229,11 +17229,11 @@ var require_undici = __commonJS({
           if (typeof opts.path !== "string") {
             throw new InvalidArgumentError("invalid opts.path");
           }
-          let path = opts.path;
+          let path2 = opts.path;
           if (!opts.path.startsWith("/")) {
-            path = `/${path}`;
+            path2 = `/${path2}`;
           }
-          url = new URL(util.parseOrigin(url).origin + path);
+          url = new URL(util.parseOrigin(url).origin + path2);
         } else {
           if (!opts) {
             opts = typeof url === "object" ? url : {};
@@ -17351,11 +17351,11 @@ var require_lib = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -17371,7 +17371,7 @@ var require_lib = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -17458,26 +17458,26 @@ var require_lib = __commonJS({
       }
       readBody() {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2) => __awaiter2(this, void 0, void 0, function* () {
             let output = Buffer.alloc(0);
             this.message.on("data", (chunk) => {
               output = Buffer.concat([output, chunk]);
             });
             this.message.on("end", () => {
-              resolve(output.toString());
+              resolve2(output.toString());
             });
           }));
         });
       }
       readBodyBuffer() {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2) => __awaiter2(this, void 0, void 0, function* () {
             const chunks = [];
             this.message.on("data", (chunk) => {
               chunks.push(chunk);
             });
             this.message.on("end", () => {
-              resolve(Buffer.concat(chunks));
+              resolve2(Buffer.concat(chunks));
             });
           }));
         });
@@ -17685,14 +17685,14 @@ var require_lib = __commonJS({
        */
       requestRaw(info2, data) {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve2, reject) => {
             function callbackForResult(err, res) {
               if (err) {
                 reject(err);
               } else if (!res) {
                 reject(new Error("Unknown error"));
               } else {
-                resolve(res);
+                resolve2(res);
               }
             }
             this.requestRawWithCallback(info2, data, callbackForResult);
@@ -17927,12 +17927,12 @@ var require_lib = __commonJS({
         return __awaiter2(this, void 0, void 0, function* () {
           retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
           const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
-          return new Promise((resolve) => setTimeout(() => resolve(), ms));
+          return new Promise((resolve2) => setTimeout(() => resolve2(), ms));
         });
       }
       _processResponse(res, options) {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2, reject) => __awaiter2(this, void 0, void 0, function* () {
             const statusCode = res.message.statusCode || 0;
             const response = {
               statusCode,
@@ -17940,7 +17940,7 @@ var require_lib = __commonJS({
               headers: {}
             };
             if (statusCode === HttpCodes.NotFound) {
-              resolve(response);
+              resolve2(response);
             }
             function dateTimeDeserializer(key, value) {
               if (typeof value === "string") {
@@ -17979,7 +17979,7 @@ var require_lib = __commonJS({
               err.result = response.result;
               reject(err);
             } else {
-              resolve(response);
+              resolve2(response);
             }
           }));
         });
@@ -17996,11 +17996,11 @@ var require_auth = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -18016,7 +18016,7 @@ var require_auth = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -18100,11 +18100,11 @@ var require_oidc_utils = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -18120,7 +18120,7 @@ var require_oidc_utils = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -18198,11 +18198,11 @@ var require_summary = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -18218,7 +18218,7 @@ var require_summary = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -18531,7 +18531,7 @@ var require_path_utils = __commonJS({
     exports2.toPosixPath = toPosixPath;
     exports2.toWin32Path = toWin32Path;
     exports2.toPlatformPath = toPlatformPath;
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     function toPosixPath(pth) {
       return pth.replace(/[\\]/g, "/");
     }
@@ -18539,7 +18539,7 @@ var require_path_utils = __commonJS({
       return pth.replace(/[/]/g, "\\");
     }
     function toPlatformPath(pth) {
-      return pth.replace(/[/\\]/g, path.sep);
+      return pth.replace(/[/\\]/g, path2.sep);
     }
   }
 });
@@ -18587,11 +18587,11 @@ var require_io_util = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -18607,7 +18607,7 @@ var require_io_util = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -18622,7 +18622,7 @@ var require_io_util = __commonJS({
     exports2.tryGetExecutablePath = tryGetExecutablePath;
     exports2.getCmdPath = getCmdPath;
     var fs = __importStar2(require("fs"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     _a = fs.promises, exports2.chmod = _a.chmod, exports2.copyFile = _a.copyFile, exports2.lstat = _a.lstat, exports2.mkdir = _a.mkdir, exports2.open = _a.open, exports2.readdir = _a.readdir, exports2.rename = _a.rename, exports2.rm = _a.rm, exports2.rmdir = _a.rmdir, exports2.stat = _a.stat, exports2.symlink = _a.symlink, exports2.unlink = _a.unlink;
     exports2.IS_WINDOWS = process.platform === "win32";
     function readlink(fsPath) {
@@ -18677,7 +18677,7 @@ var require_io_util = __commonJS({
         }
         if (stats && stats.isFile()) {
           if (exports2.IS_WINDOWS) {
-            const upperExt = path.extname(filePath).toUpperCase();
+            const upperExt = path2.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
             }
@@ -18701,11 +18701,11 @@ var require_io_util = __commonJS({
           if (stats && stats.isFile()) {
             if (exports2.IS_WINDOWS) {
               try {
-                const directory = path.dirname(filePath);
-                const upperName = path.basename(filePath).toUpperCase();
+                const directory = path2.dirname(filePath);
+                const upperName = path2.basename(filePath).toUpperCase();
                 for (const actualName of yield (0, exports2.readdir)(directory)) {
                   if (upperName === actualName.toUpperCase()) {
-                    filePath = path.join(directory, actualName);
+                    filePath = path2.join(directory, actualName);
                     break;
                   }
                 }
@@ -18784,11 +18784,11 @@ var require_io = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -18804,7 +18804,7 @@ var require_io = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -18817,7 +18817,7 @@ var require_io = __commonJS({
     exports2.which = which;
     exports2.findInPath = findInPath;
     var assert_1 = require("assert");
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var ioUtil = __importStar2(require_io_util());
     function cp(source_1, dest_1) {
       return __awaiter2(this, arguments, void 0, function* (source, dest, options = {}) {
@@ -18826,7 +18826,7 @@ var require_io = __commonJS({
         if (destStat && destStat.isFile() && !force) {
           return;
         }
-        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path.join(dest, path.basename(source)) : dest;
+        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path2.join(dest, path2.basename(source)) : dest;
         if (!(yield ioUtil.exists(source))) {
           throw new Error(`no such file or directory: ${source}`);
         }
@@ -18838,7 +18838,7 @@ var require_io = __commonJS({
             yield cpDirRecursive(source, newDest, 0, force);
           }
         } else {
-          if (path.relative(source, newDest) === "") {
+          if (path2.relative(source, newDest) === "") {
             throw new Error(`'${newDest}' and '${source}' are the same file`);
           }
           yield copyFile(source, newDest, force);
@@ -18850,7 +18850,7 @@ var require_io = __commonJS({
         if (yield ioUtil.exists(dest)) {
           let destExists = true;
           if (yield ioUtil.isDirectory(dest)) {
-            dest = path.join(dest, path.basename(source));
+            dest = path2.join(dest, path2.basename(source));
             destExists = yield ioUtil.exists(dest);
           }
           if (destExists) {
@@ -18861,7 +18861,7 @@ var require_io = __commonJS({
             }
           }
         }
-        yield mkdirP(path.dirname(dest));
+        yield mkdirP(path2.dirname(dest));
         yield ioUtil.rename(source, dest);
       });
     }
@@ -18920,7 +18920,7 @@ var require_io = __commonJS({
         }
         const extensions = [];
         if (ioUtil.IS_WINDOWS && process.env["PATHEXT"]) {
-          for (const extension of process.env["PATHEXT"].split(path.delimiter)) {
+          for (const extension of process.env["PATHEXT"].split(path2.delimiter)) {
             if (extension) {
               extensions.push(extension);
             }
@@ -18933,12 +18933,12 @@ var require_io = __commonJS({
           }
           return [];
         }
-        if (tool.includes(path.sep)) {
+        if (tool.includes(path2.sep)) {
           return [];
         }
         const directories = [];
         if (process.env.PATH) {
-          for (const p of process.env.PATH.split(path.delimiter)) {
+          for (const p of process.env.PATH.split(path2.delimiter)) {
             if (p) {
               directories.push(p);
             }
@@ -18946,7 +18946,7 @@ var require_io = __commonJS({
         }
         const matches = [];
         for (const directory of directories) {
-          const filePath = yield ioUtil.tryGetExecutablePath(path.join(directory, tool), extensions);
+          const filePath = yield ioUtil.tryGetExecutablePath(path2.join(directory, tool), extensions);
           if (filePath) {
             matches.push(filePath);
           }
@@ -19045,11 +19045,11 @@ var require_toolrunner = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -19065,7 +19065,7 @@ var require_toolrunner = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -19076,7 +19076,7 @@ var require_toolrunner = __commonJS({
     var os2 = __importStar2(require("os"));
     var events = __importStar2(require("events"));
     var child = __importStar2(require("child_process"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var io = __importStar2(require_io());
     var ioUtil = __importStar2(require_io_util());
     var timers_1 = require("timers");
@@ -19291,10 +19291,10 @@ var require_toolrunner = __commonJS({
       exec() {
         return __awaiter2(this, void 0, void 0, function* () {
           if (!ioUtil.isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS && this.toolPath.includes("\\"))) {
-            this.toolPath = path.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+            this.toolPath = path2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
           }
           this.toolPath = yield io.which(this.toolPath, true);
-          return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2, reject) => __awaiter2(this, void 0, void 0, function* () {
             this._debug(`exec tool: ${this.toolPath}`);
             this._debug("arguments:");
             for (const arg of this.args) {
@@ -19377,7 +19377,7 @@ var require_toolrunner = __commonJS({
               if (error) {
                 reject(error);
               } else {
-                resolve(exitCode);
+                resolve2(exitCode);
               }
             });
             if (this.options.input) {
@@ -19543,11 +19543,11 @@ var require_exec = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -19563,7 +19563,7 @@ var require_exec = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -19663,11 +19663,11 @@ var require_platform = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -19683,7 +19683,7 @@ var require_platform = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -19792,11 +19792,11 @@ var require_core = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -19812,7 +19812,7 @@ var require_core = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -19844,7 +19844,7 @@ var require_core = __commonJS({
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
     var os2 = __importStar2(require("os"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var oidc_utils_1 = require_oidc_utils();
     var ExitCode;
     (function(ExitCode2) {
@@ -19870,7 +19870,7 @@ var require_core = __commonJS({
       } else {
         (0, command_1.issueCommand)("add-path", {}, inputPath);
       }
-      process.env["PATH"] = `${inputPath}${path.delimiter}${process.env["PATH"]}`;
+      process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
     }
     function getInput2(name, options) {
       const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
@@ -20286,11 +20286,11 @@ var require_lib2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -20306,7 +20306,7 @@ var require_lib2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -20392,26 +20392,26 @@ var require_lib2 = __commonJS({
       }
       readBody() {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2) => __awaiter2(this, void 0, void 0, function* () {
             let output = Buffer.alloc(0);
             this.message.on("data", (chunk) => {
               output = Buffer.concat([output, chunk]);
             });
             this.message.on("end", () => {
-              resolve(output.toString());
+              resolve2(output.toString());
             });
           }));
         });
       }
       readBodyBuffer() {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2) => __awaiter2(this, void 0, void 0, function* () {
             const chunks = [];
             this.message.on("data", (chunk) => {
               chunks.push(chunk);
             });
             this.message.on("end", () => {
-              resolve(Buffer.concat(chunks));
+              resolve2(Buffer.concat(chunks));
             });
           }));
         });
@@ -20620,14 +20620,14 @@ var require_lib2 = __commonJS({
        */
       requestRaw(info2, data) {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve2, reject) => {
             function callbackForResult(err, res) {
               if (err) {
                 reject(err);
               } else if (!res) {
                 reject(new Error("Unknown error"));
               } else {
-                resolve(res);
+                resolve2(res);
               }
             }
             this.requestRawWithCallback(info2, data, callbackForResult);
@@ -20809,12 +20809,12 @@ var require_lib2 = __commonJS({
         return __awaiter2(this, void 0, void 0, function* () {
           retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
           const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
-          return new Promise((resolve) => setTimeout(() => resolve(), ms));
+          return new Promise((resolve2) => setTimeout(() => resolve2(), ms));
         });
       }
       _processResponse(res, options) {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2, reject) => __awaiter2(this, void 0, void 0, function* () {
             const statusCode = res.message.statusCode || 0;
             const response = {
               statusCode,
@@ -20822,7 +20822,7 @@ var require_lib2 = __commonJS({
               headers: {}
             };
             if (statusCode === HttpCodes.NotFound) {
-              resolve(response);
+              resolve2(response);
             }
             function dateTimeDeserializer(key, value) {
               if (typeof value === "string") {
@@ -20861,7 +20861,7 @@ var require_lib2 = __commonJS({
               err.result = response.result;
               reject(err);
             } else {
-              resolve(response);
+              resolve2(response);
             }
           }));
         });
@@ -20878,11 +20878,11 @@ var require_auth2 = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -20898,7 +20898,7 @@ var require_auth2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -20982,11 +20982,11 @@ var require_oidc_utils2 = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -21002,7 +21002,7 @@ var require_oidc_utils2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -21080,11 +21080,11 @@ var require_summary2 = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -21100,7 +21100,7 @@ var require_summary2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -21401,7 +21401,7 @@ var require_path_utils2 = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.toPlatformPath = exports2.toWin32Path = exports2.toPosixPath = void 0;
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     function toPosixPath(pth) {
       return pth.replace(/[\\]/g, "/");
     }
@@ -21411,7 +21411,7 @@ var require_path_utils2 = __commonJS({
     }
     exports2.toWin32Path = toWin32Path;
     function toPlatformPath(pth) {
-      return pth.replace(/[/\\]/g, path.sep);
+      return pth.replace(/[/\\]/g, path2.sep);
     }
     exports2.toPlatformPath = toPlatformPath;
   }
@@ -21446,11 +21446,11 @@ var require_io_util2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -21466,7 +21466,7 @@ var require_io_util2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -21475,7 +21475,7 @@ var require_io_util2 = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getCmdPath = exports2.tryGetExecutablePath = exports2.isRooted = exports2.isDirectory = exports2.exists = exports2.READONLY = exports2.UV_FS_O_EXLOCK = exports2.IS_WINDOWS = exports2.unlink = exports2.symlink = exports2.stat = exports2.rmdir = exports2.rm = exports2.rename = exports2.readlink = exports2.readdir = exports2.open = exports2.mkdir = exports2.lstat = exports2.copyFile = exports2.chmod = void 0;
     var fs = __importStar2(require("fs"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     _a = fs.promises, exports2.chmod = _a.chmod, exports2.copyFile = _a.copyFile, exports2.lstat = _a.lstat, exports2.mkdir = _a.mkdir, exports2.open = _a.open, exports2.readdir = _a.readdir, exports2.readlink = _a.readlink, exports2.rename = _a.rename, exports2.rm = _a.rm, exports2.rmdir = _a.rmdir, exports2.stat = _a.stat, exports2.symlink = _a.symlink, exports2.unlink = _a.unlink;
     exports2.IS_WINDOWS = process.platform === "win32";
     exports2.UV_FS_O_EXLOCK = 268435456;
@@ -21524,7 +21524,7 @@ var require_io_util2 = __commonJS({
         }
         if (stats && stats.isFile()) {
           if (exports2.IS_WINDOWS) {
-            const upperExt = path.extname(filePath).toUpperCase();
+            const upperExt = path2.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
             }
@@ -21548,11 +21548,11 @@ var require_io_util2 = __commonJS({
           if (stats && stats.isFile()) {
             if (exports2.IS_WINDOWS) {
               try {
-                const directory = path.dirname(filePath);
-                const upperName = path.basename(filePath).toUpperCase();
+                const directory = path2.dirname(filePath);
+                const upperName = path2.basename(filePath).toUpperCase();
                 for (const actualName of yield exports2.readdir(directory)) {
                   if (upperName === actualName.toUpperCase()) {
-                    filePath = path.join(directory, actualName);
+                    filePath = path2.join(directory, actualName);
                     break;
                   }
                 }
@@ -21619,11 +21619,11 @@ var require_io2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -21639,7 +21639,7 @@ var require_io2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -21647,7 +21647,7 @@ var require_io2 = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.findInPath = exports2.which = exports2.mkdirP = exports2.rmRF = exports2.mv = exports2.cp = void 0;
     var assert_1 = require("assert");
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var ioUtil = __importStar2(require_io_util2());
     function cp(source, dest, options = {}) {
       return __awaiter2(this, void 0, void 0, function* () {
@@ -21656,7 +21656,7 @@ var require_io2 = __commonJS({
         if (destStat && destStat.isFile() && !force) {
           return;
         }
-        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path.join(dest, path.basename(source)) : dest;
+        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path2.join(dest, path2.basename(source)) : dest;
         if (!(yield ioUtil.exists(source))) {
           throw new Error(`no such file or directory: ${source}`);
         }
@@ -21668,7 +21668,7 @@ var require_io2 = __commonJS({
             yield cpDirRecursive(source, newDest, 0, force);
           }
         } else {
-          if (path.relative(source, newDest) === "") {
+          if (path2.relative(source, newDest) === "") {
             throw new Error(`'${newDest}' and '${source}' are the same file`);
           }
           yield copyFile(source, newDest, force);
@@ -21681,7 +21681,7 @@ var require_io2 = __commonJS({
         if (yield ioUtil.exists(dest)) {
           let destExists = true;
           if (yield ioUtil.isDirectory(dest)) {
-            dest = path.join(dest, path.basename(source));
+            dest = path2.join(dest, path2.basename(source));
             destExists = yield ioUtil.exists(dest);
           }
           if (destExists) {
@@ -21692,7 +21692,7 @@ var require_io2 = __commonJS({
             }
           }
         }
-        yield mkdirP(path.dirname(dest));
+        yield mkdirP(path2.dirname(dest));
         yield ioUtil.rename(source, dest);
       });
     }
@@ -21755,7 +21755,7 @@ var require_io2 = __commonJS({
         }
         const extensions = [];
         if (ioUtil.IS_WINDOWS && process.env["PATHEXT"]) {
-          for (const extension of process.env["PATHEXT"].split(path.delimiter)) {
+          for (const extension of process.env["PATHEXT"].split(path2.delimiter)) {
             if (extension) {
               extensions.push(extension);
             }
@@ -21768,12 +21768,12 @@ var require_io2 = __commonJS({
           }
           return [];
         }
-        if (tool.includes(path.sep)) {
+        if (tool.includes(path2.sep)) {
           return [];
         }
         const directories = [];
         if (process.env.PATH) {
-          for (const p of process.env.PATH.split(path.delimiter)) {
+          for (const p of process.env.PATH.split(path2.delimiter)) {
             if (p) {
               directories.push(p);
             }
@@ -21781,7 +21781,7 @@ var require_io2 = __commonJS({
         }
         const matches = [];
         for (const directory of directories) {
-          const filePath = yield ioUtil.tryGetExecutablePath(path.join(directory, tool), extensions);
+          const filePath = yield ioUtil.tryGetExecutablePath(path2.join(directory, tool), extensions);
           if (filePath) {
             matches.push(filePath);
           }
@@ -21867,11 +21867,11 @@ var require_toolrunner2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -21887,7 +21887,7 @@ var require_toolrunner2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -21897,7 +21897,7 @@ var require_toolrunner2 = __commonJS({
     var os2 = __importStar2(require("os"));
     var events = __importStar2(require("events"));
     var child = __importStar2(require("child_process"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var io = __importStar2(require_io2());
     var ioUtil = __importStar2(require_io_util2());
     var timers_1 = require("timers");
@@ -22112,10 +22112,10 @@ var require_toolrunner2 = __commonJS({
       exec() {
         return __awaiter2(this, void 0, void 0, function* () {
           if (!ioUtil.isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS && this.toolPath.includes("\\"))) {
-            this.toolPath = path.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+            this.toolPath = path2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
           }
           this.toolPath = yield io.which(this.toolPath, true);
-          return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          return new Promise((resolve2, reject) => __awaiter2(this, void 0, void 0, function* () {
             this._debug(`exec tool: ${this.toolPath}`);
             this._debug("arguments:");
             for (const arg of this.args) {
@@ -22198,7 +22198,7 @@ var require_toolrunner2 = __commonJS({
               if (error) {
                 reject(error);
               } else {
-                resolve(exitCode);
+                resolve2(exitCode);
               }
             });
             if (this.options.input) {
@@ -22351,11 +22351,11 @@ var require_exec2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -22371,7 +22371,7 @@ var require_exec2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -22462,11 +22462,11 @@ var require_platform2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -22482,7 +22482,7 @@ var require_platform2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -22581,11 +22581,11 @@ var require_core2 = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -22601,7 +22601,7 @@ var require_core2 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -22612,7 +22612,7 @@ var require_core2 = __commonJS({
     var file_command_1 = require_file_command2();
     var utils_1 = require_utils3();
     var os2 = __importStar2(require("os"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var oidc_utils_1 = require_oidc_utils2();
     var ExitCode;
     (function(ExitCode2) {
@@ -22640,7 +22640,7 @@ var require_core2 = __commonJS({
       } else {
         (0, command_1.issueCommand)("add-path", {}, inputPath);
       }
-      process.env["PATH"] = `${inputPath}${path.delimiter}${process.env["PATH"]}`;
+      process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
     }
     exports2.addPath = addPath2;
     function getInput2(name, options) {
@@ -22883,7 +22883,7 @@ var require_internal_path_helper = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.safeTrimTrailingSeparator = exports2.normalizeSeparators = exports2.hasRoot = exports2.hasAbsoluteRoot = exports2.ensureAbsoluteRoot = exports2.dirname = void 0;
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var assert_1 = __importDefault2(require("assert"));
     var IS_WINDOWS = process.platform === "win32";
     function dirname(p) {
@@ -22891,7 +22891,7 @@ var require_internal_path_helper = __commonJS({
       if (IS_WINDOWS && /^\\\\[^\\]+(\\[^\\]+)?$/.test(p)) {
         return p;
       }
-      let result = path.dirname(p);
+      let result = path2.dirname(p);
       if (IS_WINDOWS && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) {
         result = safeTrimTrailingSeparator(result);
       }
@@ -22929,7 +22929,7 @@ var require_internal_path_helper = __commonJS({
       (0, assert_1.default)(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
       if (root.endsWith("/") || IS_WINDOWS && root.endsWith("\\")) {
       } else {
-        root += path.sep;
+        root += path2.sep;
       }
       return root + itemPath;
     }
@@ -22967,10 +22967,10 @@ var require_internal_path_helper = __commonJS({
         return "";
       }
       p = normalizeSeparators(p);
-      if (!p.endsWith(path.sep)) {
+      if (!p.endsWith(path2.sep)) {
         return p;
       }
-      if (p === path.sep) {
+      if (p === path2.sep) {
         return p;
       }
       if (IS_WINDOWS && /^[A-Z]:\\$/i.test(p)) {
@@ -23310,7 +23310,7 @@ var require_minimatch = __commonJS({
   "node_modules/.pnpm/minimatch@3.1.2/node_modules/minimatch/minimatch.js"(exports2, module2) {
     module2.exports = minimatch;
     minimatch.Minimatch = Minimatch;
-    var path = (function() {
+    var path2 = (function() {
       try {
         return require("path");
       } catch (e) {
@@ -23318,7 +23318,7 @@ var require_minimatch = __commonJS({
     })() || {
       sep: "/"
     };
-    minimatch.sep = path.sep;
+    minimatch.sep = path2.sep;
     var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {};
     var expand = require_brace_expansion();
     var plTypes = {
@@ -23407,8 +23407,8 @@ var require_minimatch = __commonJS({
       assertValidPattern(pattern);
       if (!options) options = {};
       pattern = pattern.trim();
-      if (!options.allowWindowsEscape && path.sep !== "/") {
-        pattern = pattern.split(path.sep).join("/");
+      if (!options.allowWindowsEscape && path2.sep !== "/") {
+        pattern = pattern.split(path2.sep).join("/");
       }
       this.options = options;
       this.set = [];
@@ -23777,8 +23777,8 @@ var require_minimatch = __commonJS({
       if (this.empty) return f === "";
       if (f === "/" && partial) return true;
       var options = this.options;
-      if (path.sep !== "/") {
-        f = f.split(path.sep).join("/");
+      if (path2.sep !== "/") {
+        f = f.split(path2.sep).join("/");
       }
       f = f.split(slashSplit);
       this.debug(this.pattern, "split", f);
@@ -23914,7 +23914,7 @@ var require_internal_path = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Path = void 0;
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var pathHelper = __importStar2(require_internal_path_helper());
     var assert_1 = __importDefault2(require("assert"));
     var IS_WINDOWS = process.platform === "win32";
@@ -23929,12 +23929,12 @@ var require_internal_path = __commonJS({
           (0, assert_1.default)(itemPath, `Parameter 'itemPath' must not be empty`);
           itemPath = pathHelper.safeTrimTrailingSeparator(itemPath);
           if (!pathHelper.hasRoot(itemPath)) {
-            this.segments = itemPath.split(path.sep);
+            this.segments = itemPath.split(path2.sep);
           } else {
             let remaining = itemPath;
             let dir = pathHelper.dirname(remaining);
             while (dir !== remaining) {
-              const basename = path.basename(remaining);
+              const basename = path2.basename(remaining);
               this.segments.unshift(basename);
               remaining = dir;
               dir = pathHelper.dirname(remaining);
@@ -23952,7 +23952,7 @@ var require_internal_path = __commonJS({
               (0, assert_1.default)(segment === pathHelper.dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
               this.segments.push(segment);
             } else {
-              (0, assert_1.default)(!segment.includes(path.sep), `Parameter 'itemPath' contains unexpected path separators`);
+              (0, assert_1.default)(!segment.includes(path2.sep), `Parameter 'itemPath' contains unexpected path separators`);
               this.segments.push(segment);
             }
           }
@@ -23963,12 +23963,12 @@ var require_internal_path = __commonJS({
        */
       toString() {
         let result = this.segments[0];
-        let skipSlash = result.endsWith(path.sep) || IS_WINDOWS && /^[A-Z]:$/i.test(result);
+        let skipSlash = result.endsWith(path2.sep) || IS_WINDOWS && /^[A-Z]:$/i.test(result);
         for (let i = 1; i < this.segments.length; i++) {
           if (skipSlash) {
             skipSlash = false;
           } else {
-            result += path.sep;
+            result += path2.sep;
           }
           result += this.segments[i];
         }
@@ -24016,7 +24016,7 @@ var require_internal_pattern = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Pattern = void 0;
     var os2 = __importStar2(require("os"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var pathHelper = __importStar2(require_internal_path_helper());
     var assert_1 = __importDefault2(require("assert"));
     var minimatch_1 = require_minimatch();
@@ -24024,7 +24024,7 @@ var require_internal_pattern = __commonJS({
     var internal_path_1 = require_internal_path();
     var IS_WINDOWS = process.platform === "win32";
     var Pattern = class _Pattern {
-      constructor(patternOrNegate, isImplicitPattern = false, segments, homedir) {
+      constructor(patternOrNegate, isImplicitPattern = false, segments, homedir2) {
         this.negate = false;
         let pattern;
         if (typeof patternOrNegate === "string") {
@@ -24043,9 +24043,9 @@ var require_internal_pattern = __commonJS({
           this.negate = !this.negate;
           pattern = pattern.substr(1).trim();
         }
-        pattern = _Pattern.fixupPattern(pattern, homedir);
+        pattern = _Pattern.fixupPattern(pattern, homedir2);
         this.segments = new internal_path_1.Path(pattern).segments;
-        this.trailingSeparator = pathHelper.normalizeSeparators(pattern).endsWith(path.sep);
+        this.trailingSeparator = pathHelper.normalizeSeparators(pattern).endsWith(path2.sep);
         pattern = pathHelper.safeTrimTrailingSeparator(pattern);
         let foundGlob = false;
         const searchSegments = this.segments.map((x) => _Pattern.getLiteral(x)).filter((x) => !foundGlob && !(foundGlob = x === ""));
@@ -24069,8 +24069,8 @@ var require_internal_pattern = __commonJS({
       match(itemPath) {
         if (this.segments[this.segments.length - 1] === "**") {
           itemPath = pathHelper.normalizeSeparators(itemPath);
-          if (!itemPath.endsWith(path.sep) && this.isImplicitPattern === false) {
-            itemPath = `${itemPath}${path.sep}`;
+          if (!itemPath.endsWith(path2.sep) && this.isImplicitPattern === false) {
+            itemPath = `${itemPath}${path2.sep}`;
           }
         } else {
           itemPath = pathHelper.safeTrimTrailingSeparator(itemPath);
@@ -24099,19 +24099,19 @@ var require_internal_pattern = __commonJS({
       /**
        * Normalizes slashes and ensures absolute root
        */
-      static fixupPattern(pattern, homedir) {
+      static fixupPattern(pattern, homedir2) {
         (0, assert_1.default)(pattern, "pattern cannot be empty");
         const literalSegments = new internal_path_1.Path(pattern).segments.map((x) => _Pattern.getLiteral(x));
         (0, assert_1.default)(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
         (0, assert_1.default)(!pathHelper.hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
         pattern = pathHelper.normalizeSeparators(pattern);
-        if (pattern === "." || pattern.startsWith(`.${path.sep}`)) {
+        if (pattern === "." || pattern.startsWith(`.${path2.sep}`)) {
           pattern = _Pattern.globEscape(process.cwd()) + pattern.substr(1);
-        } else if (pattern === "~" || pattern.startsWith(`~${path.sep}`)) {
-          homedir = homedir || os2.homedir();
-          (0, assert_1.default)(homedir, "Unable to determine HOME directory");
-          (0, assert_1.default)(pathHelper.hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
-          pattern = _Pattern.globEscape(homedir) + pattern.substr(1);
+        } else if (pattern === "~" || pattern.startsWith(`~${path2.sep}`)) {
+          homedir2 = homedir2 || os2.homedir();
+          (0, assert_1.default)(homedir2, "Unable to determine HOME directory");
+          (0, assert_1.default)(pathHelper.hasAbsoluteRoot(homedir2), `Expected HOME directory to be a rooted path. Actual '${homedir2}'`);
+          pattern = _Pattern.globEscape(homedir2) + pattern.substr(1);
         } else if (IS_WINDOWS && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
           let root = pathHelper.ensureAbsoluteRoot("C:\\dummy-root", pattern.substr(0, 2));
           if (pattern.length > 2 && !root.endsWith("\\")) {
@@ -24191,8 +24191,8 @@ var require_internal_search_state = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.SearchState = void 0;
     var SearchState = class {
-      constructor(path, level) {
-        this.path = path;
+      constructor(path2, level) {
+        this.path = path2;
         this.level = level;
       }
     };
@@ -24233,11 +24233,11 @@ var require_internal_globber = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -24253,7 +24253,7 @@ var require_internal_globber = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -24266,14 +24266,14 @@ var require_internal_globber = __commonJS({
       }, i);
       function verb(n) {
         i[n] = o[n] && function(v) {
-          return new Promise(function(resolve, reject) {
-            v = o[n](v), settle(resolve, reject, v.done, v.value);
+          return new Promise(function(resolve2, reject) {
+            v = o[n](v), settle(resolve2, reject, v.done, v.value);
           });
         };
       }
-      function settle(resolve, reject, d, v) {
+      function settle(resolve2, reject, d, v) {
         Promise.resolve(v).then(function(v2) {
-          resolve({ value: v2, done: d });
+          resolve2({ value: v2, done: d });
         }, reject);
       }
     };
@@ -24318,7 +24318,7 @@ var require_internal_globber = __commonJS({
     var core2 = __importStar2(require_core2());
     var fs = __importStar2(require("fs"));
     var globOptionsHelper = __importStar2(require_internal_glob_options_helper());
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var patternHelper = __importStar2(require_internal_pattern_helper());
     var internal_match_kind_1 = require_internal_match_kind();
     var internal_pattern_1 = require_internal_pattern();
@@ -24394,7 +24394,7 @@ var require_internal_globber = __commonJS({
             if (!stats) {
               continue;
             }
-            if (options.excludeHiddenFiles && path.basename(item.path).match(/^\./)) {
+            if (options.excludeHiddenFiles && path2.basename(item.path).match(/^\./)) {
               continue;
             }
             if (stats.isDirectory()) {
@@ -24404,7 +24404,7 @@ var require_internal_globber = __commonJS({
                 continue;
               }
               const childLevel = item.level + 1;
-              const childItems = (yield __await2(fs.promises.readdir(item.path))).map((x) => new internal_search_state_1.SearchState(path.join(item.path, x), childLevel));
+              const childItems = (yield __await2(fs.promises.readdir(item.path))).map((x) => new internal_search_state_1.SearchState(path2.join(item.path, x), childLevel));
               stack.push(...childItems.reverse());
             } else if (match & internal_match_kind_1.MatchKind.File) {
               yield yield __await2(item.path);
@@ -24505,11 +24505,11 @@ var require_internal_hash_files = __commonJS({
     };
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -24525,7 +24525,7 @@ var require_internal_hash_files = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -24538,14 +24538,14 @@ var require_internal_hash_files = __commonJS({
       }, i);
       function verb(n) {
         i[n] = o[n] && function(v) {
-          return new Promise(function(resolve, reject) {
-            v = o[n](v), settle(resolve, reject, v.done, v.value);
+          return new Promise(function(resolve2, reject) {
+            v = o[n](v), settle(resolve2, reject, v.done, v.value);
           });
         };
       }
-      function settle(resolve, reject, d, v) {
+      function settle(resolve2, reject, d, v) {
         Promise.resolve(v).then(function(v2) {
-          resolve({ value: v2, done: d });
+          resolve2({ value: v2, done: d });
         }, reject);
       }
     };
@@ -24556,7 +24556,7 @@ var require_internal_hash_files = __commonJS({
     var fs = __importStar2(require("fs"));
     var stream = __importStar2(require("stream"));
     var util = __importStar2(require("util"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     function hashFiles(globber, currentWorkspace, verbose = false) {
       var _a, e_1, _b, _c;
       var _d;
@@ -24572,7 +24572,7 @@ var require_internal_hash_files = __commonJS({
             _e = false;
             const file = _c;
             writeDelegate(file);
-            if (!file.startsWith(`${githubWorkspace}${path.sep}`)) {
+            if (!file.startsWith(`${githubWorkspace}${path2.sep}`)) {
               writeDelegate(`Ignore '${file}' since it is not under GITHUB_WORKSPACE.`);
               continue;
             }
@@ -24618,11 +24618,11 @@ var require_glob = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -24638,7 +24638,7 @@ var require_glob = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -25899,11 +25899,11 @@ var require_cacheUtils = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -25919,7 +25919,7 @@ var require_cacheUtils = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -25932,14 +25932,14 @@ var require_cacheUtils = __commonJS({
       }, i);
       function verb(n) {
         i[n] = o[n] && function(v) {
-          return new Promise(function(resolve, reject) {
-            v = o[n](v), settle(resolve, reject, v.done, v.value);
+          return new Promise(function(resolve2, reject) {
+            v = o[n](v), settle(resolve2, reject, v.done, v.value);
           });
         };
       }
-      function settle(resolve, reject, d, v) {
+      function settle(resolve2, reject, d, v) {
         Promise.resolve(v).then(function(v2) {
-          resolve({ value: v2, done: d });
+          resolve2({ value: v2, done: d });
         }, reject);
       }
     };
@@ -25960,7 +25960,7 @@ var require_cacheUtils = __commonJS({
     var io = __importStar2(require_io());
     var crypto2 = __importStar2(require("crypto"));
     var fs = __importStar2(require("fs"));
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var semver = __importStar2(require_semver());
     var util = __importStar2(require("util"));
     var constants_1 = require_constants6();
@@ -25980,9 +25980,9 @@ var require_cacheUtils = __commonJS({
               baseLocation = "/home";
             }
           }
-          tempDirectory = path.join(baseLocation, "actions", "temp");
+          tempDirectory = path2.join(baseLocation, "actions", "temp");
         }
-        const dest = path.join(tempDirectory, crypto2.randomUUID());
+        const dest = path2.join(tempDirectory, crypto2.randomUUID());
         yield io.mkdirP(dest);
         return dest;
       });
@@ -26004,7 +26004,7 @@ var require_cacheUtils = __commonJS({
             _c = _g.value;
             _e = false;
             const file = _c;
-            const relativeFile = path.relative(workspace, file).replace(new RegExp(`\\${path.sep}`, "g"), "/");
+            const relativeFile = path2.relative(workspace, file).replace(new RegExp(`\\${path2.sep}`, "g"), "/");
             core2.debug(`Matched: ${relativeFile}`);
             if (relativeFile === "") {
               paths.push(".");
@@ -26221,11 +26221,11 @@ function __metadata(metadataKey, metadataValue) {
 }
 function __awaiter(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve) {
-      resolve(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -26241,7 +26241,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -26432,14 +26432,14 @@ function __asyncValues(o) {
   }, i);
   function verb(n) {
     i[n] = o[n] && function(v) {
-      return new Promise(function(resolve, reject) {
-        v = o[n](v), settle(resolve, reject, v.done, v.value);
+      return new Promise(function(resolve2, reject) {
+        v = o[n](v), settle(resolve2, reject, v.done, v.value);
       });
     };
   }
-  function settle(resolve, reject, d, v) {
+  function settle(resolve2, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
-      resolve({ value: v2, done: d });
+      resolve2({ value: v2, done: d });
     }, reject);
   }
 }
@@ -26531,13 +26531,13 @@ function __disposeResources(env) {
   }
   return next();
 }
-function __rewriteRelativeImportExtension(path, preserveJsx) {
-  if (typeof path === "string" && /^\.\.?\//.test(path)) {
-    return path.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m, tsx, d, ext, cm) {
+function __rewriteRelativeImportExtension(path2, preserveJsx) {
+  if (typeof path2 === "string" && /^\.\.?\//.test(path2)) {
+    return path2.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m, tsx, d, ext, cm) {
       return tsx ? preserveJsx ? ".jsx" : ".js" : d && (!ext || !cm) ? m : d + ext + "." + cm.toLowerCase() + "js";
     });
   }
-  return path;
+  return path2;
 }
 var extendStatics, __assign, __createBinding, __setModuleDefault, ownKeys, _SuppressedError, tslib_es6_default;
 var init_tslib_es6 = __esm({
@@ -27611,9 +27611,9 @@ var require_nodeHttpClient = __commonJS({
       if (stream.readable === false) {
         return Promise.resolve();
       }
-      return new Promise((resolve) => {
+      return new Promise((resolve2) => {
         const handler = () => {
-          resolve();
+          resolve2();
           stream.removeListener("close", handler);
           stream.removeListener("end", handler);
           stream.removeListener("error", handler);
@@ -27768,8 +27768,8 @@ var require_nodeHttpClient = __commonJS({
           headers: request.headers.toJSON({ preserveCase: true }),
           ...request.requestOverrides
         };
-        return new Promise((resolve, reject) => {
-          const req = isInsecure ? node_http_1.default.request(options, resolve) : node_https_1.default.request(options, resolve);
+        return new Promise((resolve2, reject) => {
+          const req = isInsecure ? node_http_1.default.request(options, resolve2) : node_https_1.default.request(options, resolve2);
           req.once("error", (err) => {
             reject(new restError_js_1.RestError(err.message, { code: err.code ?? restError_js_1.RestError.REQUEST_SEND_ERROR, request }));
           });
@@ -27853,7 +27853,7 @@ var require_nodeHttpClient = __commonJS({
       return stream;
     }
     function streamToText(stream) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         const buffer = [];
         stream.on("data", (chunk) => {
           if (Buffer.isBuffer(chunk)) {
@@ -27863,7 +27863,7 @@ var require_nodeHttpClient = __commonJS({
           }
         });
         stream.on("end", () => {
-          resolve(Buffer.concat(buffer).toString("utf8"));
+          resolve2(Buffer.concat(buffer).toString("utf8"));
         });
         stream.on("error", (e) => {
           if (e && e?.name === "AbortError") {
@@ -28141,7 +28141,7 @@ var require_helpers = __commonJS({
     var AbortError_js_1 = require_AbortError();
     var StandardAbortMessage = "The operation was aborted.";
     function delay(delayInMs, value, options) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         let timer = void 0;
         let onAborted = void 0;
         const rejectOnAbort = () => {
@@ -28164,7 +28164,7 @@ var require_helpers = __commonJS({
         }
         timer = setTimeout(() => {
           removeListeners();
-          resolve(value);
+          resolve2(value);
         }, delayInMs);
         if (options?.abortSignal) {
           options.abortSignal.addEventListener("abort", onAborted);
@@ -29212,8 +29212,8 @@ var require_helpers2 = __commonJS({
     function req(url, opts = {}) {
       const href = typeof url === "string" ? url : url.href;
       const req2 = (href.startsWith("https:") ? https : http).request(url, opts);
-      const promise = new Promise((resolve, reject) => {
-        req2.once("response", resolve).once("error", reject).end();
+      const promise = new Promise((resolve2, reject) => {
+        req2.once("response", resolve2).once("error", reject).end();
       });
       req2.then = promise.then.bind(promise);
       return req2;
@@ -29390,7 +29390,7 @@ var require_parse_proxy_response = __commonJS({
     var debug_1 = __importDefault2(require_src());
     var debug = (0, debug_1.default)("https-proxy-agent:parse-proxy-response");
     function parseProxyResponse(socket) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         let buffersLength = 0;
         const buffers = [];
         function read() {
@@ -29456,7 +29456,7 @@ var require_parse_proxy_response = __commonJS({
           }
           debug("got proxy server response: %o %o", firstLine, headers);
           cleanup();
-          resolve({
+          resolve2({
             connect: {
               statusCode,
               statusText,
@@ -30836,8 +30836,8 @@ var require_getClient = __commonJS({
       }
       const { allowInsecureConnection, httpClient } = clientOptions;
       const endpointUrl = clientOptions.endpoint ?? endpoint;
-      const client = (path, ...args) => {
-        const getUrl = (requestOptions) => (0, urlHelpers_js_1.buildRequestUrl)(endpointUrl, path, args, { allowInsecureConnection, ...requestOptions });
+      const client = (path2, ...args) => {
+        const getUrl = (requestOptions) => (0, urlHelpers_js_1.buildRequestUrl)(endpointUrl, path2, args, { allowInsecureConnection, ...requestOptions });
         return {
           get: (requestOptions = {}) => {
             return buildOperation("GET", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection, httpClient);
@@ -31542,7 +31542,7 @@ var require_createAbortablePromise = __commonJS({
     var abort_controller_1 = require_commonjs3();
     function createAbortablePromise(buildPromise, options) {
       const { cleanupBeforeAbort, abortSignal, abortErrorMsg } = options ?? {};
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         function rejectOnAbort() {
           reject(new abort_controller_1.AbortError(abortErrorMsg ?? "The operation was aborted."));
         }
@@ -31560,7 +31560,7 @@ var require_createAbortablePromise = __commonJS({
         try {
           buildPromise((x) => {
             removeListeners();
-            resolve(x);
+            resolve2(x);
           }, (x) => {
             removeListeners();
             reject(x);
@@ -31587,8 +31587,8 @@ var require_delay2 = __commonJS({
     function delay(timeInMs, options) {
       let token;
       const { abortSignal, abortErrorMsg } = options ?? {};
-      return (0, createAbortablePromise_js_1.createAbortablePromise)((resolve) => {
-        token = setTimeout(resolve, timeInMs);
+      return (0, createAbortablePromise_js_1.createAbortablePromise)((resolve2) => {
+        token = setTimeout(resolve2, timeInMs);
       }, {
         cleanupBeforeAbort: () => clearTimeout(token),
         abortSignal,
@@ -34708,15 +34708,15 @@ var require_urlHelpers2 = __commonJS({
       let isAbsolutePath = false;
       let requestUrl = replaceAll(baseUri, urlReplacements);
       if (operationSpec.path) {
-        let path = replaceAll(operationSpec.path, urlReplacements);
-        if (operationSpec.path === "/{nextLink}" && path.startsWith("/")) {
-          path = path.substring(1);
+        let path2 = replaceAll(operationSpec.path, urlReplacements);
+        if (operationSpec.path === "/{nextLink}" && path2.startsWith("/")) {
+          path2 = path2.substring(1);
         }
-        if (isAbsoluteUrl(path)) {
-          requestUrl = path;
+        if (isAbsoluteUrl(path2)) {
+          requestUrl = path2;
           isAbsolutePath = true;
         } else {
-          requestUrl = appendPath(requestUrl, path);
+          requestUrl = appendPath(requestUrl, path2);
         }
       }
       const { queryParams, sequenceParams } = calculateQueryParameters(operationSpec, operationArguments, fallbackObject);
@@ -34762,9 +34762,9 @@ var require_urlHelpers2 = __commonJS({
       }
       const searchStart = pathToAppend.indexOf("?");
       if (searchStart !== -1) {
-        const path = pathToAppend.substring(0, searchStart);
+        const path2 = pathToAppend.substring(0, searchStart);
         const search = pathToAppend.substring(searchStart + 1);
-        newPath = newPath + path;
+        newPath = newPath + path2;
         if (search) {
           parsedUrl.search = parsedUrl.search ? `${parsedUrl.search}&${search}` : search;
         }
@@ -36964,10 +36964,10 @@ var require_utils_common = __commonJS({
     var constants_js_1 = require_constants9();
     function escapeURLPath(url) {
       const urlParsed = new URL(url);
-      let path = urlParsed.pathname;
-      path = path || "/";
-      path = escape(path);
-      urlParsed.pathname = path;
+      let path2 = urlParsed.pathname;
+      path2 = path2 || "/";
+      path2 = escape(path2);
+      urlParsed.pathname = path2;
       return urlParsed.toString();
     }
     function getProxyUriFromDevConnString(connectionString) {
@@ -37052,9 +37052,9 @@ var require_utils_common = __commonJS({
     }
     function appendToURLPath(url, name) {
       const urlParsed = new URL(url);
-      let path = urlParsed.pathname;
-      path = path ? path.endsWith("/") ? `${path}${name}` : `${path}/${name}` : name;
-      urlParsed.pathname = path;
+      let path2 = urlParsed.pathname;
+      path2 = path2 ? path2.endsWith("/") ? `${path2}${name}` : `${path2}/${name}` : name;
+      urlParsed.pathname = path2;
       return urlParsed.toString();
     }
     function setURLParameter(url, name, value) {
@@ -37169,7 +37169,7 @@ var require_utils_common = __commonJS({
       return base64encode(res);
     }
     async function delay(timeInMs, aborter, abortError) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         let timeout;
         const abortHandler = () => {
           if (timeout !== void 0) {
@@ -37181,7 +37181,7 @@ var require_utils_common = __commonJS({
           if (aborter !== void 0) {
             aborter.removeEventListener("abort", abortHandler);
           }
-          resolve();
+          resolve2();
         };
         timeout = setTimeout(resolveHandler, timeInMs);
         if (aborter !== void 0) {
@@ -38281,9 +38281,9 @@ var require_StorageSharedKeyCredentialPolicy = __commonJS({
        * @param request -
        */
       getCanonicalizedResourceString(request) {
-        const path = (0, utils_common_js_1.getURLPath)(request.url) || "/";
+        const path2 = (0, utils_common_js_1.getURLPath)(request.url) || "/";
         let canonicalizedResourceString = "";
-        canonicalizedResourceString += `/${this.factory.accountName}${path}`;
+        canonicalizedResourceString += `/${this.factory.accountName}${path2}`;
         const queries = (0, utils_common_js_1.getURLQueries)(request.url);
         const lowercaseQueries = {};
         if (queries) {
@@ -38722,7 +38722,7 @@ var require_BufferScheduler = __commonJS({
        *
        */
       async do() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           this.readable.on("data", (data) => {
             data = typeof data === "string" ? Buffer.from(data, this.encoding) : data;
             this.appendUnresolvedData(data);
@@ -38750,11 +38750,11 @@ var require_BufferScheduler = __commonJS({
             if (this.isStreamEnd && this.executingOutgoingHandlers === 0) {
               if (this.unresolvedLength > 0 && this.unresolvedLength < this.bufferSize) {
                 const buffer = this.shiftBufferFromUnresolvedDataArray();
-                this.outgoingHandler(() => buffer.getReadableStream(), buffer.size, this.offset).then(resolve).catch(reject);
+                this.outgoingHandler(() => buffer.getReadableStream(), buffer.size, this.offset).then(resolve2).catch(reject);
               } else if (this.unresolvedLength >= this.bufferSize) {
                 return;
               } else {
-                resolve();
+                resolve2();
               }
             }
           });
@@ -39022,10 +39022,10 @@ var require_utils_common2 = __commonJS({
     var constants_js_1 = require_constants10();
     function escapeURLPath(url) {
       const urlParsed = new URL(url);
-      let path = urlParsed.pathname;
-      path = path || "/";
-      path = escape(path);
-      urlParsed.pathname = path;
+      let path2 = urlParsed.pathname;
+      path2 = path2 || "/";
+      path2 = escape(path2);
+      urlParsed.pathname = path2;
       return urlParsed.toString();
     }
     function getProxyUriFromDevConnString(connectionString) {
@@ -39110,9 +39110,9 @@ var require_utils_common2 = __commonJS({
     }
     function appendToURLPath(url, name) {
       const urlParsed = new URL(url);
-      let path = urlParsed.pathname;
-      path = path ? path.endsWith("/") ? `${path}${name}` : `${path}/${name}` : name;
-      urlParsed.pathname = path;
+      let path2 = urlParsed.pathname;
+      path2 = path2 ? path2.endsWith("/") ? `${path2}${name}` : `${path2}/${name}` : name;
+      urlParsed.pathname = path2;
       return urlParsed.toString();
     }
     function setURLParameter(url, name, value) {
@@ -39227,7 +39227,7 @@ var require_utils_common2 = __commonJS({
       return base64encode(res);
     }
     async function delay(timeInMs, aborter, abortError) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         let timeout;
         const abortHandler = () => {
           if (timeout !== void 0) {
@@ -39239,7 +39239,7 @@ var require_utils_common2 = __commonJS({
           if (aborter !== void 0) {
             aborter.removeEventListener("abort", abortHandler);
           }
-          resolve();
+          resolve2();
         };
         timeout = setTimeout(resolveHandler, timeInMs);
         if (aborter !== void 0) {
@@ -40033,9 +40033,9 @@ var require_StorageSharedKeyCredentialPolicy2 = __commonJS({
        * @param request -
        */
       getCanonicalizedResourceString(request) {
-        const path = (0, utils_common_js_1.getURLPath)(request.url) || "/";
+        const path2 = (0, utils_common_js_1.getURLPath)(request.url) || "/";
         let canonicalizedResourceString = "";
-        canonicalizedResourceString += `/${this.factory.accountName}${path}`;
+        canonicalizedResourceString += `/${this.factory.accountName}${path2}`;
         const queries = (0, utils_common_js_1.getURLQueries)(request.url);
         const lowercaseQueries = {};
         if (queries) {
@@ -40636,9 +40636,9 @@ var require_StorageSharedKeyCredentialPolicyV2 = __commonJS({
         return canonicalizedHeadersStringToSign;
       }
       function getCanonicalizedResourceString(request) {
-        const path = (0, utils_common_js_1.getURLPath)(request.url) || "/";
+        const path2 = (0, utils_common_js_1.getURLPath)(request.url) || "/";
         let canonicalizedResourceString = "";
-        canonicalizedResourceString += `/${options.accountName}${path}`;
+        canonicalizedResourceString += `/${options.accountName}${path2}`;
         const queries = (0, utils_common_js_1.getURLQueries)(request.url);
         const lowercaseQueries = {};
         if (queries) {
@@ -40983,9 +40983,9 @@ var require_StorageSharedKeyCredentialPolicyV22 = __commonJS({
         return canonicalizedHeadersStringToSign;
       }
       function getCanonicalizedResourceString(request) {
-        const path = (0, utils_common_js_1.getURLPath)(request.url) || "/";
+        const path2 = (0, utils_common_js_1.getURLPath)(request.url) || "/";
         let canonicalizedResourceString = "";
-        canonicalizedResourceString += `/${options.accountName}${path}`;
+        canonicalizedResourceString += `/${options.accountName}${path2}`;
         const queries = (0, utils_common_js_1.getURLQueries)(request.url);
         const lowercaseQueries = {};
         if (queries) {
@@ -57408,7 +57408,7 @@ var require_AvroReadableFromStream = __commonJS({
           this._position += chunk.length;
           return this.toUint8Array(chunk);
         } else {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve2, reject) => {
             const cleanUp = () => {
               this._readable.removeListener("readable", readableCallback);
               this._readable.removeListener("error", rejectCallback);
@@ -57423,7 +57423,7 @@ var require_AvroReadableFromStream = __commonJS({
               if (callbackChunk) {
                 this._position += callbackChunk.length;
                 cleanUp();
-                resolve(this.toUint8Array(callbackChunk));
+                resolve2(this.toUint8Array(callbackChunk));
               }
             };
             const rejectCallback = () => {
@@ -58903,8 +58903,8 @@ var require_poller3 = __commonJS({
         this.stopped = true;
         this.pollProgressCallbacks = [];
         this.operation = operation;
-        this.promise = new Promise((resolve, reject) => {
-          this.resolve = resolve;
+        this.promise = new Promise((resolve2, reject) => {
+          this.resolve = resolve2;
           this.reject = reject;
         });
         this.promise.catch(() => {
@@ -59157,7 +59157,7 @@ var require_lroEngine = __commonJS({
        * The method used by the poller to wait before attempting to update its operation.
        */
       delay() {
-        return new Promise((resolve) => setTimeout(() => resolve(), this.config.intervalInMs));
+        return new Promise((resolve2) => setTimeout(() => resolve2(), this.config.intervalInMs));
       }
     };
     exports2.LroEngine = LroEngine;
@@ -59403,8 +59403,8 @@ var require_Batch = __commonJS({
           return Promise.resolve();
         }
         this.parallelExecute();
-        return new Promise((resolve, reject) => {
-          this.emitter.on("finish", resolve);
+        return new Promise((resolve2, reject) => {
+          this.emitter.on("finish", resolve2);
           this.emitter.on("error", (error) => {
             this.state = BatchStates.Error;
             reject(error);
@@ -59465,12 +59465,12 @@ var require_utils5 = __commonJS({
     async function streamToBuffer(stream, buffer, offset, end, encoding) {
       let pos = 0;
       const count = end - offset;
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         const timeout = setTimeout(() => reject(new Error(`The operation cannot be completed in timeout.`)), constants_js_1.REQUEST_TIMEOUT);
         stream.on("readable", () => {
           if (pos >= count) {
             clearTimeout(timeout);
-            resolve();
+            resolve2();
             return;
           }
           let chunk = stream.read();
@@ -59489,7 +59489,7 @@ var require_utils5 = __commonJS({
           if (pos < count) {
             reject(new Error(`Stream drains before getting enough data needed. Data read: ${pos}, data need: ${count}`));
           }
-          resolve();
+          resolve2();
         });
         stream.on("error", (msg) => {
           clearTimeout(timeout);
@@ -59500,7 +59500,7 @@ var require_utils5 = __commonJS({
     async function streamToBuffer2(stream, buffer, encoding) {
       let pos = 0;
       const bufferSize = buffer.length;
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         stream.on("readable", () => {
           let chunk = stream.read();
           if (!chunk) {
@@ -59517,25 +59517,25 @@ var require_utils5 = __commonJS({
           pos += chunk.length;
         });
         stream.on("end", () => {
-          resolve(pos);
+          resolve2(pos);
         });
         stream.on("error", reject);
       });
     }
     async function streamToBuffer3(readableStream, encoding) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         const chunks = [];
         readableStream.on("data", (data) => {
           chunks.push(typeof data === "string" ? Buffer.from(data, encoding) : data);
         });
         readableStream.on("end", () => {
-          resolve(Buffer.concat(chunks));
+          resolve2(Buffer.concat(chunks));
         });
         readableStream.on("error", reject);
       });
     }
     async function readStreamToLocalFile(rs, file) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         const ws = node_fs_1.default.createWriteStream(file);
         rs.on("error", (err) => {
           reject(err);
@@ -59543,7 +59543,7 @@ var require_utils5 = __commonJS({
         ws.on("error", (err) => {
           reject(err);
         });
-        ws.on("close", resolve);
+        ws.on("close", resolve2);
         rs.pipe(ws);
       });
     }
@@ -60482,7 +60482,7 @@ var require_Clients = __commonJS({
        * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
        */
       generateSasUrl(options) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
             throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
           }
@@ -60493,7 +60493,7 @@ var require_Clients = __commonJS({
             versionId: this._versionId,
             ...options
           }, this.credential).toString();
-          resolve((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
+          resolve2((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
         });
       }
       /**
@@ -60532,7 +60532,7 @@ var require_Clients = __commonJS({
        * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
        */
       generateUserDelegationSasUrl(options, userDelegationKey) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           const sas = (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParameters)({
             containerName: this._containerName,
             blobName: this._name,
@@ -60540,7 +60540,7 @@ var require_Clients = __commonJS({
             versionId: this._versionId,
             ...options
           }, userDelegationKey, this.accountName).toString();
-          resolve((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
+          resolve2((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
         });
       }
       /**
@@ -62395,14 +62395,14 @@ var require_Mutex = __commonJS({
        * @param key - lock key
        */
       static async lock(key) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           if (this.keys[key] === void 0 || this.keys[key] === MutexLockStatus.UNLOCKED) {
             this.keys[key] = MutexLockStatus.LOCKED;
-            resolve();
+            resolve2();
           } else {
             this.onUnlockEvent(key, () => {
               this.keys[key] = MutexLockStatus.LOCKED;
-              resolve();
+              resolve2();
             });
           }
         });
@@ -62413,12 +62413,12 @@ var require_Mutex = __commonJS({
        * @param key -
        */
       static async unlock(key) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           if (this.keys[key] === MutexLockStatus.LOCKED) {
             this.emitUnlockEvent(key);
           }
           delete this.keys[key];
-          resolve();
+          resolve2();
         });
       }
       static keys = {};
@@ -62640,8 +62640,8 @@ var require_BlobBatch = __commonJS({
         if (this.operationCount >= constants_js_1.BATCH_MAX_REQUEST) {
           throw new RangeError(`Cannot exceed ${constants_js_1.BATCH_MAX_REQUEST} sub requests in a single batch`);
         }
-        const path = (0, utils_common_js_1.getURLPath)(subRequest.url);
-        if (!path || path === "") {
+        const path2 = (0, utils_common_js_1.getURLPath)(subRequest.url);
+        if (!path2 || path2 === "") {
           throw new RangeError(`Invalid url for sub request: '${subRequest.url}'`);
         }
       }
@@ -62719,8 +62719,8 @@ var require_BlobBatchClient = __commonJS({
           pipeline = (0, Pipeline_js_1.newPipeline)(credentialOrPipeline, options);
         }
         const storageClientContext = new StorageContextClient_js_1.StorageContextClient(url, (0, Pipeline_js_1.getCoreClientOptions)(pipeline));
-        const path = (0, utils_common_js_1.getURLPath)(url);
-        if (path && path !== "/") {
+        const path2 = (0, utils_common_js_1.getURLPath)(url);
+        if (path2 && path2 !== "/") {
           this.serviceOrContainerContext = storageClientContext.container;
         } else {
           this.serviceOrContainerContext = storageClientContext.service;
@@ -64021,7 +64021,7 @@ var require_ContainerClient = __commonJS({
        * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
        */
       generateSasUrl(options) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
             throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
           }
@@ -64029,7 +64029,7 @@ var require_ContainerClient = __commonJS({
             containerName: this._containerName,
             ...options
           }, this.credential).toString();
-          resolve((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
+          resolve2((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
         });
       }
       /**
@@ -64064,12 +64064,12 @@ var require_ContainerClient = __commonJS({
        * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
        */
       generateUserDelegationSasUrl(options, userDelegationKey) {
-        return new Promise((resolve) => {
+        return new Promise((resolve2) => {
           const sas = (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParameters)({
             containerName: this._containerName,
             ...options
           }, userDelegationKey, this.accountName).toString();
-          resolve((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
+          resolve2((0, utils_common_js_1.appendToURLQuery)(this.url, sas));
         });
       }
       /**
@@ -65458,11 +65458,11 @@ var require_uploadUtils = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -65478,7 +65478,7 @@ var require_uploadUtils = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -65645,11 +65645,11 @@ var require_requestUtils = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -65665,7 +65665,7 @@ var require_requestUtils = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -65705,7 +65705,7 @@ var require_requestUtils = __commonJS({
     }
     function sleep(milliseconds) {
       return __awaiter2(this, void 0, void 0, function* () {
-        return new Promise((resolve) => setTimeout(resolve, milliseconds));
+        return new Promise((resolve2) => setTimeout(resolve2, milliseconds));
       });
     }
     function retry(name_1, method_1, getStatusCode_1) {
@@ -65966,11 +65966,11 @@ var require_downloadUtils = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -65986,7 +65986,7 @@ var require_downloadUtils = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -66282,8 +66282,8 @@ var require_downloadUtils = __commonJS({
     }
     var promiseWithTimeout = (timeoutMs, promise) => __awaiter2(void 0, void 0, void 0, function* () {
       let timeoutHandle;
-      const timeoutPromise = new Promise((resolve) => {
-        timeoutHandle = setTimeout(() => resolve("timeout"), timeoutMs);
+      const timeoutPromise = new Promise((resolve2) => {
+        timeoutHandle = setTimeout(() => resolve2("timeout"), timeoutMs);
       });
       return Promise.race([promise, timeoutPromise]).then((result) => {
         clearTimeout(timeoutHandle);
@@ -66564,11 +66564,11 @@ var require_cacheHttpClient = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -66584,7 +66584,7 @@ var require_cacheHttpClient = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70054,8 +70054,8 @@ var require_deferred = __commonJS({
        */
       constructor(preventUnhandledRejectionWarning = true) {
         this._state = DeferredState.PENDING;
-        this._promise = new Promise((resolve, reject) => {
-          this._resolve = resolve;
+        this._promise = new Promise((resolve2, reject) => {
+          this._resolve = resolve2;
           this._reject = reject;
         });
         if (preventUnhandledRejectionWarning) {
@@ -70270,11 +70270,11 @@ var require_unary_call = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -70290,7 +70290,7 @@ var require_unary_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70339,11 +70339,11 @@ var require_server_streaming_call = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -70359,7 +70359,7 @@ var require_server_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70409,11 +70409,11 @@ var require_client_streaming_call = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -70429,7 +70429,7 @@ var require_client_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70478,11 +70478,11 @@ var require_duplex_streaming_call = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -70498,7 +70498,7 @@ var require_duplex_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70546,11 +70546,11 @@ var require_test_transport = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -70566,7 +70566,7 @@ var require_test_transport = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -70763,11 +70763,11 @@ var require_test_transport = __commonJS({
       responseTrailer: "test"
     };
     function delay(ms, abort) {
-      return (v) => new Promise((resolve, reject) => {
+      return (v) => new Promise((resolve2, reject) => {
         if (abort === null || abort === void 0 ? void 0 : abort.aborted) {
           reject(new rpc_error_1.RpcError("user cancel", "CANCELLED"));
         } else {
-          const id = setTimeout(() => resolve(v), ms);
+          const id = setTimeout(() => resolve2(v), ms);
           if (abort) {
             abort.addEventListener("abort", (ev) => {
               clearTimeout(id);
@@ -71765,11 +71765,11 @@ var require_cacheTwirpClient = __commonJS({
     "use strict";
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -71785,7 +71785,7 @@ var require_cacheTwirpClient = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -71913,7 +71913,7 @@ var require_cacheTwirpClient = __commonJS({
       }
       sleep(milliseconds) {
         return __awaiter2(this, void 0, void 0, function* () {
-          return new Promise((resolve) => setTimeout(resolve, milliseconds));
+          return new Promise((resolve2) => setTimeout(resolve2, milliseconds));
         });
       }
       getExponentialRetryTimeMilliseconds(attempt) {
@@ -71978,11 +71978,11 @@ var require_tar = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -71998,7 +71998,7 @@ var require_tar = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -72010,7 +72010,7 @@ var require_tar = __commonJS({
     var exec_1 = require_exec();
     var io = __importStar2(require_io());
     var fs_1 = require("fs");
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var utils = __importStar2(require_cacheUtils());
     var constants_1 = require_constants6();
     var IS_WINDOWS = process.platform === "win32";
@@ -72056,13 +72056,13 @@ var require_tar = __commonJS({
         const BSD_TAR_ZSTD = tarPath.type === constants_1.ArchiveToolType.BSD && compressionMethod !== constants_1.CompressionMethod.Gzip && IS_WINDOWS;
         switch (type) {
           case "create":
-            args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path.sep}`, "g"), "/"), "--files-from", constants_1.ManifestFilename);
+            args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path2.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path2.sep}`, "g"), "/"), "--files-from", constants_1.ManifestFilename);
             break;
           case "extract":
-            args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path.sep}`, "g"), "/"));
+            args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path2.sep}`, "g"), "/"));
             break;
           case "list":
-            args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path.sep}`, "g"), "/"), "-P");
+            args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path2.sep}`, "g"), "/"), "-P");
             break;
         }
         if (tarPath.type === constants_1.ArchiveToolType.GNU) {
@@ -72108,7 +72108,7 @@ var require_tar = __commonJS({
             return BSD_TAR_ZSTD ? [
               "zstd -d --long=30 --force -o",
               constants_1.TarFilename,
-              archivePath.replace(new RegExp(`\\${path.sep}`, "g"), "/")
+              archivePath.replace(new RegExp(`\\${path2.sep}`, "g"), "/")
             ] : [
               "--use-compress-program",
               IS_WINDOWS ? '"zstd -d --long=30"' : "unzstd --long=30"
@@ -72117,7 +72117,7 @@ var require_tar = __commonJS({
             return BSD_TAR_ZSTD ? [
               "zstd -d --force -o",
               constants_1.TarFilename,
-              archivePath.replace(new RegExp(`\\${path.sep}`, "g"), "/")
+              archivePath.replace(new RegExp(`\\${path2.sep}`, "g"), "/")
             ] : ["--use-compress-program", IS_WINDOWS ? '"zstd -d"' : "unzstd"];
           default:
             return ["-z"];
@@ -72132,7 +72132,7 @@ var require_tar = __commonJS({
           case constants_1.CompressionMethod.Zstd:
             return BSD_TAR_ZSTD ? [
               "zstd -T0 --long=30 --force -o",
-              cacheFileName.replace(new RegExp(`\\${path.sep}`, "g"), "/"),
+              cacheFileName.replace(new RegExp(`\\${path2.sep}`, "g"), "/"),
               constants_1.TarFilename
             ] : [
               "--use-compress-program",
@@ -72141,7 +72141,7 @@ var require_tar = __commonJS({
           case constants_1.CompressionMethod.ZstdWithoutLong:
             return BSD_TAR_ZSTD ? [
               "zstd -T0 --force -o",
-              cacheFileName.replace(new RegExp(`\\${path.sep}`, "g"), "/"),
+              cacheFileName.replace(new RegExp(`\\${path2.sep}`, "g"), "/"),
               constants_1.TarFilename
             ] : ["--use-compress-program", IS_WINDOWS ? '"zstd -T0"' : "zstdmt"];
           default:
@@ -72179,7 +72179,7 @@ var require_tar = __commonJS({
     }
     function createTar(archiveFolder, sourceDirectories, compressionMethod) {
       return __awaiter2(this, void 0, void 0, function* () {
-        (0, fs_1.writeFileSync)(path.join(archiveFolder, constants_1.ManifestFilename), sourceDirectories.join("\n"));
+        (0, fs_1.writeFileSync)(path2.join(archiveFolder, constants_1.ManifestFilename), sourceDirectories.join("\n"));
         const commands = yield getCommands(compressionMethod, "create");
         yield execCommands(commands, archiveFolder);
       });
@@ -72230,11 +72230,11 @@ var require_cache4 = __commonJS({
     })();
     var __awaiter2 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -72250,7 +72250,7 @@ var require_cache4 = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -72261,7 +72261,7 @@ var require_cache4 = __commonJS({
     exports2.restoreCache = restoreCache2;
     exports2.saveCache = saveCache2;
     var core2 = __importStar2(require_core());
-    var path = __importStar2(require("path"));
+    var path2 = __importStar2(require("path"));
     var utils = __importStar2(require_cacheUtils());
     var cacheHttpClient = __importStar2(require_cacheHttpClient());
     var cacheTwirpClient = __importStar2(require_cacheTwirpClient());
@@ -72356,7 +72356,7 @@ var require_cache4 = __commonJS({
             core2.info("Lookup only - skipping download");
             return cacheEntry.cacheKey;
           }
-          archivePath = path.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
+          archivePath = path2.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
           core2.debug(`Archive Path: ${archivePath}`);
           yield cacheHttpClient.downloadCache(cacheEntry.archiveLocation, archivePath, options);
           if (core2.isDebug()) {
@@ -72425,7 +72425,7 @@ var require_cache4 = __commonJS({
             core2.info("Lookup only - skipping download");
             return response.matchedKey;
           }
-          archivePath = path.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
+          archivePath = path2.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
           core2.debug(`Archive path: ${archivePath}`);
           core2.debug(`Starting download of archive to: ${archivePath}`);
           yield cacheHttpClient.downloadCache(response.signedDownloadUrl, archivePath, options);
@@ -72487,7 +72487,7 @@ var require_cache4 = __commonJS({
           throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
         }
         const archiveFolder = yield utils.createTempDirectory();
-        const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
+        const archivePath = path2.join(archiveFolder, utils.getCacheFileName(compressionMethod));
         core2.debug(`Archive Path: ${archivePath}`);
         try {
           yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
@@ -72551,7 +72551,7 @@ var require_cache4 = __commonJS({
           throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
         }
         const archiveFolder = yield utils.createTempDirectory();
-        const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
+        const archivePath = path2.join(archiveFolder, utils.getCacheFileName(compressionMethod));
         core2.debug(`Archive Path: ${archivePath}`);
         try {
           yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
@@ -72631,11 +72631,51 @@ var core = __toESM(require_core(), 1);
 var import_core = __toESM(require_core(), 1);
 var import_node_child_process = require("node:child_process");
 var os = __toESM(require("node:os"), 1);
+var path = __toESM(require("node:path"), 1);
+function getPersistentDataDir() {
+  const uv_data_dir = process.env.UV_DATA_DIR;
+  if (uv_data_dir) {
+    return uv_data_dir;
+  }
+  const xdg_data_home = process.env.XDG_DATA_HOME;
+  if (xdg_data_home) {
+    return path.join(xdg_data_home, "uv");
+  }
+  const home_dir = os.homedir();
+  if (process.platform === "win32") {
+    const appdata = process.env.APPDATA;
+    if (appdata) {
+      return path.join(appdata, "uv", "data");
+    }
+  }
+  if (home_dir) {
+    return path.join(home_dir, ".local", "share", "uv");
+  }
+  return path.join(process.cwd(), ".uv");
+}
+function getToolDir() {
+  return process.env.UV_TOOL_DIR ?? path.join(getPersistentDataDir(), "tools");
+}
+function getBinDir() {
+  const uv_tool_bin_dir = process.env.UV_TOOL_BIN_DIR;
+  if (uv_tool_bin_dir) {
+    return uv_tool_bin_dir;
+  }
+  const xdg_bin_home = process.env.XDG_BIN_HOME;
+  if (xdg_bin_home) {
+    return xdg_bin_home;
+  }
+  const xdg_data_home = process.env.XDG_DATA_HOME;
+  if (xdg_data_home) {
+    return path.resolve(xdg_data_home, "..", "bin");
+  }
+  return path.join(os.homedir(), ".local", "bin");
+}
 (async () => {
   try {
     const version = (0, import_core.getInput)("version", { required: true });
-    const tool_dir = process.env.UV_TOOL_DIR;
-    const bin_dir = process.env.UV_TOOL_BIN_DIR;
+    const tool_dir = getToolDir();
+    const bin_dir = getBinDir();
     const cache_key = `${os.platform()}-gersemi-${version}`;
     const restored_key = await cache.restoreCache([tool_dir, bin_dir], cache_key);
     if (!restored_key) {
