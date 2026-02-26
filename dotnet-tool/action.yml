@@ -1,13 +1,13 @@
-name: "dotnet tool"
+name: "Install dotnet tool"
 
-description: "Add a dotnet tool"
+description: "Install dotnet tool"
 
 inputs:
   tool:
-    description: "Tool id"
+    description: "id of the dotnet tool to install (e.g. wix)"
     required: true
   version:
-    description: "Tool version"
+    description: "Version of the dotnet tool to install (e.g. 6.2.0)"
     required: true
 
 runs:

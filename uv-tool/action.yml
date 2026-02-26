@@ -1,13 +1,13 @@
-name: "uv tool"
+name: "Install uv tool"
 
-description: "Add a python tool"
+description: "Install uv tool"
 
 inputs:
   tool:
-    description: "Tool id"
+    description: "id of the uv tool to install (e.g. clang-format)"
     required: true
   version:
-    description: "Tool version"
+    description: "Version of the uv tool to install (e.g. 21.1.0)"
     required: true
 
 runs:
