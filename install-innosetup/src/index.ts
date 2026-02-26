@@ -47,7 +47,6 @@ import * as util from "node:util";
         }
 
         core.addPath(install_dir);
-        core.info(`Inno Setup ${version} added to PATH`);
     } catch (error: any) {
         core.setFailed(error.message);
     }
