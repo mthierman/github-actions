@@ -75,7 +75,6 @@ function getBinDir(): string {
         }
 
         core.addPath(bin_dir);
-        core.info(`Gersemi ${version} added to PATH`);
     } catch (error: any) {
         core.setFailed(error.message);
     }
