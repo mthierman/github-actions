@@ -27,7 +27,7 @@ import * as util from "node:util";
 
     try {
         const stream_pipeline = util.promisify(stream.pipeline);
-        const version = getInput("version", { required: true });
+        const version = getInput("version");
         const workspace = process.cwd();
         const install_dir = path.join(workspace, `ninja-${version}`);
         const cache_key = `${os.platform()}-ninja-${version}`;

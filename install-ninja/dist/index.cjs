@@ -64924,7 +64924,7 @@ var util6 = __toESM(require("node:util"), 1);
   }
   try {
     const stream_pipeline = util6.promisify(stream3.pipeline);
-    const version3 = getInput("version", { required: true });
+    const version3 = getInput("version");
     const workspace = process.cwd();
     const install_dir = path14.join(workspace, `ninja-${version3}`);
     const cache_key = `${os8.platform()}-ninja-${version3}`;
