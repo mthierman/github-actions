@@ -4,10 +4,7 @@ description: "Install gersemi via uv-tool and run gersemi --check"
 runs:
   using: "composite"
   steps:
-    - uses: surge-synthesizer/sst-githubactions/uv-tool@main
-      with:
-        tool: "gersemi"
-        version: "0.26.0"
+
     - shell: pwsh
       run: |
         & gersemi --check .

@@ -4,10 +4,6 @@ description: "Install clang-format via uv-tool and verify formatting"
 runs:
   using: "composite"
   steps:
-    - uses: surge-synthesizer/sst-githubactions/uv-tool@main
-      with:
-        tool: "clang-format"
-        version: "22.1.0"
     - shell: pwsh
       run: |
         $extensions = @(".cpp", ".hpp", ".cc", ".cxx", ".h", ".c", ".m", ".mm")
