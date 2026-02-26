@@ -3,11 +3,9 @@ import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 
 const actions = [
-    { name: "install-clang-format" },
-    { name: "install-gersemi" },
+    { name: "dotnet-tool" },
     { name: "install-innosetup" },
     { name: "install-ninja" },
-    { name: "install-wix" },
     { name: "notify-web" },
     { name: "receive-web" },
     { name: "uv-tool" },

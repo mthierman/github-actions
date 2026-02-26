@@ -2050,9 +2050,9 @@ var require_dispatcher_base = __commonJS({
       }
       close(callback) {
         if (callback === void 0) {
-          return new Promise((resolve3, reject) => {
+          return new Promise((resolve2, reject) => {
             this.close((err, data) => {
-              return err ? reject(err) : resolve3(data);
+              return err ? reject(err) : resolve2(data);
             });
           });
         }
@@ -2090,12 +2090,12 @@ var require_dispatcher_base = __commonJS({
           err = null;
         }
         if (callback === void 0) {
-          return new Promise((resolve3, reject) => {
+          return new Promise((resolve2, reject) => {
             this.destroy(err, (err2, data) => {
               return err2 ? (
                 /* istanbul ignore next: should never error */
                 reject(err2)
-              ) : resolve3(data);
+              ) : resolve2(data);
             });
           });
         }
@@ -4362,8 +4362,8 @@ var require_util2 = __commonJS({
     function createDeferredPromise() {
       let res;
       let rej;
-      const promise = new Promise((resolve3, reject) => {
-        res = resolve3;
+      const promise = new Promise((resolve2, reject) => {
+        res = resolve2;
         rej = reject;
       });
       return { promise, resolve: res, reject: rej };
@@ -6504,12 +6504,12 @@ upgrade: ${upgrade}\r
           cb();
         }
       }
-      const waitForDrain = () => new Promise((resolve3, reject) => {
+      const waitForDrain = () => new Promise((resolve2, reject) => {
         assert4(callback === null);
         if (socket[kError]) {
           reject(socket[kError]);
         } else {
-          callback = resolve3;
+          callback = resolve2;
         }
       });
       socket.on("close", onDrain).on("drain", onDrain);
@@ -7146,12 +7146,12 @@ var require_client_h2 = __commonJS({
           cb();
         }
       }
-      const waitForDrain = () => new Promise((resolve3, reject) => {
+      const waitForDrain = () => new Promise((resolve2, reject) => {
         assert4(callback === null);
         if (socket[kError]) {
           reject(socket[kError]);
         } else {
-          callback = resolve3;
+          callback = resolve2;
         }
       });
       h2stream.on("close", onDrain).on("drain", onDrain);
@@ -7628,16 +7628,16 @@ var require_client = __commonJS({
         return this[kNeedDrain] < 2;
       }
       async [kClose]() {
-        return new Promise((resolve3) => {
+        return new Promise((resolve2) => {
           if (this[kSize]) {
-            this[kClosedResolve] = resolve3;
+            this[kClosedResolve] = resolve2;
           } else {
-            resolve3(null);
+            resolve2(null);
           }
         });
       }
       async [kDestroy](err) {
-        return new Promise((resolve3) => {
+        return new Promise((resolve2) => {
           const requests = this[kQueue].splice(this[kPendingIdx]);
           for (let i = 0; i < requests.length; i++) {
             const request = requests[i];
@@ -7648,7 +7648,7 @@ var require_client = __commonJS({
               this[kClosedResolve]();
               this[kClosedResolve] = null;
             }
-            resolve3(null);
+            resolve2(null);
           };
           if (this[kHTTPContext]) {
             this[kHTTPContext].destroy(err, callback);
@@ -7699,7 +7699,7 @@ var require_client = __commonJS({
         });
       }
       try {
-        const socket = await new Promise((resolve3, reject) => {
+        const socket = await new Promise((resolve2, reject) => {
           client[kConnector]({
             host,
             hostname,
@@ -7711,7 +7711,7 @@ var require_client = __commonJS({
             if (err) {
               reject(err);
             } else {
-              resolve3(socket2);
+              resolve2(socket2);
             }
           });
         });
@@ -8047,8 +8047,8 @@ var require_pool_base = __commonJS({
         if (this[kQueue].isEmpty()) {
           await Promise.all(this[kClients].map((c) => c.close()));
         } else {
-          await new Promise((resolve3) => {
-            this[kClosedResolve] = resolve3;
+          await new Promise((resolve2) => {
+            this[kClosedResolve] = resolve2;
           });
         }
       }
@@ -9263,7 +9263,7 @@ var require_readable = __commonJS({
         if (this._readableState.closeEmitted) {
           return null;
         }
-        return await new Promise((resolve3, reject) => {
+        return await new Promise((resolve2, reject) => {
           if (this[kContentLength] > limit) {
             this.destroy(new AbortError3());
           }
@@ -9276,7 +9276,7 @@ var require_readable = __commonJS({
             if (signal?.aborted) {
               reject(signal.reason ?? new AbortError3());
             } else {
-              resolve3(null);
+              resolve2(null);
             }
           }).on("error", noop).on("data", function(chunk) {
             limit -= chunk.length;
@@ -9295,7 +9295,7 @@ var require_readable = __commonJS({
     }
     async function consume(stream3, type) {
       assert4(!stream3[kConsume]);
-      return new Promise((resolve3, reject) => {
+      return new Promise((resolve2, reject) => {
         if (isUnusable(stream3)) {
           const rState = stream3._readableState;
           if (rState.destroyed && rState.closeEmitted === false) {
@@ -9312,7 +9312,7 @@ var require_readable = __commonJS({
             stream3[kConsume] = {
               type,
               stream: stream3,
-              resolve: resolve3,
+              resolve: resolve2,
               reject,
               length: 0,
               body: []
@@ -9382,18 +9382,18 @@ var require_readable = __commonJS({
       return buffer3;
     }
     function consumeEnd(consume2) {
-      const { type, body: body2, resolve: resolve3, stream: stream3, length } = consume2;
+      const { type, body: body2, resolve: resolve2, stream: stream3, length } = consume2;
       try {
         if (type === "text") {
-          resolve3(chunksDecode(body2, length));
+          resolve2(chunksDecode(body2, length));
         } else if (type === "json") {
-          resolve3(JSON.parse(chunksDecode(body2, length)));
+          resolve2(JSON.parse(chunksDecode(body2, length)));
         } else if (type === "arrayBuffer") {
-          resolve3(chunksConcat(body2, length).buffer);
+          resolve2(chunksConcat(body2, length).buffer);
         } else if (type === "blob") {
-          resolve3(new Blob(body2, { type: stream3[kContentType] }));
+          resolve2(new Blob(body2, { type: stream3[kContentType] }));
         } else if (type === "bytes") {
-          resolve3(chunksConcat(body2, length));
+          resolve2(chunksConcat(body2, length));
         }
         consumeFinish(consume2);
       } catch (err) {
@@ -9650,9 +9650,9 @@ var require_api_request = __commonJS({
     };
     function request(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve3, reject) => {
+        return new Promise((resolve2, reject) => {
           request.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve3(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -9875,9 +9875,9 @@ var require_api_stream = __commonJS({
     };
     function stream3(opts, factory, callback) {
       if (callback === void 0) {
-        return new Promise((resolve3, reject) => {
+        return new Promise((resolve2, reject) => {
           stream3.call(this, opts, factory, (err, data) => {
-            return err ? reject(err) : resolve3(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -10162,9 +10162,9 @@ var require_api_upgrade = __commonJS({
     };
     function upgrade(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve3, reject) => {
+        return new Promise((resolve2, reject) => {
           upgrade.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve3(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -10256,9 +10256,9 @@ var require_api_connect = __commonJS({
     };
     function connect(opts, callback) {
       if (callback === void 0) {
-        return new Promise((resolve3, reject) => {
+        return new Promise((resolve2, reject) => {
           connect.call(this, opts, (err, data) => {
-            return err ? reject(err) : resolve3(data);
+            return err ? reject(err) : resolve2(data);
           });
         });
       }
@@ -14120,7 +14120,7 @@ var require_fetch = __commonJS({
       function dispatch({ body: body2 }) {
         const url2 = requestCurrentURL(request);
         const agent = fetchParams.controller.dispatcher;
-        return new Promise((resolve3, reject) => agent.dispatch(
+        return new Promise((resolve2, reject) => agent.dispatch(
           {
             path: url2.pathname + url2.search,
             origin: url2.origin,
@@ -14196,7 +14196,7 @@ var require_fetch = __commonJS({
                 }
               }
               const onError = this.onError.bind(this);
-              resolve3({
+              resolve2({
                 status,
                 statusText,
                 headersList,
@@ -14242,7 +14242,7 @@ var require_fetch = __commonJS({
               for (let i = 0; i < rawHeaders.length; i += 2) {
                 headersList.append(bufferToLowerCasedHeaderName(rawHeaders[i]), rawHeaders[i + 1].toString("latin1"), true);
               }
-              resolve3({
+              resolve2({
                 status,
                 statusText: STATUS_CODES[status],
                 headersList,
@@ -17835,8 +17835,8 @@ var require_util8 = __commonJS({
       return true;
     }
     function delay4(ms) {
-      return new Promise((resolve3) => {
-        setTimeout(resolve3, ms).unref();
+      return new Promise((resolve2) => {
+        setTimeout(resolve2, ms).unref();
       });
     }
     module2.exports = {
@@ -22046,8 +22046,8 @@ var require_helpers = __commonJS({
     function req(url2, opts = {}) {
       const href = typeof url2 === "string" ? url2 : url2.href;
       const req2 = (href.startsWith("https:") ? https3 : http3).request(url2, opts);
-      const promise = new Promise((resolve3, reject) => {
-        req2.once("response", resolve3).once("error", reject).end();
+      const promise = new Promise((resolve2, reject) => {
+        req2.once("response", resolve2).once("error", reject).end();
       });
       req2.then = promise.then.bind(promise);
       return req2;
@@ -22224,7 +22224,7 @@ var require_parse_proxy_response = __commonJS({
     var debug_1 = __importDefault(require_src());
     var debug2 = (0, debug_1.default)("https-proxy-agent:parse-proxy-response");
     function parseProxyResponse(socket) {
-      return new Promise((resolve3, reject) => {
+      return new Promise((resolve2, reject) => {
         let buffersLength = 0;
         const buffers = [];
         function read() {
@@ -22290,7 +22290,7 @@ var require_parse_proxy_response = __commonJS({
           }
           debug2("got proxy server response: %o %o", firstLine, headers);
           cleanup();
-          resolve3({
+          resolve2({
             connect: {
               statusCode,
               statusText,
@@ -25950,8 +25950,8 @@ var require_deferred = __commonJS({
        */
       constructor(preventUnhandledRejectionWarning = true) {
         this._state = DeferredState.PENDING;
-        this._promise = new Promise((resolve3, reject) => {
-          this._resolve = resolve3;
+        this._promise = new Promise((resolve2, reject) => {
+          this._resolve = resolve2;
           this._reject = reject;
         });
         if (preventUnhandledRejectionWarning) {
@@ -26166,11 +26166,11 @@ var require_unary_call = __commonJS({
     "use strict";
     var __awaiter18 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -26186,7 +26186,7 @@ var require_unary_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -26235,11 +26235,11 @@ var require_server_streaming_call = __commonJS({
     "use strict";
     var __awaiter18 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -26255,7 +26255,7 @@ var require_server_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -26305,11 +26305,11 @@ var require_client_streaming_call = __commonJS({
     "use strict";
     var __awaiter18 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -26325,7 +26325,7 @@ var require_client_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -26374,11 +26374,11 @@ var require_duplex_streaming_call = __commonJS({
     "use strict";
     var __awaiter18 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -26394,7 +26394,7 @@ var require_duplex_streaming_call = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -26442,11 +26442,11 @@ var require_test_transport = __commonJS({
     "use strict";
     var __awaiter18 = exports2 && exports2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -26462,7 +26462,7 @@ var require_test_transport = __commonJS({
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -26659,11 +26659,11 @@ var require_test_transport = __commonJS({
       responseTrailer: "test"
     };
     function delay4(ms, abort) {
-      return (v) => new Promise((resolve3, reject) => {
+      return (v) => new Promise((resolve2, reject) => {
         if (abort === null || abort === void 0 ? void 0 : abort.aborted) {
           reject(new rpc_error_1.RpcError("user cancel", "CANCELLED"));
         } else {
-          const id = setTimeout(() => resolve3(v), ms);
+          const id = setTimeout(() => resolve2(v), ms);
           if (abort) {
             abort.addEventListener("abort", (ev) => {
               clearTimeout(id);
@@ -27092,11 +27092,11 @@ var tunnel = __toESM(require_tunnel2(), 1);
 var import_undici = __toESM(require_undici(), 1);
 var __awaiter = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -27112,7 +27112,7 @@ var __awaiter = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -27185,26 +27185,26 @@ var HttpClientResponse = class {
   }
   readBody() {
     return __awaiter(this, void 0, void 0, function* () {
-      return new Promise((resolve3) => __awaiter(this, void 0, void 0, function* () {
+      return new Promise((resolve2) => __awaiter(this, void 0, void 0, function* () {
         let output = Buffer.alloc(0);
         this.message.on("data", (chunk) => {
           output = Buffer.concat([output, chunk]);
         });
         this.message.on("end", () => {
-          resolve3(output.toString());
+          resolve2(output.toString());
         });
       }));
     });
   }
   readBodyBuffer() {
     return __awaiter(this, void 0, void 0, function* () {
-      return new Promise((resolve3) => __awaiter(this, void 0, void 0, function* () {
+      return new Promise((resolve2) => __awaiter(this, void 0, void 0, function* () {
         const chunks = [];
         this.message.on("data", (chunk) => {
           chunks.push(chunk);
         });
         this.message.on("end", () => {
-          resolve3(Buffer.concat(chunks));
+          resolve2(Buffer.concat(chunks));
         });
       }));
     });
@@ -27407,14 +27407,14 @@ var HttpClient = class {
    */
   requestRaw(info2, data) {
     return __awaiter(this, void 0, void 0, function* () {
-      return new Promise((resolve3, reject) => {
+      return new Promise((resolve2, reject) => {
         function callbackForResult(err, res) {
           if (err) {
             reject(err);
           } else if (!res) {
             reject(new Error("Unknown error"));
           } else {
-            resolve3(res);
+            resolve2(res);
           }
         }
         this.requestRawWithCallback(info2, data, callbackForResult);
@@ -27658,12 +27658,12 @@ var HttpClient = class {
     return __awaiter(this, void 0, void 0, function* () {
       retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
       const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
-      return new Promise((resolve3) => setTimeout(() => resolve3(), ms));
+      return new Promise((resolve2) => setTimeout(() => resolve2(), ms));
     });
   }
   _processResponse(res, options) {
     return __awaiter(this, void 0, void 0, function* () {
-      return new Promise((resolve3, reject) => __awaiter(this, void 0, void 0, function* () {
+      return new Promise((resolve2, reject) => __awaiter(this, void 0, void 0, function* () {
         const statusCode = res.message.statusCode || 0;
         const response = {
           statusCode,
@@ -27671,7 +27671,7 @@ var HttpClient = class {
           headers: {}
         };
         if (statusCode === HttpCodes.NotFound) {
-          resolve3(response);
+          resolve2(response);
         }
         function dateTimeDeserializer(key, value) {
           if (typeof value === "string") {
@@ -27710,7 +27710,7 @@ var HttpClient = class {
           err.result = response.result;
           reject(err);
         } else {
-          resolve3(response);
+          resolve2(response);
         }
       }));
     });
@@ -27721,11 +27721,11 @@ var lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase(
 // node_modules/.pnpm/@actions+http-client@4.0.0/node_modules/@actions/http-client/lib/auth.js
 var __awaiter2 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -27741,7 +27741,7 @@ var __awaiter2 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -27774,11 +27774,11 @@ var import_os = require("os");
 var import_fs = require("fs");
 var __awaiter3 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -27794,7 +27794,7 @@ var __awaiter3 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -28077,11 +28077,11 @@ var fs2 = __toESM(require("fs"), 1);
 var path2 = __toESM(require("path"), 1);
 var __awaiter4 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -28097,7 +28097,7 @@ var __awaiter4 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -28201,11 +28201,11 @@ function isUnixExecutable(stats) {
 // node_modules/.pnpm/@actions+io@3.0.2/node_modules/@actions/io/lib/io.js
 var __awaiter5 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -28221,7 +28221,7 @@ var __awaiter5 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -28301,11 +28301,11 @@ function findInPath(tool) {
 var import_timers = require("timers");
 var __awaiter6 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -28321,7 +28321,7 @@ var __awaiter6 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -28540,7 +28540,7 @@ var ToolRunner = class extends events.EventEmitter {
         this.toolPath = path4.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
       }
       this.toolPath = yield which(this.toolPath, true);
-      return new Promise((resolve3, reject) => __awaiter6(this, void 0, void 0, function* () {
+      return new Promise((resolve2, reject) => __awaiter6(this, void 0, void 0, function* () {
         this._debug(`exec tool: ${this.toolPath}`);
         this._debug("arguments:");
         for (const arg of this.args) {
@@ -28623,7 +28623,7 @@ var ToolRunner = class extends events.EventEmitter {
           if (error2) {
             reject(error2);
           } else {
-            resolve3(exitCode);
+            resolve2(exitCode);
           }
         });
         if (this.options.input) {
@@ -28746,11 +28746,11 @@ var ExecState = class _ExecState extends events.EventEmitter {
 // node_modules/.pnpm/@actions+exec@3.0.0/node_modules/@actions/exec/lib/exec.js
 var __awaiter7 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -28766,7 +28766,7 @@ var __awaiter7 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -29100,7 +29100,7 @@ var Path = class {
 var { Minimatch } = import_minimatch.default;
 var IS_WINDOWS6 = process.platform === "win32";
 var Pattern = class _Pattern {
-  constructor(patternOrNegate, isImplicitPattern = false, segments, homedir3) {
+  constructor(patternOrNegate, isImplicitPattern = false, segments, homedir2) {
     this.negate = false;
     let pattern;
     if (typeof patternOrNegate === "string") {
@@ -29119,7 +29119,7 @@ var Pattern = class _Pattern {
       this.negate = !this.negate;
       pattern = pattern.substr(1).trim();
     }
-    pattern = _Pattern.fixupPattern(pattern, homedir3);
+    pattern = _Pattern.fixupPattern(pattern, homedir2);
     this.segments = new Path(pattern).segments;
     this.trailingSeparator = normalizeSeparators2(pattern).endsWith(path8.sep);
     pattern = safeTrimTrailingSeparator(pattern);
@@ -29175,7 +29175,7 @@ var Pattern = class _Pattern {
   /**
    * Normalizes slashes and ensures absolute root
    */
-  static fixupPattern(pattern, homedir3) {
+  static fixupPattern(pattern, homedir2) {
     (0, import_assert4.default)(pattern, "pattern cannot be empty");
     const literalSegments = new Path(pattern).segments.map((x) => _Pattern.getLiteral(x));
     (0, import_assert4.default)(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
@@ -29184,10 +29184,10 @@ var Pattern = class _Pattern {
     if (pattern === "." || pattern.startsWith(`.${path8.sep}`)) {
       pattern = _Pattern.globEscape(process.cwd()) + pattern.substr(1);
     } else if (pattern === "~" || pattern.startsWith(`~${path8.sep}`)) {
-      homedir3 = homedir3 || os6.homedir();
-      (0, import_assert4.default)(homedir3, "Unable to determine HOME directory");
-      (0, import_assert4.default)(hasAbsoluteRoot(homedir3), `Expected HOME directory to be a rooted path. Actual '${homedir3}'`);
-      pattern = _Pattern.globEscape(homedir3) + pattern.substr(1);
+      homedir2 = homedir2 || os6.homedir();
+      (0, import_assert4.default)(homedir2, "Unable to determine HOME directory");
+      (0, import_assert4.default)(hasAbsoluteRoot(homedir2), `Expected HOME directory to be a rooted path. Actual '${homedir2}'`);
+      pattern = _Pattern.globEscape(homedir2) + pattern.substr(1);
     } else if (IS_WINDOWS6 && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
       let root = ensureAbsoluteRoot("C:\\dummy-root", pattern.substr(0, 2));
       if (pattern.length > 2 && !root.endsWith("\\")) {
@@ -29268,11 +29268,11 @@ var SearchState = class {
 // node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-globber.js
 var __awaiter8 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -29288,7 +29288,7 @@ var __awaiter8 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -29301,14 +29301,14 @@ var __asyncValues = function(o) {
   }, i);
   function verb(n) {
     i[n] = o[n] && function(v) {
-      return new Promise(function(resolve3, reject) {
-        v = o[n](v), settle(resolve3, reject, v.done, v.value);
+      return new Promise(function(resolve2, reject) {
+        v = o[n](v), settle(resolve2, reject, v.done, v.value);
       });
     };
   }
-  function settle(resolve3, reject, d, v) {
+  function settle(resolve2, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
-      resolve3({ value: v2, done: d });
+      resolve2({ value: v2, done: d });
     }, reject);
   }
 };
@@ -29512,11 +29512,11 @@ var path10 = __toESM(require("path"), 1);
 // node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/glob.js
 var __awaiter9 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -29532,7 +29532,7 @@ var __awaiter9 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -29579,11 +29579,11 @@ var CacheFileSizeLimit = 10 * Math.pow(1024, 3);
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
 var __awaiter10 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -29599,7 +29599,7 @@ var __awaiter10 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -29612,14 +29612,14 @@ var __asyncValues2 = function(o) {
   }, i);
   function verb(n) {
     i[n] = o[n] && function(v) {
-      return new Promise(function(resolve3, reject) {
-        v = o[n](v), settle(resolve3, reject, v.done, v.value);
+      return new Promise(function(resolve2, reject) {
+        v = o[n](v), settle(resolve2, reject, v.done, v.value);
       });
     };
   }
-  function settle(resolve3, reject, d, v) {
+  function settle(resolve2, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
-      resolve3({ value: v2, done: d });
+      resolve2({ value: v2, done: d });
     }, reject);
   }
 };
@@ -30587,9 +30587,9 @@ function isStreamComplete(stream3) {
   if (stream3.readable === false) {
     return Promise.resolve();
   }
-  return new Promise((resolve3) => {
+  return new Promise((resolve2) => {
     const handler = () => {
-      resolve3();
+      resolve2();
       stream3.removeListener("close", handler);
       stream3.removeListener("end", handler);
       stream3.removeListener("error", handler);
@@ -30744,8 +30744,8 @@ var NodeHttpClient = class {
       headers: request.headers.toJSON({ preserveCase: true }),
       ...request.requestOverrides
     };
-    return new Promise((resolve3, reject) => {
-      const req = isInsecure ? import_node_http.default.request(options, resolve3) : import_node_https.default.request(options, resolve3);
+    return new Promise((resolve2, reject) => {
+      const req = isInsecure ? import_node_http.default.request(options, resolve2) : import_node_https.default.request(options, resolve2);
       req.once("error", (err) => {
         reject(new RestError(err.message, { code: err.code ?? RestError.REQUEST_SEND_ERROR, request }));
       });
@@ -30829,7 +30829,7 @@ function getDecodedResponseStream(stream3, headers) {
   return stream3;
 }
 function streamToText(stream3) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     const buffer3 = [];
     stream3.on("data", (chunk) => {
       if (Buffer.isBuffer(chunk)) {
@@ -30839,7 +30839,7 @@ function streamToText(stream3) {
       }
     });
     stream3.on("end", () => {
-      resolve3(Buffer.concat(buffer3).toString("utf8"));
+      resolve2(Buffer.concat(buffer3).toString("utf8"));
     });
     stream3.on("error", (e) => {
       if (e && e?.name === "AbortError") {
@@ -30979,7 +30979,7 @@ function calculateRetryDelay(retryAttempt, config) {
 // node_modules/.pnpm/@typespec+ts-http-runtime@0.3.3/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
 var StandardAbortMessage = "The operation was aborted.";
 function delay(delayInMs, value, options) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     let timer = void 0;
     let onAborted = void 0;
     const rejectOnAbort = () => {
@@ -31002,7 +31002,7 @@ function delay(delayInMs, value, options) {
     }
     timer = setTimeout(() => {
       removeListeners();
-      resolve3(value);
+      resolve2(value);
     }, delayInMs);
     if (options?.abortSignal) {
       options.abortSignal.addEventListener("abort", onAborted);
@@ -31705,7 +31705,7 @@ var AbortError2 = class extends Error {
 // node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/createAbortablePromise.js
 function createAbortablePromise(buildPromise, options) {
   const { cleanupBeforeAbort, abortSignal, abortErrorMsg } = options ?? {};
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     function rejectOnAbort() {
       reject(new AbortError2(abortErrorMsg ?? "The operation was aborted."));
     }
@@ -31723,7 +31723,7 @@ function createAbortablePromise(buildPromise, options) {
     try {
       buildPromise((x) => {
         removeListeners();
-        resolve3(x);
+        resolve2(x);
       }, (x) => {
         removeListeners();
         reject(x);
@@ -31740,8 +31740,8 @@ var StandardAbortMessage2 = "The delay was aborted.";
 function delay2(timeInMs, options) {
   let token;
   const { abortSignal, abortErrorMsg } = options ?? {};
-  return createAbortablePromise((resolve3) => {
-    token = setTimeout(resolve3, timeInMs);
+  return createAbortablePromise((resolve2) => {
+    token = setTimeout(resolve2, timeInMs);
   }, {
     cleanupBeforeAbort: () => clearTimeout(token),
     abortSignal,
@@ -36830,7 +36830,7 @@ var BufferScheduler = class {
    *
    */
   async do() {
-    return new Promise((resolve3, reject) => {
+    return new Promise((resolve2, reject) => {
       this.readable.on("data", (data) => {
         data = typeof data === "string" ? Buffer.from(data, this.encoding) : data;
         this.appendUnresolvedData(data);
@@ -36858,11 +36858,11 @@ var BufferScheduler = class {
         if (this.isStreamEnd && this.executingOutgoingHandlers === 0) {
           if (this.unresolvedLength > 0 && this.unresolvedLength < this.bufferSize) {
             const buffer3 = this.shiftBufferFromUnresolvedDataArray();
-            this.outgoingHandler(() => buffer3.getReadableStream(), buffer3.size, this.offset).then(resolve3).catch(reject);
+            this.outgoingHandler(() => buffer3.getReadableStream(), buffer3.size, this.offset).then(resolve2).catch(reject);
           } else if (this.unresolvedLength >= this.bufferSize) {
             return;
           } else {
-            resolve3();
+            resolve2();
           }
         }
       });
@@ -37100,7 +37100,7 @@ function getURLQueries(url2) {
   return queries;
 }
 async function delay3(timeInMs, aborter, abortError) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     let timeout;
     const abortHandler = () => {
       if (timeout !== void 0) {
@@ -37112,7 +37112,7 @@ async function delay3(timeInMs, aborter, abortError) {
       if (aborter !== void 0) {
         aborter.removeEventListener("abort", abortHandler);
       }
-      resolve3();
+      resolve2();
     };
     timeout = setTimeout(resolveHandler, timeInMs);
     if (aborter !== void 0) {
@@ -55002,7 +55002,7 @@ var AvroReadableFromStream = class extends AvroReadable {
       this._position += chunk.length;
       return this.toUint8Array(chunk);
     } else {
-      return new Promise((resolve3, reject) => {
+      return new Promise((resolve2, reject) => {
         const cleanUp = () => {
           this._readable.removeListener("readable", readableCallback);
           this._readable.removeListener("error", rejectCallback);
@@ -55017,7 +55017,7 @@ var AvroReadableFromStream = class extends AvroReadable {
           if (callbackChunk) {
             this._position += callbackChunk.length;
             cleanUp();
-            resolve3(this.toUint8Array(callbackChunk));
+            resolve2(this.toUint8Array(callbackChunk));
           }
         };
         const rejectCallback = () => {
@@ -55663,8 +55663,8 @@ var Poller = class {
     this.stopped = true;
     this.pollProgressCallbacks = [];
     this.operation = operation;
-    this.promise = new Promise((resolve3, reject) => {
-      this.resolve = resolve3;
+    this.promise = new Promise((resolve2, reject) => {
+      this.resolve = resolve2;
       this.reject = reject;
     });
     this.promise.catch(() => {
@@ -56069,8 +56069,8 @@ var Batch = class {
       return Promise.resolve();
     }
     this.parallelExecute();
-    return new Promise((resolve3, reject) => {
-      this.emitter.on("finish", resolve3);
+    return new Promise((resolve2, reject) => {
+      this.emitter.on("finish", resolve2);
       this.emitter.on("error", (error2) => {
         this.state = BatchStates.Error;
         reject(error2);
@@ -56117,12 +56117,12 @@ var import_node_util3 = __toESM(require("node:util"), 1);
 async function streamToBuffer(stream3, buffer3, offset, end, encoding) {
   let pos = 0;
   const count = end - offset;
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     const timeout = setTimeout(() => reject(new Error(`The operation cannot be completed in timeout.`)), REQUEST_TIMEOUT);
     stream3.on("readable", () => {
       if (pos >= count) {
         clearTimeout(timeout);
-        resolve3();
+        resolve2();
         return;
       }
       let chunk = stream3.read();
@@ -56141,7 +56141,7 @@ async function streamToBuffer(stream3, buffer3, offset, end, encoding) {
       if (pos < count) {
         reject(new Error(`Stream drains before getting enough data needed. Data read: ${pos}, data need: ${count}`));
       }
-      resolve3();
+      resolve2();
     });
     stream3.on("error", (msg) => {
       clearTimeout(timeout);
@@ -56150,7 +56150,7 @@ async function streamToBuffer(stream3, buffer3, offset, end, encoding) {
   });
 }
 async function readStreamToLocalFile(rs, file) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     const ws = import_node_fs.default.createWriteStream(file);
     rs.on("error", (err) => {
       reject(err);
@@ -56158,7 +56158,7 @@ async function readStreamToLocalFile(rs, file) {
     ws.on("error", (err) => {
       reject(err);
     });
-    ws.on("close", resolve3);
+    ws.on("close", resolve2);
     rs.pipe(ws);
   });
 }
@@ -57070,7 +57070,7 @@ var BlobClient = class _BlobClient extends StorageClient2 {
    * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
    */
   generateSasUrl(options) {
-    return new Promise((resolve3) => {
+    return new Promise((resolve2) => {
       if (!(this.credential instanceof StorageSharedKeyCredential)) {
         throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
       }
@@ -57081,7 +57081,7 @@ var BlobClient = class _BlobClient extends StorageClient2 {
         versionId: this._versionId,
         ...options
       }, this.credential).toString();
-      resolve3(appendToURLQuery(this.url, sas));
+      resolve2(appendToURLQuery(this.url, sas));
     });
   }
   /**
@@ -57120,7 +57120,7 @@ var BlobClient = class _BlobClient extends StorageClient2 {
    * @returns The SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
    */
   generateUserDelegationSasUrl(options, userDelegationKey) {
-    return new Promise((resolve3) => {
+    return new Promise((resolve2) => {
       const sas = generateBlobSASQueryParameters({
         containerName: this._containerName,
         blobName: this._name,
@@ -57128,7 +57128,7 @@ var BlobClient = class _BlobClient extends StorageClient2 {
         versionId: this._versionId,
         ...options
       }, userDelegationKey, this.accountName).toString();
-      resolve3(appendToURLQuery(this.url, sas));
+      resolve2(appendToURLQuery(this.url, sas));
     });
   }
   /**
@@ -58885,11 +58885,11 @@ var RateLimitError = class extends Error {
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/uploadUtils.js
 var __awaiter11 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -58905,7 +58905,7 @@ var __awaiter11 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -59029,11 +59029,11 @@ var util5 = __toESM(require("util"), 1);
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/requestUtils.js
 var __awaiter12 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -59049,7 +59049,7 @@ var __awaiter12 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -59079,7 +59079,7 @@ function isRetryableStatusCode(statusCode) {
 }
 function sleep(milliseconds) {
   return __awaiter12(this, void 0, void 0, function* () {
-    return new Promise((resolve3) => setTimeout(resolve3, milliseconds));
+    return new Promise((resolve2) => setTimeout(resolve2, milliseconds));
   });
 }
 function retry(name_1, method_1, getStatusCode_1) {
@@ -59154,11 +59154,11 @@ function retryHttpClientResponse(name_1, method_1) {
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/downloadUtils.js
 var __awaiter13 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -59174,7 +59174,7 @@ var __awaiter13 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -59453,8 +59453,8 @@ function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
 }
 var promiseWithTimeout = (timeoutMs, promise) => __awaiter13(void 0, void 0, void 0, function* () {
   let timeoutHandle;
-  const timeoutPromise = new Promise((resolve3) => {
-    timeoutHandle = setTimeout(() => resolve3("timeout"), timeoutMs);
+  const timeoutPromise = new Promise((resolve2) => {
+    timeoutHandle = setTimeout(() => resolve2("timeout"), timeoutMs);
   });
   return Promise.race([promise, timeoutPromise]).then((result) => {
     clearTimeout(timeoutHandle);
@@ -59564,11 +59564,11 @@ function getUserAgentString2() {
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
 var __awaiter14 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -59584,7 +59584,7 @@ var __awaiter14 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -60456,11 +60456,11 @@ function maskSecretUrls(body2) {
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
 var __awaiter15 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -60476,7 +60476,7 @@ var __awaiter15 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -60605,7 +60605,7 @@ var CacheServiceClient = class {
   }
   sleep(milliseconds) {
     return __awaiter15(this, void 0, void 0, function* () {
-      return new Promise((resolve3) => setTimeout(resolve3, milliseconds));
+      return new Promise((resolve2) => setTimeout(resolve2, milliseconds));
     });
   }
   getExponentialRetryTimeMilliseconds(attempt) {
@@ -60630,11 +60630,11 @@ var import_fs2 = require("fs");
 var path12 = __toESM(require("path"), 1);
 var __awaiter16 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -60650,7 +60650,7 @@ var __awaiter16 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -60830,11 +60830,11 @@ function createTar(archiveFolder, sourceDirectories, compressionMethod) {
 // node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/cache.js
 var __awaiter17 = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve3) {
-      resolve3(value);
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve2, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -60850,7 +60850,7 @@ var __awaiter17 = function(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -61197,66 +61197,50 @@ function saveCacheV2(paths_1, key_1, options_1) {
   });
 }
 
-// install-clang-format/src/index.ts
+// dotnet-tool/src/index.ts
 var import_node_child_process = require("node:child_process");
+var import_node_crypto4 = require("node:crypto");
+var fs9 = __toESM(require("node:fs"), 1);
 var os8 = __toESM(require("node:os"), 1);
 var path14 = __toESM(require("node:path"), 1);
-function getPersistentDataDir() {
-  const uv_data_dir = process.env.UV_DATA_DIR;
-  if (uv_data_dir) {
-    return uv_data_dir;
-  }
-  const xdg_data_home = process.env.XDG_DATA_HOME;
-  if (xdg_data_home) {
-    return path14.join(xdg_data_home, "uv");
-  }
-  const home_dir = os8.homedir();
-  if (process.platform === "win32") {
-    const appdata = process.env.APPDATA;
-    if (appdata) {
-      return path14.join(appdata, "uv", "data");
-    }
-  }
-  if (home_dir) {
-    return path14.join(home_dir, ".local", "share", "uv");
-  }
-  return path14.join(process.cwd(), ".uv");
+function toPathComponent(value) {
+  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9._-]+/g, "_");
+  return normalized.replace(/^_+|_+$/g, "") || "tool";
 }
-function getToolDir() {
-  return process.env.UV_TOOL_DIR ?? path14.join(getPersistentDataDir(), "tools");
-}
-function getBinDir() {
-  const uv_tool_bin_dir = process.env.UV_TOOL_BIN_DIR;
-  if (uv_tool_bin_dir) {
-    return uv_tool_bin_dir;
-  }
-  const xdg_bin_home = process.env.XDG_BIN_HOME;
-  if (xdg_bin_home) {
-    return xdg_bin_home;
-  }
-  const xdg_data_home = process.env.XDG_DATA_HOME;
-  if (xdg_data_home) {
-    return path14.resolve(xdg_data_home, "..", "bin");
-  }
-  return path14.join(os8.homedir(), ".local", "bin");
+function getInstallRoot(tool, version3) {
+  const digest = (0, import_node_crypto4.createHash)("sha256").update(`${tool}==${version3}`).digest("hex").slice(0, 12);
+  return `${toPathComponent(tool)}-${toPathComponent(version3)}-${digest}`;
 }
 (async () => {
   try {
-    const version3 = getInput("version", { required: true });
-    const tool_dir = getToolDir();
-    const bin_dir = getBinDir();
-    const cache_key = `${os8.platform()}-clang-format-${version3}`;
-    const restored_key = await restoreCache([tool_dir, bin_dir], cache_key);
+    const tool = getInput("tool", { required: true }).trim();
+    const version3 = getInput("version", { required: true }).trim();
+    const workspace = process.cwd();
+    const install_root = getInstallRoot(tool, version3);
+    const tool_dir = path14.join(workspace, ".dotnet-tools", install_root);
+    const nuget_packages_dir = path14.join(workspace, ".nuget-packages", install_root);
+    const cache_key = `${os8.platform()}-dotnet-tool-${tool}-${version3}`;
+    const restored_key = await restoreCache([tool_dir, nuget_packages_dir], cache_key);
     if (!restored_key) {
-      const install = (0, import_node_child_process.spawnSync)("uv", ["tool", "install", `clang-format==${version3}`], {
-        stdio: "inherit"
-      });
-      if (install.status !== 0) {
-        throw new Error(`uv tool install failed: ${install.status}`);
+      fs9.mkdirSync(tool_dir, { recursive: true });
+      fs9.mkdirSync(nuget_packages_dir, { recursive: true });
+      const install_tool = (0, import_node_child_process.spawnSync)(
+        "dotnet",
+        ["tool", "install", tool, "--version", version3, "--tool-path", tool_dir],
+        {
+          stdio: "inherit",
+          env: {
+            ...process.env,
+            NUGET_PACKAGES: nuget_packages_dir
+          }
+        }
+      );
+      if (install_tool.status !== 0) {
+        throw new Error(`dotnet tool install failed: ${install_tool.status}`);
       }
-      await saveCache2([tool_dir, bin_dir], cache_key);
+      await saveCache2([tool_dir, nuget_packages_dir], cache_key);
     }
-    addPath(bin_dir);
+    addPath(tool_dir);
   } catch (error2) {
     setFailed(error2.message);
   }
