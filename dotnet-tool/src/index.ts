@@ -8,7 +8,10 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 function toPathComponent(value: string): string {
-    const normalized = value.trim().toLowerCase().replace(/[^a-z0-9._-]+/g, "_");
+    const normalized = value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9._-]+/g, "_");
     return normalized.replace(/^_+|_+$/g, "") || "tool";
 }
 
