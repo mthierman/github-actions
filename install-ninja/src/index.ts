@@ -81,7 +81,6 @@ import * as util from "node:util";
         }
 
         core.addPath(install_dir);
-        core.info(`Ninja ${version} added to PATH`);
     } catch (error: any) {
         core.setFailed(error.message);
     }
