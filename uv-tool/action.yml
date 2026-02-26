@@ -1,10 +1,10 @@
 name: "uv tool"
 
-description: "Add a Python tool"
+description: "Add a python tool"
 
 inputs:
   tool:
-    description: "Tool name"
+    description: "Tool id"
     required: true
   version:
     description: "Tool version"
