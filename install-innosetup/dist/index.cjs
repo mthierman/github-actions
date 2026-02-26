@@ -61210,7 +61210,7 @@ var util6 = __toESM(require("node:util"), 1);
   }
   try {
     const stream_pipeline = util6.promisify(stream3.pipeline);
-    const version3 = getInput("version");
+    const version3 = getInput("version", { required: true }).trim();
     const workspace = process.cwd();
     const install_dir = path14.join(workspace, `innosetup-${version3}`);
     const cache_key = `${os8.platform()}-innosetup-${version3}`;
