@@ -1,11 +1,6 @@
 name: "Check Gersemi"
 description: "Install gersemi via uv-tool and run gersemi --check"
 
-inputs:
-  paths:
-    description: "Newline-separated files and/or folders to check"
-    default: "."
-
 runs:
   using: "composite"
   steps:
@@ -16,15 +11,7 @@ runs:
 
     - shell: pwsh
       run: |
-        $raw = @'
-        ${{ inputs.paths }}
-        '@
-        $targets = $raw -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ }
-        if ($targets.Count -eq 0) {
-          $targets = @(".")
-        }
-
-        & gersemi --check @targets
+        & gersemi --check .
         if ($LASTEXITCODE -ne 0) {
           exit $LASTEXITCODE
         }
