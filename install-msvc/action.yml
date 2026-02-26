@@ -4,8 +4,8 @@ description: "Install MSVC"
 
 inputs:
   version:
-    description: "Version"
-    default: "18.1.1"
+    description: "Version of MSVC to install (e.g. 18.3.2)"
+    default: "18.3.2"
 
 runs:
   using: node24
