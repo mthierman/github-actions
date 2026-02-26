@@ -13,14 +13,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install gersemi
-      uses: surge-synthesizer/sst-githubactions/uv-tool@main
+    - uses: surge-synthesizer/sst-githubactions/uv-tool@main
       with:
         tool: "gersemi"
         version: "0.26.0"
 
-    - name: Run gersemi --check
-      shell: pwsh
+    - shell: pwsh
       run: |
         $raw = @'
         ${{ inputs.paths }}
