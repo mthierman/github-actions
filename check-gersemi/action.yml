@@ -1,0 +1,38 @@
+name: "Check Gersemi"
+
+description: "Install gersemi via uv-tool and run gersemi --check"
+
+inputs:
+  version:
+    description: "Version of gersemi to install (e.g. 0.18.0)"
+    required: false
+    default: "0.18.0"
+  paths:
+    description: "Newline-separated files and/or folders to check"
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install gersemi
+      uses: surge-synthesizer/sst-githubactions/uv-tool@main
+      with:
+        tool: "gersemi"
+        version: "0.26.0"
+
+    - name: Run gersemi --check
+      shell: pwsh
+      run: |
+        $raw = @'
+        ${{ inputs.paths }}
+        '@
+        $targets = $raw -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+        if ($targets.Count -eq 0) {
+          $targets = @(".")
+        }
+
+        & gersemi --check @targets
+        if ($LASTEXITCODE -ne 0) {
+          exit $LASTEXITCODE
+        }
