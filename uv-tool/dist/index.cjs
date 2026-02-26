@@ -61199,6 +61199,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 
 // uv-tool/src/index.ts
 var import_node_child_process = require("node:child_process");
+var import_node_crypto4 = require("node:crypto");
 var os8 = __toESM(require("node:os"), 1);
 var path14 = __toESM(require("node:path"), 1);
 function getPersistentDataDir() {
@@ -61240,6 +61241,14 @@ function getBinDir() {
   }
   return path14.join(os8.homedir(), ".local", "bin");
 }
+function toPathComponent(value) {
+  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9._-]+/g, "_");
+  return normalized.replace(/^_+|_+$/g, "") || "tool";
+}
+function getInstallRoot(tool, version3) {
+  const digest = (0, import_node_crypto4.createHash)("sha256").update(`${tool}==${version3}`).digest("hex").slice(0, 12);
+  return `${toPathComponent(tool)}-${toPathComponent(version3)}-${digest}`;
+}
 (async () => {
   try {
     const tool = getInput("tool", { required: true }).trim();
@@ -61250,13 +61259,19 @@ function getBinDir() {
     if (!version3) {
       throw new Error("Input 'version' must not be empty");
     }
-    const tool_dir = getToolDir();
-    const bin_dir = getBinDir();
+    const install_root = getInstallRoot(tool, version3);
+    const tool_dir = path14.join(getToolDir(), install_root);
+    const bin_dir = path14.join(getBinDir(), install_root);
     const cache_key = `${os8.platform()}-uv-tool-${tool}-${version3}`;
     const restored_key = await restoreCache([tool_dir, bin_dir], cache_key);
     if (!restored_key) {
       const install = (0, import_node_child_process.spawnSync)("uv", ["tool", "install", `${tool}==${version3}`], {
-        stdio: "inherit"
+        stdio: "inherit",
+        env: {
+          ...process.env,
+          UV_TOOL_DIR: tool_dir,
+          UV_TOOL_BIN_DIR: bin_dir
+        }
       });
       if (install.status !== 0) {
         throw new Error(`uv tool install failed: ${install.status}`);
