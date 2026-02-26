@@ -13,7 +13,7 @@ runs:
         version: "22.1.0"
     - shell: pwsh
       run: |
-        clang-format --version
+        Write-Host "clang-format: v$((& clang-format --version).Trim())"
         $extensions = @(".cpp", ".hpp", ".cc", ".cxx", ".h", ".c", ".m", ".mm")
         $files = Get-ChildItem -Path . -Recurse -File | Where-Object { $extensions -contains $_.Extension.ToLowerInvariant() }
         if ($files.Count -eq 0) {
